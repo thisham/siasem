@@ -25,20 +25,6 @@ class m_data extends Model
     function master($menu = '', $act = '', $data = '')
     {
         switch ($menu) {
-            case 'sekolah':
-                switch ($act) {
-                    case 'update':
-                        extract((array) $data);
-                        return $this->db->kueri("UPDATE $this->dtsch SET sch_name = ?, sch_npsn = ?, sch_nss = ?, sch_address = ?, sch_postalcode = ?, sch_telephone = ?, sch_village = ?, sch_district = ?, sch_regency = ?, sch_province = ?, sch_website = ?, sch_email = ?")
-                                        ->ikat($sch_name, $sch_npsn, $sch_nss, $sch_address, $sch_postalcode, $sch_telephone, $sch_village, $sch_district, $sch_regency, $sch_province, $sch_website, $sch_email)->eksekusi()->baris_terefek();
-                        break;
-                    
-                    default:
-                        return $this->db->kueri("SELECT * FROM $this->dtsch WHERE sch_id = ?")->ikat('1')->eksekusi()->hasil_tunggal();
-                        break;
-                }
-                break;
-
             case 'kurikulum':
                 switch ($act) {
                     case 'detail':
@@ -57,19 +43,61 @@ class m_data extends Model
                         break;
 
                     case 'tambah':
-                        $data['cur_status'] = (isset($data['cur_status'])) ? 'on' : '';
+                        $data['cur_status'] = (isset($data['cur_status'])) ? 'on' : 'off';
                         return $this->db->kueri("INSERT INTO $this->dtcur VALUES (?, ?, ?)")->ikat($data['cur_id'], $data['cur_name'], $data['cur_status'])
                                         ->eksekusi()->baris_terefek();
                         break;
 
                     case 'update':
-                        $data['cur_status'] = (isset($data['cur_status'])) ? 'on' : '';
+                        $data['cur_status'] = ($data['cur_status'] == 'on') ? 'on' : 'off';
                         return $this->db->kueri("UPDATE $this->dtcur SET cur_name = ?, cur_status = ? WHERE cur_id = ?")->ikat($data['cur_name'], $data['cur_status'], $data['cur_id'])
                                         ->eksekusi()->baris_terefek();
                         break;
                     
                     default:
                         return $this->db->kueri("SELECT * FROM $this->dtcur")->eksekusi()->hasil_jamak();
+                        break;
+                }
+                break;
+
+            case 'sekolah':
+                switch ($act) {
+                    case 'update':
+                        extract((array) $data);
+                        return $this->db->kueri("UPDATE $this->dtsch SET sch_name = ?, sch_npsn = ?, sch_nss = ?, sch_address = ?, sch_postalcode = ?, sch_telephone = ?, sch_village = ?, sch_district = ?, sch_regency = ?, sch_province = ?, sch_website = ?, sch_email = ?")
+                                        ->ikat($sch_name, $sch_npsn, $sch_nss, $sch_address, $sch_postalcode, $sch_telephone, $sch_village, $sch_district, $sch_regency, $sch_province, $sch_website, $sch_email)->eksekusi()->baris_terefek();
+                        break;
+                    
+                    default:
+                        return $this->db->kueri("SELECT * FROM $this->dtsch WHERE sch_id = ?")->ikat('1')->eksekusi()->hasil_tunggal();
+                        break;
+                }
+                break;
+
+            case 'tapel':
+                switch ($act) {
+                    case 'detail':
+                        return $this->db->kueri("SELECT * FROM $this->dtfys WHERE fys_id = ?")->ikat($data['fys_id'])->eksekusi()->hasil_tunggal();
+                        break;
+
+                    case 'hapus':
+                        return $this->db->kueri("DELETE FROM $this->dtfys WHERE fys_id = ?")->ikat($data['fys_id'])->eksekusi()->baris_terefek();
+                        break;
+
+                    case 'tambah':
+                        $data['fys_status'] = (isset($data['fys_status'])) ? 'on' : 'off' ;
+                        return $this->db->kueri("INSERT INTO $this->dtfys VALUES (?, ?, ?, ?)")->ikat($data['fys_id'], $data['fys_name'], $data['fys_fiscal'], $data['fys_status'])
+                                        ->eksekusi()->baris_terefek();
+                        break;
+
+                    case 'update':
+                        $data['fys_status'] = (isset($data['fys_status'])) ? 'on' : 'off' ;
+                        return $this->db->kueri("UPDATE $this->dtfys SET fys_name = ?, fys_fiscal = ?, fys_status = ? WHERE fys_id = ?")
+                                        ->ikat($data['fys_name'], $data['fys_fiscal'], $data['fys_status'], $data['fys_id'])->eksekusi()->baris_terefek();
+                        break;
+                    
+                    default:
+                        return $this->db->kueri("SELECT * FROM $this->dtfys")->eksekusi()->hasil_jamak();
                         break;
                 }
                 break;

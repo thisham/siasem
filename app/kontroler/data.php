@@ -120,6 +120,66 @@ class data extends Kontroler
                 }
                 break;
 
+            case 'tapel':
+                switch ($act) {
+                    case 'detail':
+                        $send = $_POST;
+                        $acts = $this->data->master('tapel', 'detail', $send);
+
+                        echo json_encode($acts);
+                        break;
+
+                    case 'hapus':
+                        $send = $_POST;
+                        $acts = $this->data->master('tapel', 'hapus', $send);
+                        $data = array (
+                            'badan' => array(
+                                'dtfys' => $this->data->master('tapel')
+                            )
+                        );
+
+                        $this->tampilkan('data/master/after-upt/tapel', $data);
+                        break;
+
+                    case 'tambah':
+                        $send = $_POST;
+                        $acts = $this->data->master('tapel', 'tambah', $send);
+                        $data = array (
+                            'badan' => array(
+                                'dtfys' => $this->data->master('tapel')
+                            )
+                        );
+
+                        $this->tampilkan('data/master/after-upt/tapel', $data);
+                        break;
+
+                    case 'update':
+                        $send = $_POST;
+                        $acts = $this->data->master('tapel', 'update', $send);
+                        $data = array (
+                            'badan' => array(
+                                'dtfys' => $this->data->master('tapel')
+                            )
+                        );
+
+                        $this->tampilkan('data/master/after-upt/tapel', $data);
+                        break;
+                    
+                    default:
+                        $data = array(
+                            'title' => 'Data Tahun Pelajaran',
+                            'badan' => array(
+                                'dtfys' => $this->data->master('tapel')
+                            )
+                        );
+                        $this->tampilkan('pakem/header', $data);
+                        $this->tampilkan('pakem/navbar', $data);
+                        $this->tampilkan('data/master/tapel', $data);
+                        $this->tampilkan('pakem/footer');
+                        break;
+                }
+                break;
+
             default:
                 $data = array(
                     'title' => 'Data Master'
