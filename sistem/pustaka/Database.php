@@ -24,7 +24,7 @@ class Database
 			echo "Koneksi Eror: " . $this->dbh->connect_errno . " - " . $this->dbh->connect_error;
 		}
 
-		$this->stmt = $stmt;
+		$this->stmt = (object) $stmt;
 
 	}
 
@@ -56,6 +56,7 @@ class Database
 						$tipe[$i] = "s";
 						break;
 				}
+				$this->dbh->real_escape_string($tipe[$i]);
 			}
 		}
 		

@@ -1,9 +1,9 @@
 <?php
 
-$basis_url 	= 'http://lab.ukri.ac.id/bahan1';
+$basis_url 	= 'http://localhost/project/siakad-sm';
 
 $basis_data = array(
-	'database'	=> 'alims_bahan',
+	'database'	=> 'siakad_sm',
 	'username'	=> 'root',
 	'password'	=> '',
 	'hostname'	=> 'localhost'
