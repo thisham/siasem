@@ -108,7 +108,7 @@
                     $('#upt-cur_name').val(data.cur_name);
                     $('#lupt-cur-name').addClass('active');
                 }
-                if (data.cur_status != '') {
+                if (data.cur_status != 'off') {
                     $('#upt-cur_status').attr('checked', 'checked');
                 }
             }
