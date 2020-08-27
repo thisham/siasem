@@ -11,10 +11,10 @@
             <tr>
                 <td class="center"><?= $no++; ?></td>
                 <td><?= $dtcur['cur_name']; ?></td>
-                <td class="center"><?= $status = ($dtcur['cur_status'] == 'on') ? "Aktif" : "Non-Aktif"; ?></td>
+                <td class="center"><?= ($dtcur['cur_status'] == 'on') ? "Aktif" : "Non-Aktif"; ?></td>
                 <td class="center">
-                    <a href="" class="btn btn-small orange modal-trigger waves-effect waves-light" data-target="modal-upt" onclick="uptdata('<?= $dtcur[`cur_id`]; ?>');"><i class="material-icons">edit</i></a>
-                    <a href="" class="btn btn-small red modal-trigger waves-effect waves-light" onclick="deldata('<?= $dtcur[`cur_id`]; ?>');"><i class="material-icons">delete</i></a>
+                    <button class="btn btn-small orange modal-trigger waves-effect waves-light" data-target="modal-upt" onclick="uptdata('<?= $dtcur['cur_id']; ?>');"><i class="material-icons">edit</i></button>
+                    <button class="btn btn-small red modal-trigger waves-effect waves-light" onclick="deldata('<?= $dtcur['cur_id']; ?>', '<?= $dtcur['cur_name']; ?>');"><i class="material-icons">delete</i></button>
                 </td>
             </tr>
         <?php } ?>
