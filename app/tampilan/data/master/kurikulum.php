@@ -159,6 +159,10 @@
                 success: function (url) {
                     $('#add-cur_id').val(url);
                     $('#ladd-cur-id').addClass('active');
+                    $('#add-cur_name').val('');
+                    $('#add-cur_status').removeAttr('checked');
+                    $('#add-cur_status').val('');
+                    $('#ladd-cur-name').removeClass('active');
                 }
             });
         });

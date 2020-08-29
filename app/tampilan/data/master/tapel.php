@@ -121,7 +121,7 @@
                     $('#lupt-fys-fiscal').addClass('active');
                     $('#upt-fys_fiscal').val(data.fys_fiscal);
                 }
-                if (data.fys_status != 'off') {
+                if (data.fys_status == 'on') {
                     $('#upt-fys_status').attr('checked', 'checked');
                 }
             }
@@ -163,6 +163,12 @@
     $(document).ready(function () {
         $('.data-batal').click(function (e) {
             e.preventDefault();
+        });
+
+        $('#btn-add').click(function () {
+            $('#add-fys_id, #add-fys_name, #add-fys_fiscal').val('');
+            $('#add-fys_status').removeAttr('checked');
+            $('#ladd-fys-id, #ladd-fys-name, #ladd-fys-fiscal').removeClass('active');
         });
 
         $('#kirim-add').click(function (e) {
