@@ -1,7 +1,7 @@
 <div class="container">
     <div class="card">
         <div class="card-action indigo">
-            <h3 class="card-title white-text">Data Gedung</h3>
+            <h3 class="card-title white-text"><?= $title; ?></h3>
             <a class="btn-floating halfway-fab waves-effect waves-light red btn-large modal-trigger" data-target="modal-add" id="btn-add"><i class="material-icons">add</i></a>
         </div>
         <div class="card-content" id="bld-content">

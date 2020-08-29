@@ -1,7 +1,7 @@
 <div class="container">
     <div class="card">
         <div class="card-action indigo">
-            <h3 class="card-title white-text">Data Sekolah</h3>
+            <h3 class="card-title white-text"><?= $title; ?></h3>
             <a class="btn-floating halfway-fab waves-effect waves-light red btn-large" id="btn-upt"><i class="material-icons">edit</i></a>
         </div>
         <div class="card-content" id="sch-content">
