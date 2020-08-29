@@ -6,7 +6,7 @@ class m_data extends Model
     private $dtsch = 'dt_sch_school';
     private $dtcur = 'dt_cur_curriculums';
     private $dtfys = 'dt_fys_fiscalyears';
-    private $dtbld = 'dt_bld_buldings';
+    private $dtbld = 'dt_bld_buildings';
     private $dtrom = 'dt_rom_rooms';
     private $dtecl = 'dt_ecl_employeeclasses';
     private $dtptk = 'dt_ptk_ptk';
@@ -25,6 +25,44 @@ class m_data extends Model
     function master($menu = '', $act = '', $data = '')
     {
         switch ($menu) {
+            case 'gedung':
+                switch ($act) {
+                    case 'detail':
+                        return $this->db->kueri("SELECT * FROM $this->dtbld WHERE bld_id = ?")->ikat($data['bld_id'])->eksekusi()->hasil_tunggal();
+                        break;
+
+                    case 'id-add':
+                        $no_max = $this->db->kueri("SELECT max(bld_id) as kode FROM $this->dtbld")->eksekusi()->hasil_tunggal();
+                        $no_max = (int) substr($no_max['kode'], 3);
+                        $no_max = ++$no_max;
+                        return 'B-' . sprintf("%03s", $no_max);
+                        break;
+
+                    case 'hapus':
+                        return $this->db->kueri("DELETE FROM $this->dtbld WHERE bld_id = ?")->ikat($data['bld_id'])
+                                        ->eksekusi()->baris_terefek();
+                        break;
+
+                    case 'tambah':
+                        extract((array) $data);
+                        $bld_status = (isset($bld_status)) ? 'on' : 'off';
+                        return $this->db->kueri("INSERT INTO $this->dtbld VALUES (?, ?, ?, ?, ?, ?, ?, ?)")->ikat($bld_id, $bld_name, $bld_floor, $bld_length, $bld_height, $bld_width, $bld_information, $bld_status)
+                                        ->eksekusi()->baris_terefek();
+                        break;
+
+                    case 'update':
+                        $data['bld_status'] = (isset($data['bld_status'])) ? 'on' : 'off';
+                        return $this->db->kueri("UPDATE $this->dtbld SET bld_name = ?, bld_floor = ?, bld_length = ?, bld_width = ?, bld_height = ?, bld_information = ?, bld_status = ? WHERE bld_id = ?")
+                                        ->ikat($data['bld_name'], $data['bld_floor'], $data['bld_length'], $data['bld_width'], $data['bld_height'], $data['bld_information'], $data['bld_status'], $data['bld_id'])
+                                        ->eksekusi()->baris_terefek();
+                        break;
+                    
+                    default:
+                        return $this->db->kueri("SELECT * FROM $this->dtbld")->eksekusi()->hasil_jamak();
+                        break;
+                }
+                break;
+
             case 'kurikulum':
                 switch ($act) {
                     case 'detail':

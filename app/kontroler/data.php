@@ -16,6 +16,69 @@ class data extends Kontroler
     {
         switch ($menu)
         {
+            case 'gedung':
+                switch ($act) {
+                    case 'detail':
+                        $send = $_POST;
+                        $acts = $this->data->master('gedung', 'detail', $send);
+                        echo json_encode($acts);
+                        break;
+
+                    case 'hapus':
+                        $send = $_POST;
+                        $acts = $this->data->master('gedung', 'hapus', $send);
+                        $data = array (
+                            'badan' => array (
+                                'dtbld' => $this->data->master('gedung')
+                            )
+                        );
+
+                        $this->tampilkan('data/master/after-upt/gedung', $data);
+                        break;
+
+                    case 'id-add':
+                        echo $this->data->master('gedung', 'id-add');
+                        break;
+
+                    case 'tambah':
+                        $send = $_POST;
+                        $acts = $this->data->master('gedung', 'tambah', $send);
+                        $data = array (
+                            'badan' => array (
+                                'dtbld' => $this->data->master('gedung')
+                            )
+                        );
+
+                        $this->tampilkan('data/master/after-upt/gedung', $data);
+                        break;
+
+                    case 'update':
+                        $send = $_POST;
+                        $acts = $this->data->master('gedung', 'update', $send);
+                        $data = array (
+                            'badan' => array (
+                                'dtbld' => $this->data->master('gedung')
+                            )
+                        );
+
+                        $this->tampilkan('data/master/after-upt/gedung', $data);
+                        break;
+                    
+                    default:
+                        $data = array(
+                            'title' => 'Data Gedung',
+                            'badan' => array(
+                                'dtbld' => $this->data->master('gedung')
+                            )
+                        );
+                        $this->tampilkan('pakem/header', $data);
+                        $this->tampilkan('pakem/navbar', $data);
+                        $this->tampilkan('data/master/gedung', $data);
+                        $this->tampilkan('pakem/footer');
+                        break;
+                }
+                break;
+
             case 'kurikulum' :
                 switch ($act) {
                     case 'detail':
@@ -72,7 +135,7 @@ class data extends Kontroler
                             )
                         );
                         $this->tampilkan('pakem/header', $data);
-                        $this->tampilkan('pakem/navbar');
+                        $this->tampilkan('pakem/navbar', $data);
                         $this->tampilkan('data/master/kurikulum', $data);
                         $this->tampilkan('pakem/footer');
                         break;
