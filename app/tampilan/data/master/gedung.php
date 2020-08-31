@@ -146,6 +146,7 @@
             type: "POST",
             url: "<?= basis_url('data/master/gedung/detail'); ?>",
             success: function (data){
+                console.log(data);
                 $('#upt-bld_name, #upt-bld_floor, #upt-bld_length, #upt-bld_width, #upt-bld_height, #upt-bld_information').val('');
                 $('#lupt-bld-name, #lupt-bld-floor, #lupt-bld-length, #lupt-bld-width, #lupt-bld-height, #lupt-bld-information').removeClass('active');
                 $('#upt-bld_status').removeAttr('checked');
