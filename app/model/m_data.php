@@ -8,8 +8,10 @@ class m_data extends Model
     private $dtfys = 'dt_fys_fiscalyears';
     private $dtbld = 'dt_bld_buildings';
     private $dtrom = 'dt_rom_rooms';
-    private $dtecl = 'dt_ecl_employeeclasses';
+    private $dtest = 'dt_est_employeestatuses';
     private $dtptk = 'dt_ptk_ptk';
+    private $dtmjr = 'dt_mjr_majors';
+    private $dtcls = 'dt_cls_classes';
     // academic 
     private $dtsgr = 'dt_sgr_subjectgroups';
     private $dtsbj = 'dt_sbj_subjects';
@@ -25,6 +27,9 @@ class m_data extends Model
     function master($menu = '', $act = '', $data = '')
     {
         switch ($menu) {
+            case 'golongan':
+                # code...
+                break;
             case 'gedung':
                 switch ($act) {
                     case 'detail':
@@ -87,13 +92,55 @@ class m_data extends Model
                         break;
 
                     case 'update':
-                        $data['cur_status'] = ($data['cur_status'] == 'on') ? 'on' : 'off';
+                        $data['cur_status'] = (isset($data['cur_status'])) ? 'on' : 'off';
                         return $this->db->kueri("UPDATE $this->dtcur SET cur_name = ?, cur_status = ? WHERE cur_id = ?")->ikat($data['cur_name'], $data['cur_status'], $data['cur_id'])
                                         ->eksekusi()->baris_terefek();
                         break;
                     
                     default:
                         return $this->db->kueri("SELECT * FROM $this->dtcur")->eksekusi()->hasil_jamak();
+                        break;
+                }
+                break;
+
+            case 'ruangan':
+                switch ($act) {
+                    case 'detail':
+                        return $this->db->kueri("SELECT * FROM $this->dtrom JOIN $this->dtbld ON rom_bld = bld_id WHERE rom_id = ?")->ikat($data['rom_id'])->eksekusi()->hasil_tunggal();
+                        break;
+
+                    case 'hapus':
+                        return $this->db->kueri("DELETE FROM $this->dtrom WHERE rom_id = ?")->ikat($data['rom_id'])->eksekusi()->baris_terefek();
+                        break;
+
+                    case 'id-add':
+                        $no_max = $this->db->kueri("SELECT max(rom_id) as kode FROM $this->dtrom")->eksekusi()->hasil_tunggal();
+                        $no_max = (int) substr($no_max['kode'], 3);
+                        $no_max = ++$no_max;
+                        return 'R-' . sprintf("%03s", $no_max);
+                        break;
+
+                    case 'tambah':
+                        $data['rom_status']          = (isset($data['rom_status'])) ? "on" : "off";
+                        $data['rom_studentcapacity'] = ($data['rom_studentcapacity'] <= 0 || $data['rom_studentcapacity'] == NULL) ? 0 : $data['rom_studentcapacity'];
+                        $data['rom_examcapacity']    = ($data['rom_examcapacity'] <= 0 || $data['rom_examcapacity'] == NULL) ? 0 : $data['rom_examcapacity'];
+                        extract((array) $data);
+                        return $this->db->kueri("INSERT INTO $this->dtrom VALUES (?, ?, ?, ?, ?, ?, ?)")
+                                        ->ikat($rom_id, $rom_bld, $rom_name, $rom_studentcapacity, $rom_examcapacity, $rom_information, $rom_status)
+                                        ->eksekusi()->baris_terefek();
+                        break;
+
+                    case 'update':
+                        $data['rom_status']          = (isset($data['rom_status'])) ? "on" : "off";
+                        $data['rom_studentcapacity'] = ($data['rom_studentcapacity'] <= 0 || $data['rom_studentcapacity'] == NULL) ? 0 : $data['rom_studentcapacity'];
+                        $data['rom_examcapacity']    = ($data['rom_examcapacity'] <= 0 || $data['rom_examcapacity'] == NULL) ? 0 : $data['rom_examcapacity'];
+                        return $this->db->kueri("UPDATE $this->dtrom SET rom_bld = ?, rom_name = ?, rom_studentcapacity = ?, rom_examcapacity = ?, rom_information = ?, rom_status = ? WHERE rom_id = ?")
+                                        ->ikat($data['rom_bld'], $data['rom_name'], $data['rom_studentcapacity'], $data['rom_examcapacity'], $data['rom_information'], $data['rom_status'], $data['rom_id'])
+                                        ->eksekusi()->baris_terefek();
+                        break;
+                    
+                    default:
+                        return $this->db->kueri("SELECT * FROM $this->dtrom JOIN $this->dtbld ON rom_bld = bld_id")->eksekusi()->hasil_jamak();
                         break;
                 }
                 break;

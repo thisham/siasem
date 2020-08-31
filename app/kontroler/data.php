@@ -143,6 +143,74 @@ class data extends Kontroler
                 
                 break;
 
+            case 'ruangan':
+                switch ($act) {
+                    case 'detail':
+                        $send = $_POST;
+                        $acts = $this->data->master('ruangan', 'detail', $send);
+                        echo json_encode($acts);
+                        break;
+
+                    case 'hapus':
+                        $send = $_POST;
+                        $acts = $this->data->master('ruangan', 'hapus', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtrom' => $this->data->master('ruangan'),
+                                'dtbld' => $this->data->master('gedung')
+                            )
+                        );
+
+                        $this->tampilkan('data/master/after-upt/ruangan', $data);
+                        break;
+                        
+                    case 'id-add':
+                        echo $this->data->master('ruangan', 'id-add');
+                        break;
+
+                    case 'tambah':
+                        $send = $_POST;
+                        $acts = $this->data->master('ruangan', 'tambah', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtrom' => $this->data->master('ruangan'),
+                                'dtbld' => $this->data->master('gedung'),
+                                'hasil' => $acts
+                            )
+                        );
+
+                        $this->tampilkan('data/master/after-upt/ruangan', $data);
+                        break;
+
+                    case 'update':
+                        $send = $_POST;
+                        $acts = $this->data->master('ruangan', 'update', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtrom' => $this->data->master('ruangan'),
+                                'dtbld' => $this->data->master('gedung')
+                            )
+                        );
+
+                        $this->tampilkan('data/master/after-upt/ruangan', $data);
+                        break;
+                    
+                    default:
+                        $data = array(
+                            'title' => 'Data Ruangan',
+                            'badan' => array(
+                                'dtrom' => $this->data->master('ruangan'),
+                                'dtbld' => $this->data->master('gedung')
+                            )
+                        );
+                        $this->tampilkan('pakem/header', $data);
+                        $this->tampilkan('pakem/navbar', $data);
+                        $this->tampilkan('data/master/ruangan', $data);
+                        $this->tampilkan('pakem/footer');
+                        break;
+                }
+                break;
+
             case 'sekolah':
                 switch ($act) {
                     case 'update':
