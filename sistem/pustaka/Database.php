@@ -40,15 +40,15 @@ class Database
 		if ( is_null($tipe) ) {
 			for ($i=0; $i < count($val); $i++) { 
 				switch (true) {
-					case is_int($val):
+					case is_int($val[$i]):
 						$tipe[$i] = "i";
 						break;
 
-					case is_double($val):
+					case is_double($val[$i]):
 						$tipe[$i] = "d";
 						break;
 
-					case is_bool($val):
+					case is_bool($val[$i]):
 						$tipe[$i] = "b";
 						break;
 						
@@ -56,7 +56,8 @@ class Database
 						$tipe[$i] = "s";
 						break;
 				}
-				$this->dbh->real_escape_string($tipe[$i]);
+				$this->dbh->real_escape_string($val[$i]);
+				$val[$i] = htmlspecialchars($val[$i]);
 			}
 		}
 		
