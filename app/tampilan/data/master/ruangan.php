@@ -186,7 +186,6 @@
     }
 
     function deldata (rom_id, rom_name) {
-        // console.log(rom_id, rom_name);
         swal({
             title: 'Anda Yakin?',
             text: 'Ruangan ' + rom_id + ' - ' + rom_name + ' akan dihapus. Data yang telah dihapus tidak dapat dipulihkan kembali.',
@@ -262,7 +261,6 @@
 
         $('#kirim-upt').click(function (e) {
             e.preventDefault();
-            console.log($('#fr-upt').serialize());
             var rom_bld = $('#upt-rom_bld').val();
             if (rom_bld != null) {
                 $.ajax({
