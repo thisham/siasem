@@ -8,10 +8,11 @@ class m_data extends Model
     private $dtfys = 'dt_fys_fiscalyears';
     private $dtbld = 'dt_bld_buildings';
     private $dtrom = 'dt_rom_rooms';
-    private $dtest = 'dt_est_employeestatuses';
+    private $dtecl = 'dt_ecl_employeeclasses';
     private $dtptk = 'dt_ptk_ptk';
     private $dtmjr = 'dt_mjr_majors';
     private $dtcls = 'dt_cls_classes';
+    private $dtest = 'dt_est_employeestatuses';
     // academic 
     private $dtsgr = 'dt_sgr_subjectgroups';
     private $dtsbj = 'dt_sbj_subjects';
@@ -27,9 +28,6 @@ class m_data extends Model
     function master($menu = '', $act = '', $data = '')
     {
         switch ($menu) {
-            case 'golongan':
-                # code...
-                break;
             case 'gedung':
                 switch ($act) {
                     case 'detail':
@@ -64,6 +62,41 @@ class m_data extends Model
                     
                     default:
                         return $this->db->kueri("SELECT * FROM $this->dtbld")->eksekusi()->hasil_jamak();
+                        break;
+                }
+                break;
+
+            case 'golongan':
+                switch ($act) {
+                    case 'detail':
+                        return $this->db->kueri("SELECT * FROM $this->dtecl WHERE ecl_id = ?")->ikat($data['ecl_id'])
+                                        ->eksekusi()->hasil_tunggal();
+                        break;
+
+                    case 'id-add':
+                        $no_max = $this->db->kueri("SELECT max(ecl_id) as kode FROM $this->dtecl")->eksekusi()->hasil_tunggal();
+                        $no_max = (int) substr($no_max['kode'], 3); 
+                        $no_max = ++$no_max;
+                        return 'E-' . sprintf("%03s", $no_max);
+                        break;
+
+                    case 'hapus':
+                        return $this->db->kueri("DELETE FROM $this->dtecl WHERE ecl_id = ?")->ikat($data['ecl_id'])
+                                        ->eksekusi()->baris_terefek();
+                        break;
+
+                    case 'tambah':
+                        return $this->db->kueri("INSERT INTO $this->dtecl VALUES (?, ?, ?)")->ikat($data['ecl_id'], $data['ecl_name'], $data['ecl_information'])
+                                        ->eksekusi()->baris_terefek();
+                        break;
+
+                    case 'update':
+                        return $this->db->kueri("UPDATE $this->dtecl SET ecl_name = ?, ecl_information = ? WHERE ecl_id = ?")->ikat($data['ecl_name'], $data['ecl_information'], $data['ecl_id'])
+                                        ->eksekusi()->baris_terefek();
+                        break;
+                    
+                    default:
+                        return $this->db->kueri("SELECT * FROM $this->dtecl")->eksekusi()->hasil_jamak();
                         break;
                 }
                 break;

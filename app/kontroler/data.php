@@ -79,6 +79,68 @@ class data extends Kontroler
                 }
                 break;
 
+            case 'golongan':
+                switch ($act) {
+                    case 'detail':
+                        $send = $_POST;
+                        echo json_encode($this->data->master('golongan', 'detail', $send));
+                        break;
+
+                    case 'hapus':
+                        $send = $_POST;
+                        $acts = $this->data->master('golongan', 'hapus', $send);
+                        $data = array (
+                            'badan' => array (
+                                'dtecl' => $this->data->master('golongan')
+                            )
+                        );
+
+                        $this->tampilkan('data/master/after-upt/golongan', $data);
+                        break;
+
+                    case 'id-add':
+                        echo $this->data->master('golongan', 'id-add');
+                        break;
+
+                    case 'tambah':
+                        $send = $_POST;
+                        $acts = $this->data->master('golongan', 'tambah', $send);
+                        $data = array (
+                            'badan' => array (
+                                'dtecl' => $this->data->master('golongan')
+                            )
+                        );
+
+                        $this->tampilkan('data/master/after-upt/golongan', $data);
+                        break;
+
+                    case 'update':
+                        $send = $_POST;
+                        $acts = $this->data->master('golongan', 'update', $send);
+                        $data = array (
+                            'badan' => array (
+                                'dtecl' => $this->data->master('golongan')
+                            )
+                        );
+
+                        $this->tampilkan('data/master/after-upt/golongan', $data);
+                        break;
+                    
+                    default:
+                        $data = array(
+                            'title' => 'Data Golongan',
+                            'badan' => array(
+                                'dtecl' => $this->data->master('golongan')
+                            )
+                        );
+                        $this->tampilkan('pakem/header', $data);
+                        $this->tampilkan('pakem/navbar', $data);
+                        $this->tampilkan('data/master/golongan', $data);
+                        $this->tampilkan('pakem/footer');
+                        break;
+                }
+                break;
+
             case 'kurikulum' :
                 switch ($act) {
                     case 'detail':

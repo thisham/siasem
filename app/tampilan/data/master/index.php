@@ -9,9 +9,12 @@
                 <a class="collection-item indigo-text" href="<?= basis_url('data/master/kurikulum'); ?>">Kurikulum <i class="material-icons right">chevron_right</i></a>
                 <a class="collection-item indigo-text" href="<?= basis_url('data/master/tapel'); ?>">Tahun Ajaran <i class="material-icons right">chevron_right</i></a>
                 <a class="collection-item indigo-text" href="<?= basis_url('data/master/gedung'); ?>">Gedung <i class="material-icons right">chevron_right</i></a>
-                <a class="collection-item" href="<?= basis_url('data/master/ruangan'); ?>">Ruangan <i class="material-icons right">chevron_right</i></a>
-                <a class="collection-item" href="<?= basis_url('data/master/golongan'); ?>">Golongan <i class="material-icons right">chevron_right</i></a>
+                <a class="collection-item indigo-text" href="<?= basis_url('data/master/ruangan'); ?>">Ruangan <i class="material-icons right">chevron_right</i></a>
+                <a class="collection-item indigo-text" href="<?= basis_url('data/master/golongan'); ?>">Golongan <i class="material-icons right">chevron_right</i></a>
                 <a class="collection-item" href="<?= basis_url('data/master/ptk'); ?>">Pendidik dan Tenaga Kependidikan (PTK) <i class="material-icons right">chevron_right</i></a>
+                <a class="collection-item" href="<?= basis_url('data/master/ptk'); ?>">Jurusan <i class="material-icons right">chevron_right</i></a>
+                <a class="collection-item" href="<?= basis_url('data/master/ptk'); ?>">Kelas <i class="material-icons right">chevron_right</i></a>
+                <a class="collection-item" href="<?= basis_url('data/master/ptk'); ?>">Status Kepegawaian <i class="material-icons right">chevron_right</i></a>
             </ul>
         </div>
     </div>
