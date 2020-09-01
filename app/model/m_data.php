@@ -136,6 +136,41 @@ class m_data extends Model
                 }
                 break;
 
+            case 'ptk':
+                switch ($act) {
+                    case 'detail':
+                        return $this->db->kueri("SELECT * FROM $this->dtptk WHERE ptk_id = ?")->ikat($data['ptk_id'])
+                                        ->eksekusi()->hasil_tunggal();
+                        break;
+
+                    case 'hapus':
+                        return $this->db->kueri("DELETE FROM $this->dtptk WHERE ptk_id = ?")->ikat($data['ptk_id'])
+                                        ->eksekusi()->baris_terefek();
+                        break;
+
+                    case 'id-add':
+                        $no_max = $this->db->kueri("SELECT max(ptk_id) as kode FROM $this->dtptk")->eksekusi()->hasil_tunggal();
+                        $no_max = (int) substr($no_max['kode'], 3); 
+                        $no_max = ++$no_max;
+                        return 'P-' . sprintf("%03s", $no_max);
+                        break;
+                        
+                    case 'tambah':
+                        return $this->db->kueri("INSERT INTO $this->dtptk VALUES (?, ?, ?)")->ikat($data['ptk_id'], $data['ptk_name'], $data['ptk_information'])
+                                        ->eksekusi()->baris_terefek();
+                        break;
+
+                    case 'update':
+                        return $this->db->kueri("UPDATE $this->dtptk SET ptk_name = ?, ptk_information = ? WHERE ptk_id = ?")->ikat($data['ptk_name'], $data['ptk_information'], $data['ptk_id'])
+                                        ->eksekusi()->baris_terefek();
+                        break;
+                    
+                    default:
+                        return $this->db->kueri("SELECT * FROM $this->dtptk")->eksekusi()->hasil_jamak();
+                        break;
+                }
+                break;
+
             case 'ruangan':
                 switch ($act) {
                     case 'detail':

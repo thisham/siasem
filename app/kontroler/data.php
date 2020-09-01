@@ -205,6 +205,69 @@ class data extends Kontroler
                 
                 break;
 
+            case 'ptk':
+                switch ($act) {
+                    case 'detail':
+                        $send = $_POST;
+                        $acts = $this->data->master('ptk', 'detail', $send);
+                        echo json_encode($acts);
+                        break;
+
+                    case 'hapus':
+                        $send = $_POST;
+                        $acts = $this->data->master('ptk', 'hapus', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtptk' => $this->data->master('ptk')
+                            )
+                        );
+
+                        $this->tampilkan('data/master/after-upt/ptk', $data);
+                        break;
+
+                    case 'id-add':
+                        echo $this->data->master('ptk', 'id-add');
+                        break;
+
+                    case 'tambah':
+                        $send = $_POST;
+                        $acts = $this->data->master('ptk', 'tambah', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtptk' => $this->data->master('ptk')
+                            )
+                        );
+
+                        $this->tampilkan('data/master/after-upt/ptk', $data);
+                        break;
+
+                    case 'update':
+                        $send = $_POST;
+                        $acts = $this->data->master('ptk', 'update', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtptk' => $this->data->master('ptk')
+                            )
+                        );
+
+                        $this->tampilkan('data/master/after-upt/ptk', $data);
+                        break;
+                    
+                    default:
+                        $data = array(
+                            'title' => 'Data Pendidik dan Tenaga Kependidikan',
+                            'badan' => array(
+                                'dtptk' => $this->data->master('ptk')
+                            )
+                        );
+                        $this->tampilkan('pakem/header', $data);
+                        $this->tampilkan('pakem/navbar', $data);
+                        $this->tampilkan('data/master/ptk', $data);
+                        $this->tampilkan('pakem/footer');
+                        break;
+                }
+                break;
+
             case 'ruangan':
                 switch ($act) {
                     case 'detail':
