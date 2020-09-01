@@ -141,6 +141,68 @@ class data extends Kontroler
                 }
                 break;
 
+            case 'jurusan':
+                switch ($act) {
+                    case 'detail':
+                        $send = $_POST;
+                        echo json_encode($this->data->master('jurusan', 'detail', $send));
+                        break;
+
+                    case 'hapus':
+                        $send = $_POST;
+                        $acts = $this->data->master('jurusan', 'hapus', $send);
+                        $data = array (
+                            'badan' => array (
+                                'dtmjr' => $this->data->master('jurusan')
+                            )
+                        );
+
+                        $this->tampilkan('data/master/after-upt/jurusan', $data);
+                        break;
+
+                    case 'id-add':
+                        echo $this->data->master('jurusan', 'id-add');
+                        break;
+
+                    case 'tambah':
+                        $send = $_POST;
+                        $acts = $this->data->master('jurusan', 'tambah', $send);
+                        $data = array (
+                            'badan' => array (
+                                'dtmjr' => $this->data->master('jurusan')
+                            )
+                        );
+
+                        $this->tampilkan('data/master/after-upt/jurusan', $data);
+                        break;
+
+                    case 'update':
+                        $send = $_POST;
+                        $acts = $this->data->master('jurusan', 'update', $send);
+                        $data = array (
+                            'badan' => array (
+                                'dtmjr' => $this->data->master('jurusan')
+                            )
+                        );
+
+                        $this->tampilkan('data/master/after-upt/jurusan', $data);
+                        break;
+                    
+                    default:
+                        $data = array(
+                            'title' => 'Data Jurusan',
+                            'badan' => array(
+                                'dtmjr' => $this->data->master('jurusan')
+                            )
+                        );
+                        $this->tampilkan('pakem/header', $data);
+                        $this->tampilkan('pakem/navbar', $data);
+                        $this->tampilkan('data/master/jurusan', $data);
+                        $this->tampilkan('pakem/footer');
+                        break;
+                }
+                break;
+
             case 'kurikulum' :
                 switch ($act) {
                     case 'detail':

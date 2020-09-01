@@ -101,6 +101,38 @@ class m_data extends Model
                 }
                 break;
 
+            case 'jurusan':
+                switch ($act) {
+                    case 'detail':
+                        return $this->db->kueri("SELECT * FROM $this->dtmjr WHERE mjr_id = ?")->ikat($data['mjr_id'])
+                                        ->eksekusi()->hasil_tunggal();
+                        break;
+
+                    case 'hapus':
+                        return $this->db->kueri("DELETE FROM $this->dtmjr WHERE mjr_id = ?")->ikat($data['mjr_id'])
+                                        ->eksekusi()->baris_terefek();
+                        break;
+
+                    case 'tambah':
+                        $data['mjr_status'] = (isset($data['mjr_status'])) ? 'on' : 'off';
+                        extract((array) $data);
+                        return $this->db->kueri("INSERT INTO $this->dtmjr VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")->ikat($mjr_id, $mjr_name, $mjr_nameen, $mjr_expertise, $mjr_basic, $mjr_speciality, $mjr_headofdepartment, $mjr_information, $mjr_status)
+                                        ->eksekusi()->baris_terefek();
+                        break;
+
+                    case 'update':
+                        $data['mjr_status'] = (isset($data['mjr_status'])) ? 'on' : 'off';
+                        return $this->db->kueri("UPDATE $this->dtmjr SET mjr_name = ?, mjr_nameen = ?, mjr_expertise = ?, mjr_basic = ?, mjr_speciality = ?, mjr_headofdepartment = ?, mjr_information = ?, mjr_status = ? WHERE mjr_id = ?")
+                                        ->ikat($data['mjr_name'], $data['mjr_nameen'], $data['mjr_expertise'], $data['mjr_basic'], $data['mjr_speciality'], $data['mjr_headofdepartment'], $data['mjr_information'], $data['mjr_status'], $data['mjr_id'])
+                                        ->eksekusi()->baris_terefek();
+                        break;
+                    
+                    default:
+                        return $this->db->kueri("SELECT * FROM $this->dtmjr")->eksekusi()->hasil_jamak();
+                        break;
+                }
+                break;
+
             case 'kurikulum':
                 switch ($act) {
                     case 'detail':
