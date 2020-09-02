@@ -14,7 +14,7 @@
                 <td><?= $dtest['est_information']; ?></td>
                 <td class="center">
                     <button class="btn btn-small orange modal-trigger waves-effect waves-light" data-target="modal-upt" onclick="uptdata('<?= $dtest['est_id']; ?>');"><i class="material-icons">edit</i></button>
-                    <button class="btn btn-small red modal-trigger waves-effect waves-light" onclick="deldata('<?= $dtest['est_id']; ?>', '<?= $dtest['est_name']; ?>');"><i class="material-icons">delete</i></button>
+                    <button class="btn btn-small red modal-trigger waves-effect waves-light" onclick="deldata('<?= $dtest['est_id']; ?>', '<?= $dtest['est_employeestatuses']; ?>');"><i class="material-icons">delete</i></button>
                 </td>
             </tr>
         <?php } ?>
