@@ -133,6 +133,18 @@ class m_data extends Model
                 }
                 break;
 
+            case 'kelas':
+                switch ($act) {
+                    case 'value':
+                        # code...
+                        break;
+                    
+                    default:
+                        # code...
+                        break;
+                }
+                break;
+
             case 'kurikulum':
                 switch ($act) {
                     case 'detail':
@@ -255,6 +267,41 @@ class m_data extends Model
                     
                     default:
                         return $this->db->kueri("SELECT * FROM $this->dtsch WHERE sch_id = ?")->ikat('1')->eksekusi()->hasil_tunggal();
+                        break;
+                }
+                break;
+
+            case 'status-pegawai':
+                switch ($act) {
+                    case 'detail':
+                        return $this->db->kueri("SELECT * FROM $this->dtest WHERE est_id = ?")->ikat($data['est_id'])
+                                        ->eksekusi()->hasil_tunggal();
+                        break;
+
+                    case 'hapus':
+                        return $this->db->kueri("DELETE FROM $this->dtest WHERE est_id = ?")->ikat($data['est_id'])
+                                        ->eksekusi()->baris_terefek();
+                        break;
+
+                    case 'id-add':
+                        $no_max = $this->db->kueri("SELECT max(est_id) as kode FROM $this->dtest")->eksekusi()->hasil_tunggal();
+                        $no_max = (int) substr($no_max['kode'], 3); 
+                        $no_max = ++$no_max;
+                        return 'T-' . sprintf("%03s", $no_max);
+                        break;
+
+                    case 'tambah':
+                        return $this->db->kueri("INSERT INTO $this->dtest VALUES (?, ?, ?)")->ikat($data['est_id'], $data['est_employeestatuses'], $data['est_information'])
+                                        ->eksekusi()->baris_terefek();
+                        break;
+
+                    case 'update':
+                        return $this->db->kueri("UPDATE $this->dtest SET est_employeestatuses = ?, est_information = ? WHERE est_id = ?")->ikat($data['est_employeestatuses'], $data['est_information'], $data['est_id'])
+                                        ->eksekusi()->baris_terefek();
+                        break;
+                    
+                    default:
+                        return $this->db->kueri("SELECT * FROM $this->dtest")->eksekusi()->hasil_jamak();
                         break;
                 }
                 break;

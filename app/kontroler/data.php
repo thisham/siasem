@@ -203,6 +203,20 @@ class data extends Kontroler
                 }
                 break;
 
+            case 'kelas':
+                switch ($act) {
+                    case 'value':
+                        # code...
+                        break;
+                    
+                    default:
+                        $data = array (
+                            'title' => 'Data Kelas'
+                        );
+                        break;
+                }
+                break;
+
             case 'kurikulum' :
                 switch ($act) {
                     case 'detail':
@@ -433,6 +447,70 @@ class data extends Kontroler
                         $this->tampilkan('pakem/header', $data);
                         $this->tampilkan('pakem/navbar', $data);
                         $this->tampilkan('data/master/sekolah', $data);
+                        $this->tampilkan('pakem/footer');
+                        break;
+                }
+                break;
+
+            case 'status-pegawai':
+                switch ($act) {
+                    case 'detail':
+                        $send = $_POST;
+                        $acts = $this->data->master('status-pegawai', 'detail', $send);
+                        
+                        echo json_encode($acts);
+                        break;
+
+                    case 'hapus':
+                        $send = $_POST;
+                        $acts = $this->data->master('status-pegawai', 'hapus', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtest' => $this->data->master('status-pegawai')
+                            )
+                        );
+
+                        $this->tampilkan('data/master/after-upt/status-pegawai', $data);
+                        break;
+
+                    case 'id-add':
+                        echo $this->data->master('status-pegawai', 'id-add');
+                        break;
+
+                    case 'tambah':
+                        $send = $_POST;
+                        $acts = $this->data->master('status-pegawai', 'tambah', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtest' => $this->data->master('status-pegawai')
+                            )
+                        );
+
+                        $this->tampilkan('data/master/after-upt/status-pegawai', $data);
+                        break;
+
+                    case 'update':
+                        $send = $_POST;
+                        $acts = $this->data->master('status-pegawai', 'update', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtest' => $this->data->master('status-pegawai')
+                            )
+                        );
+
+                        $this->tampilkan('data/master/after-upt/status-pegawai', $data);
+                        break;
+                    
+                    default:
+                        $data = array(
+                            'title' => 'Data Status Pegawai',
+                            'badan' => array(
+                                'dtest' => $this->data->master('status-pegawai')
+                            )
+                        );
+                        $this->tampilkan('pakem/header', $data);
+                        $this->tampilkan('pakem/navbar', $data);
+                        $this->tampilkan('data/master/status-pegawai', $data);
                         $this->tampilkan('pakem/footer');
                         break;
                 }
