@@ -210,9 +210,7 @@ class data extends Kontroler
                         break;
                     
                     default:
-                        $data = array (
-                            'title' => 'Data Kelas'
-                        );
+                        echo "DRAFTED!!! Need teacher datatables for homeroom teacher!";
                         break;
                 }
                 break;
@@ -582,7 +580,153 @@ class data extends Kontroler
                 );
                 $this->tampilkan('pakem/header', $data);
                 $this->tampilkan('pakem/navbar', $data);
-                $this->tampilkan('data/master/index');
+                $this->tampilkan('data/master/index', $data);
+                $this->tampilkan('pakem/footer');
+                break;
+        }
+    }
+
+    function user($menu = '', $act = '', $param = '')
+    {
+        switch ($menu) {
+            case 'administrator':
+                switch ($act) {
+                    case 'detail':
+                        $send = $_POST;
+                        $act1 = $this->data->user('administrator', 'detail', $send);
+                        $act2 = $this->data->user('user', 'detail', $send['adm_id']);
+                        $act1['usr_status'] = $act2['usr_status'];
+                        echo json_encode($act1);
+                        break;
+
+                    case 'editor':
+                        $send = $_POST;
+                        $data = array(
+                            'badan' => array(
+                                'dtadm' => $this->data->user('administrator', 'detail', $send),
+                                'dtusr' => $this->data->user('user', 'detail', $send['adm_id'])
+                            )
+                        );
+                        
+                        $this->tampilkan('data/user/upt/administrator', $data);
+                        break;
+
+                    case 'id-add':
+                        $data = array(
+                            'badan' => array(
+                                'dtadm' => $this->data->user('administrator', 'id-add')
+                            )
+                        );
+                        $this->tampilkan('data/user/add/administrator', $data);
+                        break;
+
+                    case 'list':
+                        $data = array(
+                            'title' => 'Data Administrator',
+                            'badan' => array(
+                                'dtadm' => $this->data->user('administrator')
+                            )
+                        );
+                        $this->tampilkan('data/user/after-upt/administrator', $data);
+                        break;
+
+                    case 'reset':
+                        $send = $_POST;
+                        $acts = $this->data->user('user', 'reset', $send);
+                        $data = array(
+                            'title' => 'Data Administrator',
+                            'badan' => array(
+                                'dtadm' => $this->data->user('administrator')
+                            )
+                        );
+                        $this->tampilkan('data/user/after-upt/administrator', $data);
+                        break;
+
+                    case 'tambah':
+                        $send = $_POST;
+                        $act1 = $this->data->user('administrator', 'tambah', $send);
+                        $act2 = $this->data->user('user', 'tambah-adm', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtadm' => $this->data->user('administrator')
+                            )
+                        );
+
+                        $this->tampilkan('data/user/after-upt/administrator', $data);
+                        break;
+
+                    case 'update':
+                        $send = $_POST;
+                        $act1 = $this->data->user('administrator', 'update', $send);
+                        $act2 = $this->data->user('user', 'update-status-val', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtadm' => $this->data->user('administrator')
+                            )
+                        );
+
+                        $this->tampilkan('data/user/after-upt/administrator', $data);
+                        break;
+                    
+                    default:
+                        $data = array(
+                            'title' => 'Data Administrator',
+                            'badan' => array(
+                                'dtadm' => $this->data->user('administrator')
+                            )
+                        );
+                        $this->tampilkan('pakem/header', $data);
+                        $this->tampilkan('pakem/navbar', $data);
+                        $this->tampilkan('data/user/administrator', $data);
+                        $this->tampilkan('pakem/footer');
+                        break;
+                }
+                break;
+
+            case 'kepala-sekolah':
+                switch ($act) {
+                    case 'editor':
+                        $data = array(
+                            'badan' => array(
+                                'dthdm' => $this->data->user('kepala-sekolah')
+                            )
+                        );
+                        break;
+                    
+                    default:
+                        $data = array(
+                            'title' => 'Data Kepala Sekolah',
+                            'badan' => array(
+                                'dthdm' => $this->data->user('kepala-sekolah')
+                            )
+                        );
+                        $this->tampilkan('pakem/header', $data);
+                        $this->tampilkan('pakem/navbar', $data);
+                        $this->tampilkan('data/user/kepala-sekolah', $data);
+                        $this->tampilkan('pakem/footer');
+                        break;
+                }
+                break;
+
+            case 'user':
+                switch ($act) {
+                    case 'reset':
+                        # code...
+                        break;
+                    
+                    default:
+                        # code...
+                        break;
+                }
+                break;
+            
+            default:
+                $data = array(
+                    'title' => 'Data User'
+                );
+                $this->tampilkan('pakem/header', $data);
+                $this->tampilkan('pakem/navbar', $data);
+                $this->tampilkan('data/user/index', $data);
                 $this->tampilkan('pakem/footer');
                 break;
         }

@@ -19,6 +19,13 @@ class m_data extends Model
     private $dttsr = 'dt_tsr_taskandsources';
     private $dtbcp = 'dt_bcp_basiccompetences';
     private $dtgrd = 'dt_grd_grades';
+    // users
+    private $dthdm = 'dt_hdm_headmaster';
+    private $dttch = 'dt_tch_teachers';
+    private $dtfin = 'dt_fin_finances';
+    private $dtstu = 'dt_stu_students';
+    private $dtadm = 'dt_adm_administrators';
+    private $dtusr = 'dt_usr_users';
 
     function __construct()
     {
@@ -330,6 +337,110 @@ class m_data extends Model
                     
                     default:
                         return $this->db->kueri("SELECT * FROM $this->dtfys")->eksekusi()->hasil_jamak();
+                        break;
+                }
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+    }
+
+    function user($menu = '', $act = '', $data = '')
+    {
+        switch ($menu) {
+            case 'administrator':
+                switch ($act) {
+                    case 'detail':
+                        return $this->db->kueri("SELECT * FROM $this->dtadm WHERE adm_id = ?")->ikat($data['adm_id'])
+                                        ->eksekusi()->hasil_tunggal();
+                        break;
+
+                    case 'id-add':
+                        $no_max = $this->db->kueri("SELECT max(adm_id) as kode FROM $this->dtadm")->eksekusi()->hasil_tunggal();
+                        $no_max = (int) substr($no_max['kode'], 6); 
+                        $no_max = ++$no_max;
+                        return '20201' . sprintf("%03s", $no_max);
+                        break;
+
+                    case 'tambah':
+                        $data['adm_status'] = (isset($data['adm_status'])) ? 'on' : 'off';
+                        extract((array) $data);
+                        return $this->db->kueri("INSERT INTO $this->dtadm VALUES (?, ?, ?, ?, ?, ?, ?, ?)")->ikat($adm_id, $adm_idnumber, $adm_name, $adm_passworddef, $adm_address, $adm_phone, $adm_email, $adm_position)
+                                        ->eksekusi()->baris_terefek();
+                        break;
+
+                    case 'update':
+                        return $this->db->kueri("UPDATE $this->dtadm SET adm_idnumber = ?, adm_name = ?, adm_passworddef = ?, adm_address = ?, adm_phone = ?, adm_email = ?, adm_position = ? WHERE adm_id = ?")
+                                        ->ikat($data['adm_idnumber'], $data['adm_name'], $data['adm_passworddef'], $data['adm_address'], $data['adm_phone'], $data['adm_email'], $data['adm_position'], $data['adm_id'])
+                                        ->eksekusi()->baris_terefek();
+                        break;
+                    
+                    default:
+                        return $this->db->kueri("SELECT * FROM $this->dtadm")->eksekusi()->hasil_jamak();
+                        break;
+                }
+                break;
+
+            case 'guru':
+                # code...
+                break;
+
+            case 'kepala-sekolah':
+                # code...
+                break;
+
+            case 'keuangan':
+                # code...
+                break;
+
+            case 'siswa':
+                # code...
+                break;
+
+            case 'user':
+                switch ($act) {
+                    case 'detail':
+                        return $this->db->kueri("SELECT * FROM $this->dtusr WHERE usr_id = ?")->ikat($data)
+                                        ->eksekusi()->hasil_tunggal();
+                        break;
+
+                    case 'reset':
+                        return $this->db->kueri("UPDATE $this->dtusr SET usr_name = ?, usr_password = ? WHERE usr_id = ?")->ikat($data['usr_name'], md5($data['usr_password']), $data['usr_id'])
+                                        ->eksekusi()->baris_terefek();
+                        break;
+
+                    case 'tambah-adm':
+                        $data['adm_status'] = (isset($data['adm_status'])) ? "on" : "off";
+                        return $this->db->kueri("INSERT INTO $this->dtusr VALUES (?, ?, ?, ?, ?)")->ikat($data['adm_id'], $data['adm_idnumber'], md5($data['adm_passworddef']), '1', $data['adm_status'])
+                                        ->eksekusi()->baris_terefek();
+                        break;
+
+                    case 'tambah-fin':
+                        # code...
+                        break;
+
+                    case 'tambah-hdm':
+                        # code...
+                        break;
+
+                    case 'tambah-tch':
+                        # code...
+                        break;
+
+                    case 'tambah-stu':
+                        # code...
+                        break;
+
+                    case 'update-status-val':
+                        $data['adm_status'] = (isset($data['adm_status'])) ? 'on' : 'off';
+                        return $this->db->kueri("UPDATE $this->dtusr SET usr_status = ? WHERE usr_id = ?")->ikat($data['adm_status'], $data['adm_id'])
+                                        ->eksekusi()->baris_terefek();
+                        break;
+                    
+                    default:
+                        # code...
                         break;
                 }
                 break;
