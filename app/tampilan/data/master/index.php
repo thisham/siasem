@@ -1,7 +1,7 @@
 <div class="container">
     <div class="card">
         <div class="card-action indigo">
-            <h3 class="card-title white-text">Data Master</h3>
+            <h3 class="card-title white-text"><?= $title; ?></h3>
         </div>
         <div class="card-content">
             <ul class="collection">
@@ -13,7 +13,7 @@
                 <a class="collection-item indigo-text" href="<?= basis_url('data/master/golongan'); ?>">Golongan <i class="material-icons right">chevron_right</i></a>
                 <a class="collection-item indigo-text" href="<?= basis_url('data/master/ptk'); ?>">Pendidik dan Tenaga Kependidikan (PTK) <i class="material-icons right">chevron_right</i></a>
                 <a class="collection-item indigo-text" href="<?= basis_url('data/master/jurusan'); ?>">Jurusan <i class="material-icons right">chevron_right</i></a>
-                <a class="collection-item" href="<?= basis_url('data/master/ptk'); ?>">Kelas <i class="material-icons right">chevron_right</i></a>
+                <a class="collection-item" href="<?= basis_url('data/master/kelas'); ?>">Kelas <i class="material-icons right">chevron_right</i></a>
                 <a class="collection-item indigo-text" href="<?= basis_url('data/master/status-pegawai'); ?>">Status Kepegawaian <i class="material-icons right">chevron_right</i></a>
             </ul>
         </div>
