@@ -2,7 +2,7 @@
 <div class="container">
     <div class="card">
         <div class="card-action indigo">
-            <h3 class="text-title white-text">Masuk ke Siakad SKAMEDIS</h3>
+            <h3 class="card-title white-text">Masuk ke Siakad SKAMEDIS</h3>
         </div>
         <div class="card-content" id="ct-form">
             <form method="post" id="fr-login">
@@ -27,11 +27,21 @@
         $('#fr-kirim').click(function (e) {
             e.preventDefault();
             $.ajax({
-                type: "POST",
+                dataType: "JSON",
                 data: $('#fr-login').serialize(),
+                type: "POST",
                 url: "<?= basis_url('portal/aksi/masuk'); ?>",
-                success: function (url) {
-                    $('#ct-form').html(url);
+                success: function (data) {
+                    /*console.log(data);*/
+                    if (data == null) {
+                        swal("Aksi Gagal!", "Kombinasi username dan password tidak ditemukan.", "error");
+                    } else {
+                        swal("Selamat Datang!", "Sedang dialihkan...", "success");
+                        window.location = "<?= basis_url(); ?>";
+                    }
+                },
+                error: function (data) {
+                    swal("エッラー!", "サーバーの接続が見つかりません。", "error");
                 }
             });
         });

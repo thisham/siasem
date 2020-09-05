@@ -396,7 +396,15 @@ class m_data extends Model
                 break;
 
             case 'siswa':
-                # code...
+                switch ($act) {
+                    case 'value':
+                        # code...
+                        break;
+                    
+                    default:
+                        return $this->db->kueri("SELECT * FROM $this->dtusr")->eksekusi()->hasil_jamak();
+                        break;
+                }
                 break;
 
             case 'user':

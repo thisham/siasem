@@ -2,18 +2,24 @@
 
 class m_portal extends Model
 {
-    private $dfusr = 'df_users';
+    private $dtusr = 'dt_usr_users';
 
     function __construct()
     {
         $this->db = new Database();
     }
 
-    function aksi($menu, $data)
+    function aksi($menu = '', $data = '')
     {
-        if ($menu == 'masuk') {
-            return $this->db->kueri("SELECT * FROM $this->dfusr WHERE username = ? AND password = ?")
-                            ->eksekusi()->hasil_tunggal();
+        switch ($menu) {
+            case 'masuk':
+                return $this->db->kueri("SELECT * FROM $this->dtusr WHERE usr_name = ? AND usr_password = ?")->ikat($data['username'], md5($data['password']))
+                                ->eksekusi()->hasil_tunggal();
+                break;
+            
+            default:
+                # code...
+                break;
         }
     }
 
