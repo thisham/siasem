@@ -30,6 +30,7 @@ class m_data extends Model
     function __construct()
     {
         $this->db = new Database();
+        $this->db1 = $this->pustaka('Database_PDO');
     }
 
     function master($menu = '', $act = '', $data = '')
@@ -361,7 +362,7 @@ class m_data extends Model
                         $no_max = $this->db->kueri("SELECT max(adm_id) as kode FROM $this->dtadm")->eksekusi()->hasil_tunggal();
                         $no_max = (int) substr($no_max['kode'], 6); 
                         $no_max = ++$no_max;
-                        return '20201' . sprintf("%03s", $no_max);
+                        return date('Y') . '1' . sprintf("%03s", $no_max);
                         break;
 
                     case 'tambah':
@@ -384,7 +385,109 @@ class m_data extends Model
                 break;
 
             case 'guru':
-                # code...
+                switch ($act) {
+                    case 'detail':
+                        return $this->db1->kueri("SELECT * FROM $this->dttch WHERE tch_id = :tch_id")->ikat($data)->eksekusi()->hasil_tunggal();
+                        break;
+
+                    case 'id-add':
+                        $no_max = $this->db->kueri("SELECT max(tch_id) as kode FROM $this->dttch")->eksekusi()->hasil_tunggal();
+                        $no_max = (int) substr($no_max['kode'], 6); 
+                        $no_max = ++$no_max;
+                        return date('Y') . '3' . sprintf("%03s", $no_max);
+                        break;
+
+                    case 'photo-upload':
+                        return $this->db1->kueri("UPDATE $this->dttch SET tch_photo = :tch_photo WHERE tch_id = :tch_id")->ikat($data)->eksekusi()->baris_terefek();
+                        break;
+
+                    case 'tambah':
+                        $data = array(
+                            'tch_id'					=> $data['tch_id'],
+                            'tch_idnumber'				=> $data['tch_idnumber'],
+                            'tch_name'					=> $data['tch_name'],
+                            'tch_passworddef'			=> date('dmY', strtotime($data['tch_birthdate'])),
+                            'tch_gender'				=> (isset($data['tch_gender'])) ? $data['tch_gender'] : '',
+                            'tch_birthplace'			=> $data['tch_birthplace'],
+                            'tch_birthdate'				=> date('Y-m-d', strtotime($data['tch_birthdate'])),
+                            'tch_nik'					=> $data['tch_nik'],
+                            'tch_nuptk'					=> $data['tch_nuptk'],
+                            'tch_est'					=> (isset($data['tch_est'])) ? $data['tch_est'] : '',
+                            'tch_ptk'					=> (isset($data['tch_ptk'])) ? $data['tch_ptk'] : '',
+                            'tch_fieldofstudy'			=> $data['tch_fieldofstudy'],
+                            'tch_religion'				=> (isset($data['tch_religion'])) ? $data['tch_religion'] : '',
+                            'tch_streetaddress'			=> $data['tch_streetaddress'],
+                            'tch_rt'					=> $data['tch_rt'],
+                            'tch_rw'					=> $data['tch_rw'],
+                            'tch_hamlet'				=> $data['tch_hamlet'],
+                            'tch_village'				=> $data['tch_village'],
+                            'tch_district'				=> $data['tch_district'],
+                            'tch_postalcode'			=> $data['tch_postalcode'],
+                            'tch_phone'					=> $data['tch_phone'],
+                            'tch_email'					=> $data['tch_email'],
+                            'tch_additionalassignment'	=> $data['tch_additionalassignment'],
+                            'tch_status'				=> (isset($data['tch_status'])) ? 'on' : 'off',
+                            'tch_foundationacc'			=> $data['tch_foundationacc'],
+                            'tch_foundationaccdate'		=> date('Y-m-d', strtotime($data['tch_foundationaccdate'])),
+                            'tch_salarysource'			=> $data['tch_salarysource'],
+                            'tch_mothername'			=> $data['tch_mothername'],
+                            'tch_maritalstatus'			=> (isset($data['tch_maritalstatus'])) ? 'on' : 'off',
+                            'tch_maritalpartner'		=> $data['tch_maritalpartner'],
+                            'tch_maritalpartnernik'		=> $data['tch_maritalpartnernik'],
+                            'tch_maritalpartnerjob'		=> $data['tch_maritalpartnerjob'],
+                            'tch_npwp'					=> $data['tch_npwp'],
+                            'tch_nationality'			=> $data['tch_nationality'],
+                            'tch_photo'					=> ''
+                        );
+                        return $this->db1->kueri("INSERT INTO $this->dttch VALUES (:tch_id, :tch_idnumber, :tch_name, :tch_passworddef, :tch_gender, :tch_birthplace, :tch_birthdate, :tch_nik, :tch_nuptk, :tch_est, :tch_ptk, :tch_fieldofstudy, :tch_religion, :tch_streetaddress, :tch_rt, :tch_rw, :tch_hamlet, :tch_village, :tch_district, :tch_postalcode, :tch_phone, :tch_email, :tch_additionalassignment, :tch_status, :tch_foundationacc, :tch_foundationaccdate, :tch_salarysource, :tch_mothername, :tch_maritalstatus, :tch_maritalpartner, :tch_maritalpartnernik, :tch_maritalpartnerjob, :tch_npwp, :tch_nationality, :tch_photo)")
+                                        ->ikat($data)->eksekusi()->baris_terefek();
+                        break;
+
+                    case 'update':
+                        $data = array(
+                            'tch_id'					=> $data['tch_id'],
+                            'tch_idnumber'				=> $data['tch_idnumber'],
+                            'tch_name'					=> $data['tch_name'],
+                            'tch_passworddef'			=> date('dmY', strtotime($data['tch_birthdate'])),
+                            'tch_gender'				=> (isset($data['tch_gender'])) ? $data['tch_gender'] : '',
+                            'tch_birthplace'			=> $data['tch_birthplace'],
+                            'tch_birthdate'				=> date('Y-m-d', strtotime($data['tch_birthdate'])),
+                            'tch_nik'					=> $data['tch_nik'],
+                            'tch_nuptk'					=> $data['tch_nuptk'],
+                            'tch_est'					=> (isset($data['tch_est'])) ? $data['tch_est'] : '',
+                            'tch_ptk'					=> (isset($data['tch_ptk'])) ? $data['tch_ptk'] : '',
+                            'tch_fieldofstudy'			=> $data['tch_fieldofstudy'],
+                            'tch_religion'				=> (isset($data['tch_religion'])) ? $data['tch_religion'] : '',
+                            'tch_streetaddress'			=> $data['tch_streetaddress'],
+                            'tch_rt'					=> $data['tch_rt'],
+                            'tch_rw'					=> $data['tch_rw'],
+                            'tch_hamlet'				=> $data['tch_hamlet'],
+                            'tch_village'				=> $data['tch_village'],
+                            'tch_district'				=> $data['tch_district'],
+                            'tch_postalcode'			=> $data['tch_postalcode'],
+                            'tch_phone'					=> $data['tch_phone'],
+                            'tch_email'					=> $data['tch_email'],
+                            'tch_additionalassignment'	=> $data['tch_additionalassignment'],
+                            'tch_status'				=> (isset($data['tch_status'])) ? 'on' : 'off',
+                            'tch_foundationacc'			=> $data['tch_foundationacc'],
+                            'tch_foundationaccdate'		=> date('Y-m-d', strtotime($data['tch_foundationaccdate'])),
+                            'tch_salarysource'			=> $data['tch_salarysource'],
+                            'tch_mothername'			=> $data['tch_mothername'],
+                            'tch_maritalstatus'			=> (isset($data['tch_maritalstatus'])) ? 'on' : 'off',
+                            'tch_maritalpartner'		=> $data['tch_maritalpartner'],
+                            'tch_maritalpartnernik'		=> $data['tch_maritalpartnernik'],
+                            'tch_maritalpartnerjob'		=> $data['tch_maritalpartnerjob'],
+                            'tch_npwp'					=> $data['tch_npwp'],
+                            'tch_nationality'			=> $data['tch_nationality'],
+                        );
+                        return $this->db1->kueri("UPDATE $this->dttch SET tch_idnumber = :tch_idnumber, tch_name = :tch_name, tch_passworddef = :tch_passworddef, tch_gender = :tch_gender, tch_birthplace = :tch_birthplace, tch_birthdate = :tch_birthdate, tch_nik = :tch_nik, tch_nuptk = :tch_nuptk, tch_est = :tch_est, tch_ptk = :tch_ptk, tch_fieldofstudy = :tch_fieldofstudy, tch_religion = :tch_religion, tch_streetaddress = :tch_streetaddress, tch_rt = :tch_rt, tch_rw = :tch_rw, tch_hamlet = :tch_hamlet, tch_village = :tch_village, tch_district = :tch_district, tch_postalcode = :tch_postalcode, tch_phone = :tch_phone, tch_email = :tch_email, tch_additionalassignment = :tch_additionalassignment, tch_status = :tch_status, tch_foundationacc = :tch_foundationacc, tch_foundationaccdate = :tch_foundationaccdate, tch_salarysource = :tch_salarysource, tch_mothername = :tch_mothername, tch_maritalstatus = :tch_maritalstatus, tch_maritalpartner = :tch_maritalpartner, tch_maritalpartnernik = :tch_maritalpartnernik, tch_maritalpartnerjob = :tch_maritalpartnerjob, tch_npwp = :tch_npwp, tch_nationality = :tch_nationality WHERE tch_id = :tch_id")
+                                        ->ikat($data)->eksekusi()->baris_terefek();
+                        break;
+                    
+                    default:
+                        return $this->db->kueri("SELECT * FROM $this->dttch")->eksekusi()->hasil_jamak();
+                        break;
+                }
                 break;
 
             case 'kepala-sekolah':
@@ -397,12 +500,140 @@ class m_data extends Model
 
             case 'siswa':
                 switch ($act) {
-                    case 'value':
-                        # code...
+                    case 'id-add':
+                        $no_max = $this->db->kueri("SELECT max(stu_id) as kode FROM $this->dtstu")->eksekusi()->hasil_tunggal();
+                        $no_max = (int) substr($no_max['kode'], 6); 
+                        $no_max = ++$no_max;
+                        return date('Y') . '0' . sprintf("%03s", $no_max);
+                        break;
+
+                    case 'tambah':
+                        $data = array(
+                            'stu_id'            => $data['stu_id'],
+                            'stu_idnumber'      => $data['stu_idnumber'],
+                            'stu_nisn'          => $data['stu_nisn'],
+                            'stu_passworddef'   => date('dmY', strtotime($data['stu_birthdate'])),
+                            'stu_name'          => $data['stu_name'],
+                            'stu_gender'        => (isset($data['stu_gender'])) ? $data['stu_gender'] : '',
+                            'stu_birthplace'    => $data['stu_birthplace'],
+                            'stu_birthdate'     => date('Y-m-d', strtotime($data['stu_birthdate'])),
+                            'stu_religion'      => (isset($data['stu_religion'])) ? $data['stu_religion'] : '',
+                            'stu_nik'           => $data['stu_nik'],
+                            'stu_specialneeds'  => $data['stu_specialneeds'],
+                            'stu_address'       => (isset($data['stu_address'])) ? $data['stu_address'] : '',
+                            'stu_rt'            => $data['stu_rt'],
+                            'stu_rw'            => $data['stu_rw'],
+                            'stu_hamlet'        => $data['stu_hamlet'],
+                            'stu_village'       => $data['stu_village'],
+                            'stu_district'      => $data['stu_district'],
+                            'stu_postalcode'    => $data['stu_postalcode'],
+                            'stu_placetolive'   => $data['stu_placetolive'],
+                            'stu_transportation'=> $data['stu_transportation'],
+                            'stu_phone'         => $data['stu_phone'],
+                            'stu_email'         => $data['stu_email'],
+                            'stu_skhun'         => $data['stu_skhun'],
+                            'stu_kpsrecipient'  => (isset($data['stu_kpsrecipient'])) ? 'on' : 'off',
+                            'stu_kpsnumber'     => $data['stu_kpsnumber'],
+                            'stu_photo'         => '',
+                            'stu_father_name'           => $data['stu_father_name'],
+                            'stu_father_birthplace'     => $data['stu_father_birthplace'],
+                            'stu_father_birthdate'      => date('Y-m-d', strtotime($data['stu_father_birthdate'])),
+                            'stu_father_education'      => $data['stu_father_education'],
+                            'stu_father_job'            => $data['stu_father_job'],
+                            'stu_father_salary'         => $data['stu_father_salary'],
+                            'stu_father_specialneeds'   => $data['stu_father_specialneeds'],
+                            'stu_father_phone'          => $data['stu_father_phone'],
+                            'stu_mother_name'           => $data['stu_mother_name'],
+                            'stu_mother_birthplace'     => $data['stu_mother_birthplace'],
+                            'stu_mother_birthdate'      => date('Y-m-d', strtotime($data['stu_mother_birthdate'])),
+                            'stu_mother_education'      => $data['stu_mother_education'],
+                            'stu_mother_job'            => $data['stu_mother_job'],
+                            'stu_mother_salary'         => $data['stu_mother_salary'],
+                            'stu_mother_specialneeds'   => $data['stu_mother_specialneeds'],
+                            'stu_mother_phone'          => $data['stu_mother_phone'],
+                            'stu_guardian_name'         => $data['stu_guardian_name'],
+                            'stu_guardian_birthplace'   => $data['stu_guardian_birthplace'],
+                            'stu_guardian_birthdate'    => date('Y-m-d', strtotime($data['stu_guardian_birthdate'])),
+                            'stu_guardian_education'    => $data['stu_guardian_education'],
+                            'stu_guardian_job'          => $data['stu_guardian_job'],
+                            'stu_guardian_salary'       => $data['stu_guardian_salary'],
+                            'stu_guardian_specialneeds' => $data['stu_guardian_specialneeds'],
+                            'stu_guardian_phone'        => $data['stu_guardian_phone'],
+                            'stu_generation'    => (int) $data['stu_generation'],
+                            'stu_initialstatus' => $data['stu_initialstatus'],
+                            'stu_studentstatus' => (isset($data['stu_studentstatus'])) ? 'on' : 'off',
+                            'stu_grade'         => (isset($data['stu_grade'])) ? $data['stu_grade'] : '',
+                            'stu_cls'           => (isset($data['stu_cls'])) ? $data['stu_cls'] : '',
+                            'stu_mjr'           => (isset($data['stu_mjr'])) ? $data['stu_mjr'] : ''
+                        );
+                        return $this->db1->kueri("INSERT INTO $this->dtstu VALUES (:stu_id, :stu_idnumber, :stu_nisn, :stu_passworddef, :stu_name, :stu_gender, :stu_birthplace, :stu_birthdate, :stu_religion, :stu_nik, :stu_specialneeds, :stu_address, :stu_rt, :stu_rw, :stu_hamlet, :stu_village, :stu_district, :stu_postalcode, :stu_placetolive, :stu_transportation, :stu_phone, :stu_email, :stu_skhun, :stu_kpsrecipient, :stu_kpsnumber, :stu_photo, :stu_father_name, :stu_father_birthplace, :stu_father_birthdate, :stu_father_education, :stu_father_job, :stu_father_salary, :stu_father_specialneeds, :stu_father_phone, :stu_mother_name, :stu_mother_birthplace, :stu_mother_birthdate, :stu_mother_education, :stu_mother_job, :stu_mother_salary, :stu_mother_specialneeds, :stu_mother_phone, :stu_guardian_name, :stu_guardian_birthplace, :stu_guardian_birthdate, :stu_guardian_education, :stu_guardian_job, :stu_guardian_salary, :stu_guardian_specialneeds, :stu_guardian_phone, :stu_generation, :stu_initialstatus, :stu_studentstatus, :stu_grade, :stu_cls, :stu_mjr)")
+                                        ->ikat($data)->eksekusi()->baris_terefek();
+                        break;
+
+                    case 'update':
+                        $data = array(
+                            'stu_id'            => $data['stu_id'],
+                            'stu_idnumber'      => $data['stu_idnumber'],
+                            'stu_nisn'          => $data['stu_nisn'],
+                            'stu_passworddef'   => date('dmY', strtotime($data['stu_birthdate'])),
+                            'stu_name'          => $data['stu_name'],
+                            'stu_gender'        => (isset($data['stu_gender'])) ? $data['stu_gender'] : '',
+                            'stu_birthplace'    => $data['stu_birthplace'],
+                            'stu_birthdate'     => date('Y-m-d', strtotime($data['stu_birthdate'])),
+                            'stu_religion'      => (isset($data['stu_religion'])) ? $data['stu_religion'] : '',
+                            'stu_nik'           => $data['stu_nik'],
+                            'stu_specialneeds'  => $data['stu_specialneeds'],
+                            'stu_address'       => (isset($data['stu_address'])) ? $data['stu_address'] : '',
+                            'stu_rt'            => $data['stu_rt'],
+                            'stu_rw'            => $data['stu_rw'],
+                            'stu_hamlet'        => $data['stu_hamlet'],
+                            'stu_village'       => $data['stu_village'],
+                            'stu_district'      => $data['stu_district'],
+                            'stu_postalcode'    => $data['stu_postalcode'],
+                            'stu_placetolive'   => $data['stu_placetolive'],
+                            'stu_transportation'=> $data['stu_transportation'],
+                            'stu_phone'         => $data['stu_phone'],
+                            'stu_email'         => $data['stu_email'],
+                            'stu_skhun'         => $data['stu_skhun'],
+                            'stu_kpsrecipient'  => (isset($data['stu_kpsrecipient'])) ? 'on' : 'off',
+                            'stu_kpsnumber'     => $data['stu_kpsnumber'],
+                            'stu_photo'         => '',
+                            'stu_father_name'           => $data['stu_father_name'],
+                            'stu_father_birthplace'     => $data['stu_father_birthplace'],
+                            'stu_father_birthdate'      => date('Y-m-d', strtotime($data['stu_father_birthdate'])),
+                            'stu_father_education'      => $data['stu_father_education'],
+                            'stu_father_job'            => $data['stu_father_job'],
+                            'stu_father_salary'         => $data['stu_father_salary'],
+                            'stu_father_specialneeds'   => $data['stu_father_specialneeds'],
+                            'stu_father_phone'          => $data['stu_father_phone'],
+                            'stu_mother_name'           => $data['stu_mother_name'],
+                            'stu_mother_birthplace'     => $data['stu_mother_birthplace'],
+                            'stu_mother_birthdate'      => date('Y-m-d', strtotime($data['stu_mother_birthdate'])),
+                            'stu_mother_education'      => $data['stu_mother_education'],
+                            'stu_mother_job'            => $data['stu_mother_job'],
+                            'stu_mother_salary'         => $data['stu_mother_salary'],
+                            'stu_mother_specialneeds'   => $data['stu_mother_specialneeds'],
+                            'stu_mother_phone'          => $data['stu_mother_phone'],
+                            'stu_guardian_name'         => $data['stu_guardian_name'],
+                            'stu_guardian_birthplace'   => $data['stu_guardian_birthplace'],
+                            'stu_guardian_birthdate'    => date('Y-m-d', strtotime($data['stu_guardian_birthdate'])),
+                            'stu_guardian_education'    => $data['stu_guardian_education'],
+                            'stu_guardian_job'          => $data['stu_guardian_job'],
+                            'stu_guardian_salary'       => $data['stu_guardian_salary'],
+                            'stu_guardian_specialneeds' => $data['stu_guardian_specialneeds'],
+                            'stu_guardian_phone'        => $data['stu_guardian_phone'],
+                            'stu_generation'    => (int) $data['stu_generation'],
+                            'stu_initialstatus' => $data['stu_initialstatus'],
+                            'stu_studentstatus' => (isset($data['stu_studentstatus'])) ? 'on' : 'off',
+                            'stu_grade'         => (isset($data['stu_grade'])) ? $data['stu_grade'] : '',
+                            'stu_cls'           => (isset($data['stu_cls'])) ? $data['stu_cls'] : '',
+                            'stu_mjr'           => (isset($data['stu_mjr'])) ? $data['stu_mjr'] : ''
+                        );
+                        return $this->db1->kueri("UPDATE $this->dt");
                         break;
                     
                     default:
-                        return $this->db->kueri("SELECT * FROM $this->dtusr")->eksekusi()->hasil_jamak();
+                        return $this->db->kueri("SELECT * FROM $this->dtstu")->eksekusi()->hasil_jamak();
                         break;
                 }
                 break;
@@ -434,7 +665,15 @@ class m_data extends Model
                         break;
 
                     case 'tambah-tch':
-                        # code...
+                        $data = array(
+                            'usr_id'    => $data['tch_id'],
+                            'usr_name'  => $data['tch_idnumber'],
+                            'usr_password'=> md5(date('dmY', strtotime($data['tch_birthdate']))),
+                            'usr_role'  => 3,
+                            'usr_status'=> (isset($data['tch_status'])) ? "on" : "off"
+                        );
+                        return $this->db1->kueri("INSERT INTO $this->dtusr VALUES (:usr_id, :usr_name, :usr_password, :usr_role, :usr_status)")->ikat($data)
+                                        ->eksekusi()->baris_terefek();
                         break;
 
                     case 'tambah-stu':
@@ -457,5 +696,10 @@ class m_data extends Model
                 # code...
                 break;
         }
+    }
+
+    function __destruct()
+    {
+        $this->db->tutup();
     }
 }

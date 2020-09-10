@@ -4,7 +4,12 @@ class data extends Kontroler
 {
     function __construct()
     {
+        $this->session = new Session();
         $this->data = $this->model('m_data');
+        $this->file = $this->pustaka('p_berkas');
+        if ($this->session->get('usr_role') == NULL) {
+            header('location:' . basis_url('portal'));
+        }
     }
 
     function indeks()
@@ -683,6 +688,113 @@ class data extends Kontroler
                 }
                 break;
 
+            case 'guru':
+                switch ($act) {
+                    case 'detail':
+                        $send = $_POST;
+                        $acts = $this->data->user('guru', 'detail', $send);
+                        echo json_encode($acts);
+                        break;
+
+                    case 'detail-upt':
+                        $send = $_POST;
+                        $data = array(
+                            'badan' => array(
+                                'dttch' => $this->data->user('guru', 'detail', $send),
+                                'dtest' => $this->data->master('status-pegawai'),
+                                'dtptk' => $this->data->master('ptk')
+                            )
+                        );
+                        $this->tampilkan('data/user/upt/guru', $data);
+                        break;
+
+                    case 'id-add':
+                        $data = array(
+                            'badan' => array(
+                                'dttch' => $this->data->user('guru', 'id-add'),
+                                'dtptk' => $this->data->master('ptk'),
+                                'dtest' => $this->data->master('status-pegawai')
+                            )
+                        );
+
+                        $this->tampilkan('data/user/add/guru', $data);
+                        break;
+
+                    case 'list':
+                        $data = array(
+                            'badan' => array(
+                                'dttch' => $this->data->user('guru')
+                            )
+                        );
+                        // echo 'asdsda';
+
+                        $this->tampilkan('data/user/after-upt/guru', $data);
+                        break;
+
+                    case 'tambah':
+                        $send = $_POST;
+                        $act1 = $this->data->user('guru', 'tambah', $send);
+                        $act2 = $this->data->user('user', 'tambah-tch', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dttch' => $this->data->user('guru')
+                            )
+                        );
+
+                        $this->tampilkan('data/user/after-upt/guru', $data);
+                        break;
+
+                    case 'photo-upload':
+                        $send = $_POST;
+                        $file = $this->file->setFolder('img/teacher')->upload($send['tch_id'], $_FILES['file']);
+                        $send = array('tch_id' => $send['tch_id'], 'tch_photo' => $file);
+                        $act1 = $this->data->user('guru', 'photo-upload', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dttch' => $this->data->user('guru')
+                            )
+                        );
+                        $this->tampilkan('data/user/after-upt/guru', $data);
+                        break;
+
+                    case 'reset':
+                        $send = $_POST;
+                        $acts = $this->data->user('user', 'reset', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dttch' => $this->data->user('guru')
+                            )
+                        );
+                        $this->tampilkan('data/user/after-upt/guru', $data);
+                        break;
+
+                    case 'update':
+                        $send = $_POST;
+                        $acts = $this->data->user('guru', 'update', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dttch' => $this->data->user('guru')
+                            )
+                        );
+
+                        $this->tampilkan('data/user/after-upt/guru', $data);
+                        break;
+                    
+                    default:
+                        $data = array(
+                            'title' => 'Data Guru',
+                            'badan' => array(
+                                'dttch' => $this->data->user('guru')
+                            )
+                        );
+                        $this->tampilkan('pakem/header', $data);
+                        $this->tampilkan('pakem/navbar', $data);
+                        $this->tampilkan('data/user/guru', $data);
+                        $this->tampilkan('pakem/footer');
+                        break;
+                }
+                break;
+
             case 'kepala-sekolah':
                 switch ($act) {
                     case 'editor':
@@ -703,6 +815,45 @@ class data extends Kontroler
                         $this->tampilkan('pakem/header', $data);
                         $this->tampilkan('pakem/navbar', $data);
                         $this->tampilkan('data/user/kepala-sekolah', $data);
+                        $this->tampilkan('pakem/footer');
+                        break;
+                }
+                break;
+
+            case 'siswa':
+                switch ($act) {
+                    case 'id-add':
+                        $data = array(
+                            'title' => 'Tambah Data Siswa',
+                            'badan' => array(
+                                'dtstu' => $this->data->user('siswa', 'id-add'),
+                                'dtcls' => $this->data->master('kelas'),
+                                'dtmjr' => $this->data->master('jurusan')
+                            )
+                        );
+                        $this->tampilkan('pakem/header', $data);
+                        $this->tampilkan('pakem/navbar', $data);
+                        $this->tampilkan('data/user/add/siswa', $data);
+                        $this->tampilkan('pakem/footer');
+                        break;
+
+                    case 'tambah':
+                        $send = $_POST;
+                        $this->data->user('siswa', 'tambah', $send);
+
+                        alihkan(basis_url('data/user/siswa'));
+                        break;
+                    
+                    default:
+                        $data = array(
+                            'title' => 'Data Siswa',
+                            'badan' => array(
+                                'dtstu' => $this->data->user('siswa')
+                            )
+                        );
+                        $this->tampilkan('pakem/header', $data);
+                        $this->tampilkan('pakem/navbar', $data);
+                        $this->tampilkan('data/user/siswa', $data);
                         $this->tampilkan('pakem/footer');
                         break;
                 }
