@@ -2,7 +2,7 @@
 
     <script type="text/javascript">
 		$(document).ready(function () {
-			M.AutoInit();
+            M.AutoInit();
 		});
 	</script>
     
