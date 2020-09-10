@@ -20,3 +20,8 @@ function basis_url($uri='')
 
 	return $url . $uri;
 }
+
+function alihkan($uri = '')
+{
+	echo "<script>window.location = '" . $uri . "'</script>";
+}

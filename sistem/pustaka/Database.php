@@ -28,6 +28,12 @@ class Database
 
 	}
 
+	public function np_kueri($kueri)
+	{
+		$this->stmt = $this->dbh->query($kueri);
+		return $this;
+	}
+
 	public function kueri($kueri)
 	{
 		$this->stmt = $this->dbh->prepare($kueri);

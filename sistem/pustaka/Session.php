@@ -24,14 +24,10 @@ class Session
 		}
 	}
 
-	function end($vars)
+	function end(...$vars)
 	{
-		if (is_array($vars)) {
-			for ($i=0; $i < count($vars); $i++) { 
-				unset($_SESSION[$vars[$i]]);
-			}
-		} else {
-			unset($_SESSION[$vars]);
+		for ($i=0; $i < count($vars); $i++) { 
+			unset($_SESSION[$vars[$i]]);
 		}
 		
 	}
