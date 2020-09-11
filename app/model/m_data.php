@@ -143,12 +143,47 @@ class m_data extends Model
 
             case 'kelas':
                 switch ($act) {
-                    case 'value':
-                        # code...
+                    case 'detail':
+                        return $this->db1->kueri("SELECT * FROM $this->dtcls JOIN $this->dttch ON cls_tch = tch_id JOIN $this->dtmjr ON cls_mjr = mjr_id JOIN $this->dtrom ON cls_rom = rom_id WHERE cls_id = :cls_id")->ikat($data)->eksekusi()->hasil_tunggal();
+                        break;
+
+                    case 'hapus':
+                        return $this->db1->kueri("DELETE FROM $this->dtcls WHERE cls_id = :cls_id")->ikat($data)->eksekusi()->baris_terefek();
+                        break;
+
+                    case 'id-add':
+                        $no_max = $this->db1->kueri("SELECT max(cls_id) as kode FROM $this->dtcls")->eksekusi()->hasil_tunggal();
+                        $no_max = (int) substr($no_max['kode'], 3); 
+                        $no_max = ++$no_max;
+                        return 'C-' . sprintf("%03s", $no_max);
+                        break;
+                    
+                    case 'tambah':
+                        $data = array(
+                            'cls_id'    => $data['cls_id'],
+                            'cls_name'  => $data['cls_name'],
+                            'cls_mjr'   => (isset($data['cls_mjr'])) ? $data['cls_mjr'] : '',
+                            'cls_tch'   => (isset($data['cls_tch'])) ? $data['cls_tch'] : '',
+                            'cls_rom'   => (isset($data['cls_rom'])) ? $data['cls_rom'] : '',
+                            'cls_status'=> (isset($data['cls_status'])) ? 'on' : 'off'
+                        );
+                        return $this->db1->kueri("INSERT INTO $this->dtcls VALUES (:cls_id, :cls_name, :cls_tch, :cls_mjr, :cls_rom, :cls_status)")->ikat($data)->eksekusi()->baris_terefek();
+                        break;
+
+                    case 'update':
+                        $data = array(
+                            'cls_id'    => $data['cls_id'],
+                            'cls_name'  => $data['cls_name'],
+                            'cls_mjr'   => (isset($data['cls_mjr'])) ? $data['cls_mjr'] : '',
+                            'cls_tch'   => (isset($data['cls_tch'])) ? $data['cls_tch'] : '',
+                            'cls_rom'   => (isset($data['cls_rom'])) ? $data['cls_rom'] : '',
+                            'cls_status'=> (isset($data['cls_status'])) ? 'on' : 'off'
+                        );
+                        return $this->db1->kueri("UPDATE $this->dtcls SET cls_name = :cls_name, cls_mjr = :cls_mjr, cls_tch = :cls_tch, cls_rom = :cls_rom, cls_status = :cls_status WHERE cls_id = :cls_id")->ikat($data)->eksekusi()->baris_terefek();
                         break;
                     
                     default:
-                        # code...
+                        return $this->db1->kueri("SELECT * FROM $this->dtcls JOIN $this->dttch ON cls_tch = tch_id")->eksekusi()->hasil_jamak();
                         break;
                 }
                 break;

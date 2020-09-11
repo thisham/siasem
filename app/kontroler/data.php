@@ -210,12 +210,72 @@ class data extends Kontroler
 
             case 'kelas':
                 switch ($act) {
-                    case 'value':
-                        # code...
+                    case 'detail':
+                        $send = $_POST;
+                        $acts = $this->data->master('kelas', 'detail', $send);
+                        echo json_encode($acts);
+                        break;
+
+                    case 'hapus':
+                        $send = $_POST;
+                        $acts = $this->data->master('kelas', 'hapus', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtcls' => $this->data->master('kelas'),
+                                'dtmjr' => $this->data->master('jurusan'),
+                                'dttch' => $this->data->user('guru'),
+                                'dtrom' => $this->data->master('ruangan')
+                            )
+                        );
+                        $this->tampilkan('data/master/after-upt/kelas', $data);
+                        break;
+
+                    case 'id-add':
+                        echo $this->data->master('kelas', 'id-add');
+                        break;
+
+                    case 'tambah':
+                        $send = $_POST;
+                        $acts = $this->data->master('kelas', 'tambah', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtcls' => $this->data->master('kelas'),
+                                'dtmjr' => $this->data->master('jurusan'),
+                                'dttch' => $this->data->user('guru'),
+                                'dtrom' => $this->data->master('ruangan')
+                            )
+                        );
+                        $this->tampilkan('data/master/after-upt/kelas', $data);
+                        break;
+
+                    case 'update':
+                        $send = $_POST;
+                        $acts = $this->data->master('kelas', 'update', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtcls' => $this->data->master('kelas'),
+                                'dtmjr' => $this->data->master('jurusan'),
+                                'dttch' => $this->data->user('guru'),
+                                'dtrom' => $this->data->master('ruangan')
+                            )
+                        );
+                        $this->tampilkan('data/master/after-upt/kelas', $data);
                         break;
                     
                     default:
-                        echo "DRAFTED!!! Need teacher datatables for homeroom teacher!";
+                        $data = array(
+                            'title' => 'Data Kelas',
+                            'badan' => array(
+                                'dtcls' => $this->data->master('kelas'),
+                                'dtmjr' => $this->data->master('jurusan'),
+                                'dttch' => $this->data->user('guru'),
+                                'dtrom' => $this->data->master('ruangan')
+                            )
+                        );
+                        $this->tampilkan('pakem/header', $data);
+                        $this->tampilkan('pakem/navbar', $data);
+                        $this->tampilkan('data/master/kelas', $data);
+                        $this->tampilkan('pakem/footer');
                         break;
                 }
                 break;
