@@ -1017,7 +1017,7 @@ class data extends Kontroler
                         $acts = $this->data->akademik('mapel', 'detail', $send);
                         echo json_encode($acts);
                         break;
-                        
+
                     case 'editor':
                         $send = $_POST;
                         $data = array(
@@ -1131,7 +1131,63 @@ class data extends Kontroler
                 break;
 
             case 'rentang-nilai':
-                # code...
+                switch ($act) {
+                    case 'detail':
+                        $send = $_POST;
+                        $acts = $this->data->akademik('rentang-nilai', 'detail', $send);
+                        echo json_encode($acts);
+                        break;
+
+                    case 'hapus':
+                        $send = $_POST;
+                        $acts = $this->data->akademik('rentang-nilai', 'hapus', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtgrd' => $this->data->akademik('rentang-nilai')
+                            )
+                        );
+                        $this->tampilkan('data/akademik/after-upt/rentang-nilai', $data);
+                        break;
+
+                    case 'id-add':
+                        echo $this->data->akademik('rentang-nilai', 'id-add');
+                        break;
+
+                    case 'tambah':
+                        $send = $_POST;
+                        $acts = $this->data->akademik('rentang-nilai', 'tambah', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtgrd' => $this->data->akademik('rentang-nilai')
+                            )
+                        );
+                        $this->tampilkan('data/akademik/after-upt/rentang-nilai', $data);
+                        break;
+
+                    case 'update':
+                        $send = $_POST;
+                        $acts = $this->data->akademik('rentang-nilai', 'update', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtgrd' => $this->data->akademik('rentang-nilai')
+                            )
+                        );
+                        $this->tampilkan('data/akademik/after-upt/rentang-nilai', $data);
+                        break;
+                    
+                    default:
+                        $data = array(
+                            'title' => 'Rentang Nilai (Grading)',
+                            'badan' => array(
+                                'dtgrd' => $this->data->akademik('rentang-nilai')
+                            )
+                        );
+                        $this->tampilkan('pakem/header', $data);
+                        $this->tampilkan('pakem/navbar', $data);
+                        $this->tampilkan('data/akademik/rentang-nilai', $data);
+                        $this->tampilkan('pakem/footer');
+                        break;
+                }
                 break;
             
             default:

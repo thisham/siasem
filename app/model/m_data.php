@@ -818,7 +818,34 @@ class m_data extends Model
                 break;
 
             case 'rentang-nilai':
-                # code...
+                switch ($act) {
+                    case 'detail':
+                        return $this->db1->kueri("SELECT * FROM $this->dtgrd WHERE grd_id = :grd_id")->ikat($data)->eksekusi()->hasil_tunggal();
+                        break;
+
+                    case 'hapus':
+                        return $this->db1->kueri("DELETE FROM $this->dtgrd WHERE grd_id = :grd_id")->ikat($data)->eksekusi()->baris_terefek();
+                        break;
+
+                    case 'id-add':
+                        $no_max = $this->db1->kueri("SELECT max(grd_id) as kode FROM $this->dtgrd")->eksekusi()->hasil_tunggal();
+                        $no_max = (int) substr($no_max['kode'], 3);
+                        $no_max = ++$no_max;
+                        return 'GR' . sprintf("%03s", $no_max);
+                        break;
+
+                    case 'tambah':
+                        return $this->db1->kueri("INSERT INTO $this->dtgrd VALUES (:grd_id, :grd_min, :grd_max, :grd_grade, :grd_information)")->ikat($data)->eksekusi()->baris_terefek();
+                        break;
+
+                    case 'update':
+                        return $this->db1->kueri("UPDATE $this->dtgrd SET grd_min = :grd_min, grd_max = :grd_max, grd_grade = :grd_grade, grd_information = :grd_information WHERE grd_id = :grd_id")->ikat($data)->eksekusi()->baris_terefek();
+                        break;
+                    
+                    default:
+                        return $this->db1->kueri("SELECT * FROM $this->dtgrd")->eksekusi()->hasil_jamak();
+                        break;
+                }
                 break;
             
             default:
