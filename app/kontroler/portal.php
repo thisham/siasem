@@ -8,14 +8,15 @@ class portal extends Kontroler
 	function __construct() {
 		$this->portal = $this->model('m_portal');
 		$this->session = new Session();
-		if ($this->session->get('usr_role') != NULL) {
-			header('location:' . basis_url());
-			exit;
-		}	
+		
 	}
 	
 	function indeks()
 	{
+		if ($this->session->get('usr_role') != NULL) {
+			alihkan(basis_url());
+			exit;
+		}	
 		$data = array(
 			'title'	=> 'Portal'
 		);
@@ -29,7 +30,6 @@ class portal extends Kontroler
 	{
 		switch ($menu) {
 			case 'masuk':
-				// var_dump($_POST);
 				$send = $_POST;
 				$acts = $this->portal->aksi('masuk', $send);
 				if ($acts != NULL) {
@@ -37,6 +37,7 @@ class portal extends Kontroler
 						'usr_id'	=> $acts['usr_id'],
 						'usr_name'	=> $acts['usr_name'],
 						'usr_role'	=> $acts['usr_role'],
+						'usr_photo'	=> $acts['usr_photo'],
 						'usr_status'=> $acts['usr_status']
 					);
 					$this->session->set($sesi);
@@ -47,6 +48,13 @@ class portal extends Kontroler
 
 			case 're-log':
 				$this->tampilkan('portal/re-log');
+				break;
+
+			case 'keluar':
+				if ($this->session->get('usr_id') != null) {
+					$this->session->end('usr_id', 'usr_name', 'usr_role', 'usr_status', 'usr_photo');
+					alihkan(basis_url());
+				}
 				break;
 		}
 	}
