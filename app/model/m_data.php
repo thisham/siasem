@@ -433,6 +433,7 @@ class m_data extends Model
                         break;
 
                     case 'photo-upload':
+                        $this->db1->kueri("UPDATE $this->dtusr SET usr_photo = :tch_photo WHERE usr_id = :tch_id")->ikat($data)->eksekusi()->baris_terefek();
                         return $this->db1->kueri("UPDATE $this->dttch SET tch_photo = :tch_photo WHERE tch_id = :tch_id")->ikat($data)->eksekusi()->baris_terefek();
                         break;
 
@@ -725,6 +726,62 @@ class m_data extends Model
                         # code...
                         break;
                 }
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+    }
+
+    function akademik($menu = '', $act = '', $data = '')
+    {
+        switch ($menu) {
+            case 'kelompok-mapel':
+                switch ($act) {
+                    case 'detail':
+                        return $this->db1->kueri("SELECT * FROM $this->dtsgr WHERE sgr_id = :sgr_id")->ikat($data)->eksekusi()->hasil_tunggal();
+                        break;
+
+                    case 'hapus':
+                        return $this->db1->kueri("DELETE FROM $this->dtsgr WHERE sgr_id = :sgr_id")->ikat($data)->eksekusi()->baris_terefek();
+                        break;
+
+                    case 'id-add':
+                        $no_max = $this->db->kueri("SELECT max(sgr_id) as kode FROM $this->dtsgr")->eksekusi()->hasil_tunggal();
+                        $no_max = (int) substr($no_max['kode'], 3);
+                        $no_max = ++$no_max;
+                        return 'G-' . sprintf("%03s", $no_max);
+                        break;
+
+                    case 'tambah':
+                        return $this->db1->kueri("INSERT INTO $this->dtsgr VALUES (:sgr_id, :sgr_group, :sgr_name)")->ikat($data)->eksekusi()->baris_terefek();
+                        break;
+
+                    case 'update':
+                        return $this->db1->kueri("UPDATE $this->dtsgr SET sgr_group = :sgr_group, sgr_name = :sgr_name WHERE sgr_id = :sgr_id")->ikat($data)->eksekusi()->baris_terefek();
+                        break;
+                    
+                    default:
+                        return $this->db1->kueri("SELECT * FROM $this->dtsgr")->eksekusi()->hasil_jamak();
+                        break;
+                }
+                break;
+
+            case 'mapel':
+                # code...
+                break;
+
+            case 'materi':
+                # code...
+                break;
+
+            case 'kompetensi-dasar':
+                # code...
+                break;
+
+            case 'rentang-nilai':
+                # code...
                 break;
             
             default:

@@ -8,7 +8,7 @@ class data extends Kontroler
         $this->data = $this->model('m_data');
         $this->file = $this->pustaka('p_berkas');
         if ($this->session->get('usr_role') == NULL) {
-            header('location:' . basis_url('portal'));
+            alihkan(basis_url('portal'));
         }
     }
 
@@ -19,6 +19,10 @@ class data extends Kontroler
 
     function master($menu = '', $act = '')
     {
+        if ($this->session->get('usr_role') != 1) {
+            $this->tampilkan('errors/error-403');
+            exit;
+        }
         switch ($menu)
         {
             case 'gedung':
@@ -939,6 +943,91 @@ class data extends Kontroler
                 $this->tampilkan('pakem/navbar', $data);
                 $this->tampilkan('data/user/index', $data);
                 $this->tampilkan('pakem/footer');
+                break;
+        }
+    }
+
+    function akademik($menu = '', $act = '', $data = '')
+    {
+        switch ($menu) {
+            case 'kelompok-mapel':
+                switch ($act) {
+                    case 'detail':
+                        $send = $_POST;
+                        $acts = $this->data->akademik('kelompok-mapel', 'detail', $send);
+                        echo json_encode($acts);
+                        break;
+
+                    case 'id-add':
+                        echo $this->data->akademik('kelompok-mapel', 'id-add');
+                        break;
+                        
+                    case 'hapus':
+                        $send = $_POST;
+                        $acts = $this->data->akademik('kelompok-mapel', 'hapus', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtsgr' => $this->data->akademik('kelompok-mapel')
+                            )
+                        );
+                        $this->tampilkan('data/akademik/after-upt/kelompok-mapel', $data);
+                        break;
+
+                    case 'tambah':
+                        $send = $_POST;
+                        $acts = $this->data->akademik('kelompok-mapel', 'tambah', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtsgr' => $this->data->akademik('kelompok-mapel')
+                            )
+                        );
+                        $this->tampilkan('data/akademik/after-upt/kelompok-mapel', $data);
+                        break;
+                    
+                    case 'update':
+                        $send = $_POST;
+                        $acts = $this->data->akademik('kelompok-mapel', 'update', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtsgr' => $this->data->akademik('kelompok-mapel')
+                            )
+                        );
+                        $this->tampilkan('data/akademik/after-upt/kelompok-mapel', $data);
+                        break;
+                    
+                    default:
+                        $data = array(
+                            'title' => 'Kelompok Mata Pelajaran',
+                            'badan' => array(
+                                'dtsgr' => $this->data->akademik('kelompok-mapel')
+                            )
+                        );
+                        $this->tampilkan('pakem/header', $data);
+                        $this->tampilkan('pakem/navbar', $data);
+                        $this->tampilkan('data/akademik/kelompok-mapel', $data);
+                        $this->tampilkan('pakem/footer');
+                        break;
+                }
+                break;
+
+            case 'mapel':
+                # code...
+                break;
+
+            case 'materi':
+                # code...
+                break;
+
+            case 'kompetensi-dasar':
+                # code...
+                break;
+
+            case 'rentang-nilai':
+                # code...
+                break;
+            
+            default:
+                # code...
                 break;
         }
     }
