@@ -769,7 +769,44 @@ class m_data extends Model
                 break;
 
             case 'mapel':
-                # code...
+                switch ($act) {
+                    case 'detail':
+                        return $this->db1->kueri("SELECT * FROM $this->dtsbj JOIN $this->dttch ON sbj_tch = tch_id JOIN $this->dtcur ON sbj_cur = cur_id JOIN $this->dtsgr ON sbj_sgr = sgr_id JOIN $this->dtmjr ON sbj_mjr = mjr_id WHERE sbj_id = :sbj_id")->ikat($data)->eksekusi()->hasil_tunggal();
+                        break;
+
+                    case 'hapus':
+                        return $this->db1->kueri("DELETE FROM $this->dtsbj WHERE sbj_id = :sbj_id")->ikat($data)->eksekusi()->baris_terefek();
+                        break;
+
+                    case 'id-add':
+                        $no_max = $this->db->kueri("SELECT max(sbj_id) as kode FROM $this->dtsbj")->eksekusi()->hasil_tunggal();
+                        $no_max = (int) substr($no_max['kode'], 3);
+                        $no_max = ++$no_max;
+                        return 'MP' . sprintf("%03s", $no_max);
+                        break;
+
+                    case 'tambah':
+                        $data['sbj_sgr'] = (isset($data['sbj_sgr'])) ? $data['sbj_sgr'] : '';
+                        $data['sbj_mjr'] = (isset($data['sbj_mjr'])) ? $data['sbj_mjr'] : '';
+                        $data['sbj_tch'] = (isset($data['sbj_tch'])) ? $data['sbj_tch'] : '';
+                        $data['sbj_cur'] = (isset($data['sbj_cur'])) ? $data['sbj_cur'] : '';
+                        $data['sbj_status'] = (isset($data['sbj_status'])) ? 'on' : 'off';
+                        return $this->db1->kueri("INSERT INTO $this->dtsbj VALUES (:sbj_id, :sbj_name, :sbj_nameen, :sbj_class, :sbj_competence, :sbj_sgr, :sbj_mjr, :sbj_tch, :sbj_cur, :sbj_status)")->ikat($data)->eksekusi()->baris_terefek();
+                        break;
+
+                    case 'update':
+                        $data['sbj_sgr'] = (isset($data['sbj_sgr'])) ? $data['sbj_sgr'] : '';
+                        $data['sbj_mjr'] = (isset($data['sbj_mjr'])) ? $data['sbj_mjr'] : '';
+                        $data['sbj_tch'] = (isset($data['sbj_tch'])) ? $data['sbj_tch'] : '';
+                        $data['sbj_cur'] = (isset($data['sbj_cur'])) ? $data['sbj_cur'] : '';
+                        $data['sbj_status'] = (isset($data['sbj_status'])) ? 'on' : 'off';
+                        return $this->db1->kueri("UPDATE $this->dtsbj SET sbj_id = :sbj_id, sbj_name = :sbj_name, sbj_nameen = :sbj_nameen, sbj_class = :sbj_class, sbj_competence = :sbj_competence, sbj_sgr = :sbj_sgr, sbj_mjr = :sbj_mjr, sbj_tch = :sbj_tch, sbj_cur = :sbj_cur, sbj_status = :sbj_status")->ikat($data)->eksekusi()->baris_terefek();
+                        break;
+                    
+                    default:
+                        return $this->db1->kueri("SELECT * FROM $this->dtsbj JOIN $this->dttch ON sbj_tch = tch_id")->eksekusi()->hasil_jamak();
+                        break;
+                }
                 break;
 
             case 'materi':

@@ -27,15 +27,17 @@
 </nav>
 
 <?php if (isset($_SESSION['usr_role'])) { ?>
-	<?php if ($_SESSION['usr_role'] == 1) { ?>
+	
+	<?php switch ($_SESSION['usr_role']) {
+		case 1: ?>
 		<ul class="sidenav" id="slide-out">
 			<li>
 				<div class="user-view center">
 					<div class="background">
 						<img src="<?= basis_url('assets/img/account-def.jpg'); ?>">
 					</div>
-					<a href="<?= basis_url('assets/img/logo-smk.png'); ?>">
-						<img src="<?= basis_url('assets/img/logo-smk.png'); ?>" style="max-width: 80px;">
+					<a href="<?= ($_SESSION['usr_photo'] == '') ? basis_url('assets/img/logo-smk.png') : basis_url($_SESSION['usr_photo']); ?>">
+						<img src="<?= ($_SESSION['usr_photo'] == '') ? basis_url('assets/img/logo-smk.png') : basis_url($_SESSION['usr_photo']); ?>" style="max-width: 80px;">
 					</a>
 					<br>
 					<a href="index">SMK Mitra Sehat Mandiri Sidoarjo</a>
@@ -68,7 +70,11 @@
 									<a class="collapsible-header" style="padding-left: 36pt;">Akademik <i class="material-icons right">arrow_drop_down</i></a>
 									<div class="collapsible-body">
 										<ul class="collapsible">
-											<li><a href="<?= basis_url('data/master/sekolah'); ?>" style="padding-left: 48pt;"><i class="material-icons left">school</i>X</a></li>
+											<li><a href="<?= basis_url('data/akademik/kelompok-mapel'); ?>" style="padding-left: 48pt;"><i class="material-icons left">layers</i>Kelompok Mapel</a></li>
+											<li><a href="<?= basis_url('data/akademik/mapel'); ?>" style="padding-left: 48pt;"><i class="material-icons left">book</i>Mapel</a></li>
+											<li><a href="<?= basis_url('data/akademik/materi'); ?>" style="padding-left: 48pt;"><i class="material-icons left">assignment</i>Materi Pembelajaran</a></li>
+											<li><a href="<?= basis_url('data/akademik/kompetensi-dasar'); ?>" style="padding-left: 48pt;"><i class="material-icons left">assistant</i>Kompetensi Dasar</a></li>
+											<li><a href="<?= basis_url('data/akademik/rentang-nilai'); ?>" style="padding-left: 48pt;"><i class="material-icons left">grade</i>Rentang Nilai</a></li>
 										</ul>
 									</div>
 								</li>
@@ -78,7 +84,7 @@
 										<ul class="collapsible">
 											<li><a href="<?= basis_url('data/user/kepala-sekolah'); ?>" style="padding-left: 48pt;"><i class="material-icons left">supervisor_account</i>Kepala Sekolah</a></li>
 											<li><a href="<?= basis_url('data/user/guru'); ?>" style="padding-left: 48pt;"><i class="material-icons left">school</i>Guru</a></li>
-											<li><a href="<?= basis_url('data/user/siswa'); ?>" style="padding-left: 48pt;"><i class="material-icons left">payments</i>Keuangan</a></li>
+											<!-- <li><a href="<?= basis_url('data/user/siswa'); ?>" style="padding-left: 48pt;"><i class="material-icons left">payments</i>Keuangan</a></li> -->
 											<li><a href="<?= basis_url('data/user/siswa'); ?>" style="padding-left: 48pt;"><i class="material-icons left">local_library</i>Siswa</a></li>
 											<li><a href="<?= basis_url('data/user/administrator'); ?>" style="padding-left: 48pt;"><i class="material-icons left">admin_panel_settings</i>Administrator</a></li>
 											<li><a href="<?= basis_url('data/user/list'); ?>" style="padding-left: 48pt;"><i class="material-icons left">list</i>Data Lengkap</a></li>
@@ -88,15 +94,21 @@
 							</ul>
 						</div>
 					</li>
-				</ul>
-			</li>
-			<li>
-				<ul class="collapsible collapsible-accordion">
 					<li>
 						<a class="collapsible-header" style="padding-left: 24pt;">Presensi <i class="material-icons right">arrow_drop_down</i></a>
 						<div class="collapsible-body">
 							<ul class="collapsible">
 								<li><a href="" style="padding-left: 36pt;">X</a></li>
+							</ul>
+						</div>
+					</li>
+					<div class="divider"></div>
+					<li>
+						<a class="collapsible-header" style="padding-left: 24pt;">Akun <i class="material-icons right">arrow_drop_down</i></a>
+						<div class="collapsible-body">
+							<ul class="collapsible">
+								<li><a href="<?= basis_url('akun/pengaturan'); ?>" style="padding-left: 36pt;"><i class="material-icons left">settings</i>Pengaturan Akun</a></li>
+								<li><a href="<?= basis_url('portal/aksi/keluar'); ?>" style="padding-left: 36pt;"><i class="material-icons left">exit_to_app</i>Keluar</a></li>
 							</ul>
 						</div>
 					</li>
@@ -108,7 +120,14 @@
 			<br>
 			<br>
 		</ul>
-	<?php } ?>
+			<?php break;
+		
+		default: 
+			# code...
+			break;
+	} ?>
+
+		
 <?php } else { ?>
 	<ul class="sidenav" id="slide-out">
 		<li>

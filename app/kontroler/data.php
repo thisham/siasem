@@ -1011,7 +1011,115 @@ class data extends Kontroler
                 break;
 
             case 'mapel':
-                # code...
+                switch ($act) {
+                    case 'detail':
+                        $send = $_POST;
+                        $acts = $this->data->akademik('mapel', 'detail', $send);
+                        echo json_encode($acts);
+                        break;
+                        
+                    case 'editor':
+                        $send = $_POST;
+                        $data = array(
+                            'badan' => array(
+                                'dtsbj' => $this->data->akademik('mapel', 'detail', $send),
+                                'dtsgr' => $this->data->akademik('kelompok-mapel'),
+                                'dtmjr' => $this->data->master('jurusan'),
+                                'dttch' => $this->data->user('guru'),
+                                'dtcur' => $this->data->master('kurikulum')
+                            )
+                        );
+                        $this->tampilkan('data/akademik/upt/mapel', $data);
+                        break;
+
+                    case 'hapus':
+                        $send = $_POST;
+                        $acts = $this->data->akademik('mapel', 'hapus', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtsbj' => $this->data->akademik('mapel'),
+                                'dtsgr' => $this->data->akademik('kelompok-mapel'),
+                                'dtmjr' => $this->data->master('jurusan'),
+                                'dttch' => $this->data->user('guru'),
+                                'dtcur' => $this->data->master('kurikulum')
+                            )
+                        );
+                        $this->tampilkan('data/akademik/after-upt/mapel', $data);
+                        break;
+
+                    case 'id-add':
+                        $data = array(
+                            'badan' => array(
+                                'dtsbj' => $this->data->akademik('mapel', 'id-add'),
+                                'dtsgr' => $this->data->akademik('kelompok-mapel'),
+                                'dtmjr' => $this->data->master('jurusan'),
+                                'dttch' => $this->data->user('guru'),
+                                'dtcur' => $this->data->master('kurikulum')
+                            )
+                        );
+                        $this->tampilkan('data/akademik/add/mapel', $data);
+                        break;
+
+                    case 'list':
+                        $data = array(
+                            'badan' => array(
+                                'dtsbj' => $this->data->akademik('mapel'),
+                                'dtsgr' => $this->data->akademik('kelompok-mapel'),
+                                'dtmjr' => $this->data->master('jurusan'),
+                                'dttch' => $this->data->user('guru'),
+                                'dtcur' => $this->data->master('kurikulum')
+                            )
+                        );
+                        $this->tampilkan('data/akademik/after-upt/mapel', $data);
+                        break;
+
+                    case 'tambah':
+                        $send = $_POST;
+                        $acts = $this->data->akademik('mapel', 'tambah', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtsbj' => $this->data->akademik('mapel'),
+                                'dtsgr' => $this->data->akademik('kelompok-mapel'),
+                                'dtmjr' => $this->data->master('jurusan'),
+                                'dttch' => $this->data->user('guru'),
+                                'dtcur' => $this->data->master('kurikulum')
+                            )
+                        );
+                        $this->tampilkan('data/akademik/after-upt/mapel', $data);
+                        break;
+
+                    case 'update':
+                        $send = $_POST;
+                        $acts = $this->data->akademik('mapel', 'update', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtsbj' => $this->data->akademik('mapel'),
+                                'dtsgr' => $this->data->akademik('kelompok-mapel'),
+                                'dtmjr' => $this->data->master('jurusan'),
+                                'dttch' => $this->data->user('guru'),
+                                'dtcur' => $this->data->master('kurikulum')
+                            )
+                        );
+                        $this->tampilkan('data/akademik/after-upt/mapel', $data);
+                        break;
+                    
+                    default:
+                        $data = array(
+                            'title' => 'Mata Pelajaran',
+                            'badan' => array(
+                                'dtsbj' => $this->data->akademik('mapel'),
+                                'dtsgr' => $this->data->akademik('kelompok-mapel'),
+                                'dtmjr' => $this->data->master('jurusan'),
+                                'dttch' => $this->data->user('guru'),
+                                'dtcur' => $this->data->master('kurikulum')
+                            )
+                        );
+                        $this->tampilkan('pakem/header', $data);
+                        $this->tampilkan('pakem/navbar', $data);
+                        $this->tampilkan('data/akademik/mapel', $data);
+                        $this->tampilkan('pakem/footer');
+                        break;
+                }
                 break;
 
             case 'materi':
