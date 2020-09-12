@@ -19,6 +19,7 @@ class m_data extends Model
     private $dttsr = 'dt_tsr_taskandsources';
     private $dtbcp = 'dt_bcp_basiccompetences';
     private $dtgrd = 'dt_grd_grades';
+    private $dtssc = 'dt_ssc_schedule';
     // users
     private $dthdm = 'dt_hdm_headmaster';
     private $dttch = 'dt_tch_teachers';
@@ -183,7 +184,7 @@ class m_data extends Model
                         break;
                     
                     default:
-                        return $this->db1->kueri("SELECT * FROM $this->dtcls JOIN $this->dttch ON cls_tch = tch_id")->eksekusi()->hasil_jamak();
+                        return $this->db1->kueri("SELECT * FROM $this->dtcls JOIN $this->dttch ON cls_tch = tch_id JOIN $this->dtrom ON cls_rom = rom_id")->eksekusi()->hasil_jamak();
                         break;
                 }
                 break;
@@ -764,6 +765,64 @@ class m_data extends Model
                     
                     default:
                         return $this->db1->kueri("SELECT * FROM $this->dtsgr")->eksekusi()->hasil_jamak();
+                        break;
+                }
+                break;
+
+            case 'jadwal':
+                switch ($act) {
+                    case 'detail':
+                        return $this->db1->kueri("SELECT * FROM $this->dtssc JOIN $this->dtfys ON ssc_fys = fys_id JOIN $this->dtcls ON ssc_cls = cls_id JOIN $this->dtsbj ON ssc_sbj = sbj_id JOIN $this->dtrom ON cls_rom = rom_id WHERE ssc_id = :ssc_id")->ikat($data)->eksekusi()->hasil_tunggal();
+                        break;
+
+                    case 'hapus':
+                        return $this->db1->kueri("DELETE FROM $this->dtssc WHERE ssc_id = :ssc_id")->ikat($data)->eksekusi()->baris_terefek();
+                        break;
+
+                    case 'id-add':
+                        $no_max = $this->db->kueri("SELECT max(ssc_id) as kode FROM $this->dtssc")->eksekusi()->hasil_tunggal();
+                        $no_max = (int) substr($no_max['kode'], 5);
+                        $no_max = ++$no_max;
+                        $semest = ((int) date('m') < 7) ? '1' : '2';
+                        return 'SC' . date('y') . $semest . sprintf("%03s", $no_max);
+                        break;
+
+                    case 'list':
+                        return $this->db1->kueri("SELECT * FROM $this->dtssc JOIN $this->dtfys ON ssc_fys = fys_id JOIN $this->dtcls ON ssc_cls = cls_id JOIN $this->dtsbj ON ssc_sbj = sbj_id JOIN $this->dttch ON ssc_tch = tch_id JOIN $this->dtrom ON cls_rom = rom_id WHERE ssc_fys = :ssc_fys AND ssc_cls = :ssc_cls AND ssc_day = :ssc_day")->ikat($data)->eksekusi()->hasil_jamak();
+                        break;
+
+                    case 'list-guru':
+                        return $this->db1->kueri("SELECT * FROM $this->dtssc JOIN $this->dtfys ON ssc_fys = fys_id JOIN $this->dtcls ON ssc_cls = cls_id JOIN $this->dtsbj ON ssc_sbj = sbj_id JOIN $this->dttch ON ssc_tch = tch_id JOIN $this->dtrom ON cls_rom = rom_id WHERE ssc_tch = :ssc_tch")->ikat($data)->eksekusi()->hasil_jamak();
+                        break;
+
+                    case 'list-hari':
+                        return $this->db1->kueri("SELECT * FROM $this->dtssc JOIN $this->dtfys ON ssc_fys = fys_id JOIN $this->dtcls ON ssc_cls = cls_id JOIN $this->dtsbj ON ssc_sbj = sbj_id JOIN $this->dttch ON ssc_tch = tch_id JOIN $this->dtrom ON cls_rom = rom_id WHERE ssc_day = :ssc_day")->ikat($data)->eksekusi()->hasil_jamak();
+                        break;
+
+                    case 'list-kelas':
+                        return $this->db1->kueri("SELECT * FROM $this->dtssc JOIN $this->dtfys ON ssc_fys = fys_id JOIN $this->dtcls ON ssc_cls = cls_id JOIN $this->dtsbj ON ssc_sbj = sbj_id JOIN $this->dttch ON ssc_tch = tch_id JOIN $this->dtrom ON cls_rom = rom_id WHERE ssc_cls = :ssc_cls ORDER BY ssc_day ASC")->ikat($data)->eksekusi()->hasil_jamak();
+                        break;
+
+                    case 'non-aktif':
+                        return $this->db1->kueri("SELECT * FROM $this->dtssc JOIN $this->dtfys ON ssc_fys = fys_id JOIN $this->dtcls ON ssc_cls = cls_id JOIN $this->dtsbj ON ssc_sbj = sbj_id JOIN $this->dttch ON ssc_tch = tch_id JOIN $this->dtrom ON cls_rom = rom_id WHERE ssc_status = 'off'")->eksekusi()->hasil_jamak();
+                        break;
+
+                    case 'tambah':
+                        $data['ssc_timestart'] = date('H:i:s', strtotime($data['ssc_timestart']));
+                        $data['ssc_timeend'] = date('H:i:s', strtotime($data['ssc_timeend']));
+                        $data['ssc_status'] = (isset($data['ssc_status'])) ? 'on' : 'off';
+                        return $this->db1->kueri("INSERT INTO $this->dtssc VALUES (:ssc_id, :ssc_fys, :ssc_cls, :ssc_sbj, :ssc_tch, :ssc_timestart, :ssc_timeend, :ssc_day, :ssc_status)")->ikat($data)->eksekusi()->baris_terefek();
+                        break;
+
+                    case 'update':
+                        $data['ssc_timestart'] = date('H:i:s', strtotime($data['ssc_timestart']));
+                        $data['ssc_timeend'] = date('H:i:s', strtotime($data['ssc_timeend']));
+                        $data['ssc_status'] = (isset($data['ssc_status'])) ? 'on' : 'off';
+                        return $this->db1->kueri("UPDATE $this->dtssc SET ssc_fys = :ssc_fys, ssc_cls = :ssc_cls, ssc_sbj = :ssc_sbj, ssc_tch = :ssc_tch, ssc_timestart = :ssc_timestart, ssc_timeend = :ssc_timeend, ssc_day = :ssc_day, ssc_status = :ssc_status WHERE ssc_id = :ssc_id")->ikat($data)->eksekusi()->baris_terefek();
+                        break;
+                    
+                    default:
+                        return $this->db1->kueri("SELECT * FROM $this->dtssc JOIN $this->dtfys ON ssc_fys = fys_id JOIN $this->dtcls ON ssc_cls = cls_id JOIN $this->dtsbj ON ssc_sbj = sbj_id JOIN $this->dtrom ON cls_rom = rom_id JOIN $this->dttch ON ssc_tch = tch_id WHERE ssc_status = 'on'")->eksekusi()->hasil_jamak();
                         break;
                 }
                 break;

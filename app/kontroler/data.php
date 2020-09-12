@@ -947,9 +947,150 @@ class data extends Kontroler
         }
     }
 
-    function akademik($menu = '', $act = '', $data = '')
+    function akademik($menu = '', $act = '', $p1 = '', $p2 = '')
     {
         switch ($menu) {
+            case 'jadwal':
+                switch ($act) {
+                    case 'detail':
+                        $send = $_POST;
+                        $acts = $this->data->akademik('jadwal', 'detail', $send);
+                        echo json_encode($acts);
+                        break;
+
+                    case 'editor':
+                        $send = $_POST;
+                        $data = array(
+                            'badan' => array(
+                                'dtssc' => $this->data->akademik('jadwal', 'detail', $send),
+                                'dtfys' => $this->data->master('tapel'), 
+                                'dtcls' => $this->data->master('kelas'), 
+                                'dtsbj' => $this->data->akademik('mapel'), 
+                                'dttch' => $this->data->user('guru')
+                            )
+                        );
+                        $this->tampilkan('data/akademik/upt/jadwal', $data);
+                        break;
+
+                    case 'id-add':
+                        $data = array(
+                            'badan' => array(
+                                'dtssc' => $this->data->akademik('jadwal', 'id-add'),
+                                'dtfys' => $this->data->master('tapel'), 
+                                'dtcls' => $this->data->master('kelas'), 
+                                'dtsbj' => $this->data->akademik('mapel'), 
+                                'dttch' => $this->data->user('guru')
+                            )
+                        );
+                        $this->tampilkan('data/akademik/add/jadwal', $data);
+                        break;
+
+                    case 'hapus':
+                        $send = $_POST;
+                        $acts = $this->data->akademik('jadwal', 'hapus', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtssc' => $this->data->akademik('jadwal'),
+                                'dtfys' => $this->data->master('tapel'), 
+                                'dtcls' => $this->data->master('kelas'), 
+                                'dtsbj' => $this->data->akademik('mapel'), 
+                                'dttch' => $this->data->user('guru')
+                            )
+                        );
+                        $this->tampilkan('data/akademik/after-upt/jadwal', $data);
+                        break;
+
+                    case 'list':
+                        $acts = $this->data->akademik('jadwal');
+                        $data = array(
+                            'badan' => array(
+                                'dtssc' => $acts,
+                                'dtfys' => $this->data->master('tapel'), 
+                                'dtcls' => $this->data->master('kelas'), 
+                                'dtsbj' => $this->data->akademik('mapel'), 
+                                'dttch' => $this->data->user('guru')
+                            )
+                        );
+                        $this->tampilkan('data/akademik/after-upt/jadwal', $data);
+                        break;
+
+                    case 'list-param':
+                        $send = $_POST;
+                        $acts = $this->data->akademik('jadwal', 'list', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtssc' => $acts,
+                                'dtfys' => $this->data->master('tapel'), 
+                                'dtcls' => $this->data->master('kelas'), 
+                                'dtsbj' => $this->data->akademik('mapel'), 
+                                'dttch' => $this->data->user('guru')
+                            )
+                        );
+                        $this->tampilkan('data/akademik/after-upt/tbl-jadwal', $data);
+                        break;
+
+                    case 'non-aktif':
+                        $data = array(
+                            'badan' => array(
+                                'dtssc' => $this->data->akademik('jadwal', 'non-aktif'),
+                                'dtfys' => $this->data->master('tapel'), 
+                                'dtcls' => $this->data->master('kelas'), 
+                                'dtsbj' => $this->data->akademik('mapel'), 
+                                'dttch' => $this->data->user('guru')
+                            )
+                        );
+                        $this->tampilkan('data/akademik/after-upt/jadwal', $data);
+                        break;
+
+                    case 'tambah':
+                        $send = $_POST;
+                        $acts = $this->data->akademik('jadwal', 'tambah', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtssc' => $this->data->akademik('jadwal'),
+                                'dtfys' => $this->data->master('tapel'), 
+                                'dtcls' => $this->data->master('kelas'), 
+                                'dtsbj' => $this->data->akademik('mapel'), 
+                                'dttch' => $this->data->user('guru')
+                            )
+                        );
+                        $this->tampilkan('data/akademik/after-upt/jadwal', $data);
+                        break;
+
+                    case 'update':
+                        $send = $_POST;
+                        $acts = $this->data->akademik('jadwal', 'update', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtssc' => $this->data->akademik('jadwal'),
+                                'dtfys' => $this->data->master('tapel'), 
+                                'dtcls' => $this->data->master('kelas'), 
+                                'dtsbj' => $this->data->akademik('mapel'), 
+                                'dttch' => $this->data->user('guru')
+                            )
+                        );
+                        $this->tampilkan('data/akademik/after-upt/jadwal', $data);
+                        break;
+                    
+                    default:
+                        $data = array(
+                            'title' => 'Jadwal Pelajaran',
+                            'badan' => array(
+                                'dtssc' => $this->data->akademik('jadwal'),
+                                'dtfys' => $this->data->master('tapel'), 
+                                'dtcls' => $this->data->master('kelas'), 
+                                'dtsbj' => $this->data->akademik('mapel'), 
+                                'dttch' => $this->data->user('guru')
+                            )
+                        );
+                        $this->tampilkan('pakem/header', $data);
+                        $this->tampilkan('pakem/navbar', $data);
+                        $this->tampilkan('data/akademik/jadwal', $data);
+                        $this->tampilkan('pakem/footer');
+                        break;
+                }
+                break;
+
             case 'kelompok-mapel':
                 switch ($act) {
                     case 'detail':
