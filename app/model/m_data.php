@@ -788,7 +788,7 @@ class m_data extends Model
                         break;
 
                     case 'list':
-                        return $this->db1->kueri("SELECT * FROM $this->dtssc JOIN $this->dtfys ON ssc_fys = fys_id JOIN $this->dtcls ON ssc_cls = cls_id JOIN $this->dtsbj ON ssc_sbj = sbj_id JOIN $this->dttch ON ssc_tch = tch_id JOIN $this->dtrom ON cls_rom = rom_id WHERE ssc_fys = :ssc_fys AND ssc_cls = :ssc_cls AND ssc_day = :ssc_day")->ikat($data)->eksekusi()->hasil_jamak();
+                        return $this->db1->kueri("SELECT * FROM $this->dtssc JOIN $this->dtfys ON ssc_fys = fys_id JOIN $this->dtcls ON ssc_cls = cls_id JOIN $this->dtsbj ON ssc_sbj = sbj_id JOIN $this->dttch ON ssc_tch = tch_id JOIN $this->dtrom ON cls_rom = rom_id WHERE ssc_fys = :ssc_fys AND ssc_cls = :ssc_cls AND ssc_day = :ssc_day AND ssc_status = :ssc_stt")->ikat($data)->eksekusi()->hasil_jamak();
                         break;
 
                     case 'list-guru':
