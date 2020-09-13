@@ -111,11 +111,11 @@
         }).then((willDelete) => {
             if (willDelete) {
                 $.ajax({
-                    data: {ssc_id: ssc_id},
+                    data: {ssc_id: ssc_id, ssc_param: $('#fr-lst').serialize()},
                     type: "POST",
                     url: "<?= basis_url('data/akademik/jadwal/hapus'); ?>",
                     success: function (url) {
-                        $('#ssc-content').html(url);
+                        $('#ssc-tbl').html(url);
                         swal('Jadwal ' + ssc_id + ' telah dihapus!', {
                             icon: 'success'
                         });

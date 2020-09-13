@@ -7,7 +7,7 @@
     </div>
     <div class="input-field">
         <select name="ssc_fys" id="add-ssc_fys">
-            <option value="" id="afys1" disabled selected>Pilih Tahun Pelajaran...</option>
+            <option value="" disabled selected>Pilih Tahun Pelajaran...</option>
             <?php foreach ($badan['dtfys'] as $dtfys) { ?>
                 <option value="<?= $dtfys['fys_id']; ?>"><?= $dtfys['fys_name']; ?></option>
             <?php } ?>
@@ -16,7 +16,7 @@
     </div>
     <div class="input-field">
         <select name="ssc_cls" id="add-ssc_cls">
-            <option value="" id="acls1" disabled selected>Pilih Kelas...</option>
+            <option value="" disabled selected>Pilih Kelas...</option>
             <?php foreach ($badan['dtcls'] as $dtcls) { ?>
                 <option value="<?= $dtcls['cls_id']; ?>"><?= $dtcls['cls_name']; ?></option>
             <?php } ?>
@@ -34,7 +34,7 @@
     </div>
     <div class="input-field">
         <select name="ssc_tch" id="add-ssc_tch">
-            <option value="" id="atch1" disabled selected>Pilih Pengajar...</option>
+            <option value="" disabled selected>Pilih Pengajar...</option>
             <?php foreach ($badan['dttch'] as $dttch) { ?>
                 <option value="<?= $dttch['tch_id']; ?>"><?= $dttch['tch_name']; ?></option>
             <?php } ?>
@@ -113,6 +113,7 @@
                     type: "POST",
                     url: "<?= basis_url('data/akademik/jadwal/tambah'); ?>",
                     success: function (url) {
+                        console.log('tambah');
                         $('#ssc-content').html(url);
                         M.toast({html: "Data berhasil ditambahkan!"});
                     },

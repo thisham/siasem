@@ -30,7 +30,7 @@
             </select>
         </div>
         <div class="col s12 l2 m2">
-            <select name="ssc_day" id="lst-stt">
+            <select name="ssc_stt" id="lst-stt">
                 <option value="" disabled selected>Pilih Status</option>
                 <option value="on">Aktif</option>
                 <option value="off">Tidak Aktif</option>
@@ -77,15 +77,6 @@
 <script>
     $(document).ready(function () {
         $('select').formSelect();
-
-        $('#btn-add').click(function() {
-            $.ajax({
-                url: "<?= basis_url('data/akademik/jadwal/id-add') ?>",
-                success: function (url) {
-                    $('#ssc-content').html(url);
-                }
-            });
-        });
 
         $('#kirim-lst').click(function (e) {
             e.preventDefault();

@@ -986,18 +986,20 @@ class data extends Kontroler
                         break;
 
                     case 'hapus':
+                        parse_str($_POST['ssc_param'], $_POST['ssc_param']);
+                        $par1 = $_POST['ssc_param']; unset($_POST['ssc_param']);
                         $send = $_POST;
                         $acts = $this->data->akademik('jadwal', 'hapus', $send);
                         $data = array(
                             'badan' => array(
-                                'dtssc' => $this->data->akademik('jadwal'),
+                                'dtssc' => ($par1 == NULL) ? $this->data->akademik('jadwal') : $this->data->akademik('jadwal', 'list', $par1),
                                 'dtfys' => $this->data->master('tapel'), 
                                 'dtcls' => $this->data->master('kelas'), 
                                 'dtsbj' => $this->data->akademik('mapel'), 
                                 'dttch' => $this->data->user('guru')
                             )
                         );
-                        $this->tampilkan('data/akademik/after-upt/jadwal', $data);
+                        $this->tampilkan('data/akademik/after-upt/tbl-jadwal', $data);
                         break;
 
                     case 'list':
