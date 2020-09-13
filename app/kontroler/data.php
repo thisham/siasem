@@ -861,12 +861,35 @@ class data extends Kontroler
 
             case 'kepala-sekolah':
                 switch ($act) {
+                    case 'detail':
+                        $data = array(
+                            'badan' => array(
+                                'dthdm' => $this->data->user('kepala-sekolah')
+                            )
+                        );
+                        $this->tampilkan('data/user/aftr-upt/kepala-sekolah', $data);
+                        break;
+
                     case 'editor':
                         $data = array(
                             'badan' => array(
                                 'dthdm' => $this->data->user('kepala-sekolah')
                             )
                         );
+                        $this->tampilkan('data/user/upt/kepala-sekolah', $data);
+                        break;
+
+                    case 'update':
+                        $send = $_POST;
+                        $act1 = $this->data->user('user', 'tambah-hdm', $send);
+                        $act2 = $this->data->user('kepala-sekolah', 'update', $send);
+                        
+                        $data = array(
+                            'badan' => array(
+                                'dthdm' => $this->data->user('kepala-sekolah')
+                            )
+                        );
+                        $this->tampilkan('data/user/after-upt/kepala-sekolah', $data);
                         break;
                     
                     default:
