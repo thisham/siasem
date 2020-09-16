@@ -24,7 +24,10 @@ class beranda extends Kontroler
 		$data = array(
 			'title'	=> 'Beranda',
 			'badan'	=> array (
-				'dtusr'	=> $this->data->user($acts[$this->session->get('usr_role')], 'detail', $send)
+				'dtusr'	=> $this->data->user($acts[$this->session->get('usr_role')], 'detail', $send),
+				'dtstu'	=> $this->data->user('siswa'),
+				'dttch'	=> $this->data->user('guru'),
+				'dtmjr'	=> $this->data->master('jurusan')
 			)
 		);
 		$this->tampilkan('pakem/header', $data);

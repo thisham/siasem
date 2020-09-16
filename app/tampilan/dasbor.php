@@ -19,15 +19,15 @@
                     <table class="table striped">
                         <tr>
                             <th>Siswa</th>
-                            <td><?= 5; ?></td>
+                            <td><?= count($badan['dtstu']); ?></td>
                         </tr>
                         <tr>
                             <th>Guru</th>
-                            <td><?= 5; ?></td>
+                            <td><?= count($badan['dttch']); ?></td>
                         </tr>
                         <tr>
                             <th>Jurusan</th>
-                            <td><?= 5; ?></td>
+                            <td><?= count($badan['dtmjr']); ?></td>
                         </tr>
                     </table>
                 </div>
