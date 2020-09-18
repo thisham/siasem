@@ -909,6 +909,13 @@ class data extends Kontroler
 
             case 'siswa':
                 switch ($act) {
+                    case 'detail':
+                        $send = $_POST;
+                        $acts = $this->data->user('siswa', 'detail', $send);
+
+                        echo json_encode($acts);
+                        break;
+
                     case 'id-add':
                         $data = array(
                             'title' => 'Tambah Data Siswa',
@@ -918,24 +925,101 @@ class data extends Kontroler
                                 'dtmjr' => $this->data->master('jurusan')
                             )
                         );
-                        $this->tampilkan('pakem/header', $data);
-                        $this->tampilkan('pakem/navbar', $data);
                         $this->tampilkan('data/user/add/siswa', $data);
-                        $this->tampilkan('pakem/footer');
+                        break;
+
+                    case 'editor':
+                        $send = $_POST;
+                        $data = array(
+                            'title' => 'Tambah Data Siswa',
+                            'badan' => array(
+                                'dtstu' => $this->data->user('siswa', 'detail', $send),
+                                'dtcls' => $this->data->master('kelas'),
+                                'dtmjr' => $this->data->master('jurusan')
+                            )
+                        );
+                        $this->tampilkan('data/user/upt/siswa', $data);
+                        break;
+
+                    case 'list':
+                        $send = $_POST;
+                        $data = array(
+                            'badan' => array(
+                                'dtstu' => $this->data->user('siswa'),
+                                'dtcls' => $this->data->master('kelas')
+                            )
+                        );
+                        $this->tampilkan('data/user/after-upt/siswa', $data);
+                        break;
+
+                    case 'list-param':
+                        $send = $_POST;
+                        $data = array(
+                            'badan' => array(
+                                'dtstu' => $this->data->user('siswa', 'list', $send),
+                                'dtcls' => $this->data->master('kelas')
+                            )
+                        );
+                        $this->tampilkan('data/user/after-upt/tbl-siswa', $data);
+                        break;
+
+                    case 'photo-upload':
+                        $send = $_POST;
+                        $file = $this->file->setFolder('img/student')->upload($send['stu_id'], $_FILES['file']);
+                        $send = array('stu_id' => $send['stu_id'], 'stu_photo' => $file);
+                        $act1 = $this->data->user('siswa', 'photo-upload', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtstu' => $this->data->user('siswa')
+                            )
+                        );
+                        $this->tampilkan('data/user/after-upt/siswa', $data);
+                        break;
+
+                    case 'reset':
+                        $send = $_POST;
+                        $acts = $this->data->user('user', 'reset', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtstu' => $this->data->user('siswa')
+                            )
+                        );
+                        $this->tampilkan('data/user/after-upt/siswa', $data);
                         break;
 
                     case 'tambah':
                         $send = $_POST;
-                        $this->data->user('siswa', 'tambah', $send);
+                        $act1 = $this->data->user('siswa', 'tambah', $send);
+                        $act2 = $this->data->user('user', 'tambah-stu', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtstu' => $this->data->user('siswa'),
+                                'dtcls' => $this->data->master('kelas')
+                            )
+                        );
 
-                        alihkan(basis_url('data/user/siswa'));
+                        $this->tampilkan('data/user/after-upt/siswa', $data);
+                        break;
+
+                    case 'update':
+                        $send = $_POST;
+                        $acts = $this->data->user('siswa', 'update', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtstu' => $this->data->user('siswa'),
+                                'dtcls' => $this->data->master('kelas')
+                            )
+                        );
+
+                        $this->tampilkan('data/user/after-upt/siswa', $data);
                         break;
                     
                     default:
                         $data = array(
                             'title' => 'Data Siswa',
                             'badan' => array(
-                                'dtstu' => $this->data->user('siswa')
+                                'dtstu' => $this->data->user('siswa'),
+                                'dtcls' => $this->data->master('kelas')
                             )
                         );
                         $this->tampilkan('pakem/header', $data);

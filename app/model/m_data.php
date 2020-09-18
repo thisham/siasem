@@ -556,11 +556,24 @@ class m_data extends Model
 
             case 'siswa':
                 switch ($act) {
+                    case 'detail':
+                        return $this->pdo->kueri("SELECT * FROM $this->dtstu JOIN $this->dtcls ON stu_cls = cls_id JOIN $this->dtmjr ON stu_mjr = mjr_id WHERE stu_id = :stu_id")->ikat($data)->eksekusi()->hasil_tunggal();
+                        break;
+
                     case 'id-add':
                         $no_max = $this->mysqli->kueri("SELECT max(stu_id) as kode FROM $this->dtstu")->eksekusi()->hasil_tunggal();
                         $no_max = (int) substr($no_max['kode'], 6); 
                         $no_max = ++$no_max;
                         return date('Y') . '0' . sprintf("%03s", $no_max);
+                        break;
+
+                    case 'list':
+                        return $this->pdo->kueri("SELECT * FROM $this->dtstu WHERE stu_generation = :lst_gen AND stu_cls = :lst_cls")->ikat($data)->eksekusi()->hasil_jamak();
+                        break;
+
+                    case 'photo-upload':
+                        $this->pdo->kueri("UPDATE $this->dtusr SET usr_photo = :stu_photo WHERE usr_id = :stu_id")->ikat($data)->eksekusi()->baris_terefek();
+                        return $this->pdo->kueri("UPDATE $this->dtstu SET stu_photo = :stu_photo WHERE stu_id = :stu_id")->ikat($data)->eksekusi()->baris_terefek();
                         break;
 
                     case 'tambah':
@@ -653,7 +666,6 @@ class m_data extends Model
                             'stu_skhun'         => $data['stu_skhun'],
                             'stu_kpsrecipient'  => (isset($data['stu_kpsrecipient'])) ? 'on' : 'off',
                             'stu_kpsnumber'     => $data['stu_kpsnumber'],
-                            'stu_photo'         => '',
                             'stu_father_name'           => $data['stu_father_name'],
                             'stu_father_birthplace'     => $data['stu_father_birthplace'],
                             'stu_father_birthdate'      => date('Y-m-d', strtotime($data['stu_father_birthdate'])),
@@ -685,7 +697,8 @@ class m_data extends Model
                             'stu_cls'           => (isset($data['stu_cls'])) ? $data['stu_cls'] : '',
                             'stu_mjr'           => (isset($data['stu_mjr'])) ? $data['stu_mjr'] : ''
                         );
-                        return $this->pdo->kueri("UPDATE $this->dt");
+                        return $this->pdo->kueri("UPDATE $this->dtstu SET stu_idnumber = :stu_idnumber, stu_nisn = :stu_nisn, stu_passworddef = :stu_passworddef, stu_name = :stu_name, stu_gender = :stu_gender, stu_birthplace = :stu_birthplace, stu_birthdate = :stu_birthdate, stu_religion = :stu_religion, stu_nik = :stu_nik, stu_specialneeds = :stu_specialneeds, stu_address = :stu_address, stu_rt = :stu_rt, stu_rw = :stu_rw, stu_hamlet = :stu_hamlet, stu_village = :stu_village, stu_district = :stu_district, stu_postalcode = :stu_postalcode, stu_placetolive = :stu_placetolive, stu_transportation = :stu_transportation, stu_phone = :stu_phone, stu_email = :stu_email, stu_skhun = :stu_skhun, stu_kpsrecipient = :stu_kpsrecipient, stu_kpsnumber = :stu_kpsnumber, stu_father_name = :stu_father_name, stu_father_birthplace = :stu_father_birthplace, stu_father_birthdate = :stu_father_birthdate, stu_father_education = :stu_father_education, stu_father_job = :stu_father_job, stu_father_salary = :stu_father_salary, stu_father_specialneeds = :stu_father_specialneeds, stu_father_phone = :stu_father_phone, stu_mother_name = :stu_mother_name, stu_mother_birthplace = :stu_mother_birthplace, stu_mother_birthdate = :stu_mother_birthdate, stu_mother_education = :stu_mother_education, stu_mother_job = :stu_mother_job, stu_mother_salary = :stu_mother_salary, stu_mother_specialneeds = :stu_mother_specialneeds, stu_mother_phone = :stu_mother_phone, stu_guardian_name = :stu_guardian_name, stu_guardian_birthplace = :stu_guardian_birthplace, stu_guardian_birthdate = :stu_guardian_birthdate, stu_guardian_education = :stu_guardian_education, stu_guardian_job = :stu_guardian_job, stu_guardian_salary = :stu_guardian_salary, stu_guardian_specialneeds = :stu_guardian_specialneeds, stu_guardian_phone = :stu_guardian_phone, stu_generation = :stu_generation, stu_initialstatus = :stu_initialstatus, stu_studentstatus = :stu_studentstatus, stu_grade = :stu_grade, stu_cls = :stu_cls, stu_mjr = :stu_mjr WHERE stu_id = :stu_id")
+                                        ->ikat($data)->eksekusi()->baris_terefek();
                         break;
                     
                     default:
@@ -702,7 +715,12 @@ class m_data extends Model
                         break;
 
                     case 'reset':
-                        return $this->mysqli->kueri("UPDATE $this->dtusr SET usr_name = ?, usr_password = ? WHERE usr_id = ?")->ikat($data['usr_name'], md5($data['usr_password']), $data['usr_id'])
+                        $data = array(
+                            'usr_name'  => $data['usr_name'],
+                            'usr_pass'  => md5($data['usr_password']),
+                            'usr_id'    => $data['usr_id']
+                        );
+                        return $this->pdo->kueri("UPDATE $this->dtusr SET usr_name = :usr_name, usr_password = :usr_pass WHERE usr_id = :usr_id")->ikat($data)
                                         ->eksekusi()->baris_terefek();
                         break;
 
@@ -744,7 +762,16 @@ class m_data extends Model
                         break;
 
                     case 'tambah-stu':
-                        # code...
+                        $data = array(
+                            'usr_id'    => $data['stu_id'],
+                            'usr_name'  => $data['stu_idnumber'],
+                            'usr_pass'  => md5(date('dmY', strtotime($data['stu_birthdate']))),
+                            'usr_role'  => 0,
+                            'usr_photo' => '',
+                            'usr_status'=> (isset($data['stu_status'])) ? "on" : "off"
+                        );
+                        return $this->pdo->kueri("INSERT INTO $this->dtusr VALUES (:usr_id, :usr_name, :usr_pass, :usr_role, :usr_photo, :usr_status)")->ikat($data)
+                                        ->eksekusi()->baris_terefek();
                         break;
 
                     case 'update-status-val':
