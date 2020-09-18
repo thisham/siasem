@@ -191,7 +191,7 @@
                     type: "POST",
                     url: "<?= basis_url('data/user/guru/reset'); ?>",
                     success: function (url) {
-                        $('#adm-content').html(url);
+                        $('#stu-content').html(url);
                         swal('Username dan password akun pengajar dengan tagar ' + tch_id + ' milik ' + tch_name + ' telah diset ulang menjadi username dan password default!', {
                             icon: 'success'
                         });
