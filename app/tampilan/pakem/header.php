@@ -9,6 +9,7 @@
 	<script src="<?php echo basis_url('assets/js/sweetalert.min.js'); ?>"></script>
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<link rel="stylesheet" type="text/css" href="<?php echo basis_url('assets/css/materialize.min.css'); ?>">
+	<link rel="stylesheet" type="text/css" href="<?php echo basis_url('assets/css/materialert.css'); ?>">
 	<style type="text/css">
 		body {
 			font-family: 'Ubuntu', sans-serif;

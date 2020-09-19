@@ -119,7 +119,7 @@
             </div>
             <div class="input-field">
                 <input type="text" name="mjr_headofdepartment" id="add-mjr_headofdepartment">
-                <label for="add-mjr_headofdepartment" id="ladd-mjr-headofdepartement">Ketua Jurusan</label>
+                <label for="add-mjr_headofdepartment" id="ladd-mjr-headofdepartment">Ketua Jurusan</label>
             </div>
             <div class="input-field">
                 <input type="text" name="mjr_information" id="add-mjr_information">

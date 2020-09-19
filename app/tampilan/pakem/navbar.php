@@ -59,7 +59,7 @@
 											<li><a href="<?= basis_url('data/master/gedung'); ?>" style="padding-left: 48pt;"><i class="material-icons left">location_city</i>Gedung</a></li>
 											<li><a href="<?= basis_url('data/master/ruangan'); ?>" style="padding-left: 48pt;"><i class="material-icons left">meeting_room</i>Ruangan</a></li>
 											<li><a href="<?= basis_url('data/master/golongan'); ?>" style="padding-left: 48pt;"><i class="material-icons left">group</i>Golongan</a></li>
-											<li><a href="<?= basis_url('data/master/tapel'); ?>" style="padding-left: 48pt;"><i class="material-icons left">how_to_reg</i>PTK</a></li>
+											<li><a href="<?= basis_url('data/master/ptk'); ?>" style="padding-left: 48pt;"><i class="material-icons left">how_to_reg</i>PTK</a></li>
 											<li><a href="<?= basis_url('data/master/jurusan'); ?>" style="padding-left: 48pt;"><i class="material-icons left">work</i>Jurusan</a></li>
 											<li><a href="<?= basis_url('data/master/kelas'); ?>" style="padding-left: 48pt;"><i class="material-icons left">class</i>Kelas</a></li>
 											<li><a href="<?= basis_url('data/master/status-pegawai'); ?>" style="padding-left: 48pt;"><i class="material-icons left">military_tech</i>Status Kepegawaian</a></li>
@@ -75,6 +75,7 @@
 											<li><a href="<?= basis_url('data/akademik/materi'); ?>" style="padding-left: 48pt;"><i class="material-icons left">assignment</i>Materi Pembelajaran</a></li>
 											<li><a href="<?= basis_url('data/akademik/kompetensi-dasar'); ?>" style="padding-left: 48pt;"><i class="material-icons left">assistant</i>Kompetensi Dasar</a></li>
 											<li><a href="<?= basis_url('data/akademik/rentang-nilai'); ?>" style="padding-left: 48pt;"><i class="material-icons left">grade</i>Rentang Nilai</a></li>
+											<li><a href="<?= basis_url('data/akademik/jadwal'); ?>" style="padding-left: 48pt;"><i class="material-icons left">schedule</i>Jadwal Pelajaran</a></li>
 										</ul>
 									</div>
 								</li>
