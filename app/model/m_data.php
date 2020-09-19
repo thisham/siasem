@@ -30,7 +30,6 @@ class m_data extends Model
 
     function __construct()
     {
-        $this->mysqli = new Database();
         $this->pdo = $this->pustaka('Database_PDO');
     }
 
@@ -40,37 +39,55 @@ class m_data extends Model
             case 'gedung':
                 switch ($act) {
                     case 'detail':
-                        return $this->mysqli->kueri("SELECT * FROM $this->dtbld WHERE bld_id = ?")->ikat($data['bld_id'])->eksekusi()->hasil_tunggal();
+                        $data = array('bld_id' => $data['bld_id']);
+                        return $this->pdo->kueri("SELECT * FROM $this->dtbld WHERE bld_id = :bld_id")->ikat($data)->eksekusi()->hasil_tunggal();
                         break;
 
                     case 'id-add':
-                        $no_max = $this->mysqli->kueri("SELECT max(bld_id) as kode FROM $this->dtbld")->eksekusi()->hasil_tunggal();
+                        $no_max = $this->pdo->kueri("SELECT max(bld_id) as kode FROM $this->dtbld")->eksekusi()->hasil_tunggal();
                         $no_max = (int) substr($no_max['kode'], 3);
                         $no_max = ++$no_max;
                         return 'B-' . sprintf("%03s", $no_max);
                         break;
 
                     case 'hapus':
-                        return $this->mysqli->kueri("DELETE FROM $this->dtbld WHERE bld_id = ?")->ikat($data['bld_id'])
+                        $data = array('bld_id' => $data['bld_id']);
+                        return $this->pdo->kueri("DELETE FROM $this->dtbld WHERE bld_id = :bld_id")->ikat($data)
                                         ->eksekusi()->baris_terefek();
                         break;
 
                     case 'tambah':
-                        extract((array) $data);
-                        $bld_status = (isset($bld_status)) ? 'on' : 'off';
-                        return $this->mysqli->kueri("INSERT INTO $this->dtbld VALUES (?, ?, ?, ?, ?, ?, ?, ?)")->ikat($bld_id, $bld_name, $bld_floor, $bld_length, $bld_height, $bld_width, $bld_information, $bld_status)
+                        $data = array(
+                            'bld_id'            => $data['bld_id'],
+                            'bld_name'          => $data['bld_name'],
+                            'bld_floor'         => $data['bld_floor'],
+                            'bld_length'        => $data['bld_length'],
+                            'bld_height'        => $data['bld_height'],
+                            'bld_width'         => $data['bld_width'],
+                            'bld_information'   => $data['bld_information'],
+                            'bld_status'        => (isset($data['bld_status'])) ? 'on' : 'off'
+                        );
+                        return $this->pdo->kueri("INSERT INTO $this->dtbld VALUES (:bld_id, :bld_name, :bld_floor, :bld_length, :bld_height, :bld_width, :bld_information, :bld_status)")->ikat($data)
                                         ->eksekusi()->baris_terefek();
                         break;
 
                     case 'update':
-                        $data['bld_status'] = (isset($data['bld_status'])) ? 'on' : 'off';
-                        return $this->mysqli->kueri("UPDATE $this->dtbld SET bld_name = ?, bld_floor = ?, bld_length = ?, bld_width = ?, bld_height = ?, bld_information = ?, bld_status = ? WHERE bld_id = ?")
-                                        ->ikat($data['bld_name'], $data['bld_floor'], $data['bld_length'], $data['bld_width'], $data['bld_height'], $data['bld_information'], $data['bld_status'], $data['bld_id'])
+                        $data = array(
+                            'bld_id'            => $data['bld_id'],
+                            'bld_name'          => $data['bld_name'],
+                            'bld_floor'         => $data['bld_floor'],
+                            'bld_length'        => $data['bld_length'],
+                            'bld_height'        => $data['bld_height'],
+                            'bld_width'         => $data['bld_width'],
+                            'bld_information'   => $data['bld_information'],
+                            'bld_status'        => (isset($data['bld_status'])) ? 'on' : 'off'
+                        );
+                        return $this->pdo->kueri("UPDATE $this->dtbld SET bld_name = :bld_name, bld_floor = :bld_floor, bld_length = :bld_length, bld_width = :bld_width, bld_height = :bld_height, bld_information = :bld_information, bld_status = :bld_status WHERE bld_id = :bld_id")->ikat($data)
                                         ->eksekusi()->baris_terefek();
                         break;
                     
                     default:
-                        return $this->mysqli->kueri("SELECT * FROM $this->dtbld")->eksekusi()->hasil_jamak();
+                        return $this->pdo->kueri("SELECT * FROM $this->dtbld")->eksekusi()->hasil_jamak();
                         break;
                 }
                 break;
@@ -78,34 +95,46 @@ class m_data extends Model
             case 'golongan':
                 switch ($act) {
                     case 'detail':
-                        return $this->mysqli->kueri("SELECT * FROM $this->dtecl WHERE ecl_id = ?")->ikat($data['ecl_id'])
+                        $data = array('ecl_id' => $data['ecl_id']);
+                        return $this->pdo->kueri("SELECT * FROM $this->dtecl WHERE ecl_id = :ecl_id")->ikat($data)
                                         ->eksekusi()->hasil_tunggal();
                         break;
 
                     case 'id-add':
-                        $no_max = $this->mysqli->kueri("SELECT max(ecl_id) as kode FROM $this->dtecl")->eksekusi()->hasil_tunggal();
+                        $no_max = $this->pdo->kueri("SELECT max(ecl_id) as kode FROM $this->dtecl")->eksekusi()->hasil_tunggal();
                         $no_max = (int) substr($no_max['kode'], 3); 
                         $no_max = ++$no_max;
                         return 'E-' . sprintf("%03s", $no_max);
                         break;
 
                     case 'hapus':
-                        return $this->mysqli->kueri("DELETE FROM $this->dtecl WHERE ecl_id = ?")->ikat($data['ecl_id'])
+                        $data = array('ecl_id' => $data['ecl_id']);
+                        return $this->pdo->kueri("DELETE FROM $this->dtecl WHERE ecl_id = :ecl_id")->ikat($data)
                                         ->eksekusi()->baris_terefek();
                         break;
 
                     case 'tambah':
-                        return $this->mysqli->kueri("INSERT INTO $this->dtecl VALUES (?, ?, ?)")->ikat($data['ecl_id'], $data['ecl_name'], $data['ecl_information'])
+                        $data = array(
+                            'ecl_id'    => $data['ecl_id'],
+                            'ecl_name'  => $data['ecl_name'],
+                            'ecl_information'   => $data['ecl_information']
+                        );
+                        return $this->pdo->kueri("INSERT INTO $this->dtecl VALUES (:ecl_id, :ecl_name, :ecl_information)")->ikat($data)
                                         ->eksekusi()->baris_terefek();
                         break;
 
                     case 'update':
-                        return $this->mysqli->kueri("UPDATE $this->dtecl SET ecl_name = ?, ecl_information = ? WHERE ecl_id = ?")->ikat($data['ecl_name'], $data['ecl_information'], $data['ecl_id'])
+                        $data = array(
+                            'ecl_id'    => $data['ecl_id'],
+                            'ecl_name'  => $data['ecl_name'],
+                            'ecl_information'   => $data['ecl_information']
+                        );
+                        return $this->pdo->kueri("UPDATE $this->dtecl SET ecl_name = :ecl_name, ecl_information = :ecl_information WHERE ecl_id = :ecl_id")->ikat($data)
                                         ->eksekusi()->baris_terefek();
                         break;
                     
                     default:
-                        return $this->mysqli->kueri("SELECT * FROM $this->dtecl")->eksekusi()->hasil_jamak();
+                        return $this->pdo->kueri("SELECT * FROM $this->dtecl")->eksekusi()->hasil_jamak();
                         break;
                 }
                 break;
@@ -113,31 +142,51 @@ class m_data extends Model
             case 'jurusan':
                 switch ($act) {
                     case 'detail':
-                        return $this->mysqli->kueri("SELECT * FROM $this->dtmjr WHERE mjr_id = ?")->ikat($data['mjr_id'])
+                        $data = array('mjr_id' => $data['mjr_id']);
+                        return $this->pdo->kueri("SELECT * FROM $this->dtmjr WHERE mjr_id = :mjr_id")->ikat($data)
                                         ->eksekusi()->hasil_tunggal();
                         break;
 
                     case 'hapus':
-                        return $this->mysqli->kueri("DELETE FROM $this->dtmjr WHERE mjr_id = ?")->ikat($data['mjr_id'])
+                        $data = array('mjr_id' => $data['mjr_id']);
+                        return $this->pdo->kueri("DELETE FROM $this->dtmjr WHERE mjr_id = :mjr_id")->ikat($data)
                                         ->eksekusi()->baris_terefek();
                         break;
 
                     case 'tambah':
-                        $data['mjr_status'] = (isset($data['mjr_status'])) ? 'on' : 'off';
-                        extract((array) $data);
-                        return $this->mysqli->kueri("INSERT INTO $this->dtmjr VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")->ikat($mjr_id, $mjr_name, $mjr_nameen, $mjr_expertise, $mjr_basic, $mjr_speciality, $mjr_headofdepartment, $mjr_information, $mjr_status)
+                        $data = array(
+                            'mjr_id'                => $data['mjr_id'],
+                            'mjr_name'              => $data['mjr_name'],
+                            'mjr_nameen'            => $data['mjr_nameen'],
+                            'mjr_basic'             => $data['mjr_basic'],
+                            'mjr_expertise'         => $data['mjr_expertise'],
+                            'mjr_speciality'        => $data['mjr_speciality'],
+                            'mjr_headofdepartment'  => $data['mjr_headofdepartment'],
+                            'mjr_information'       => $data['mjr_information'],
+                            'mjr_status'            => (isset($data['mjr_status'])) ? 'on' : 'off'
+                        );
+                        return $this->pdo->kueri("INSERT INTO $this->dtmjr VALUES (:mjr_id, :mjr_name, :mjr_nameen, :mjr_expertise, :mjr_basic, :mjr_speciality, :mjr_headofdepartment, :mjr_information, :mjr_status)")->ikat($data)
                                         ->eksekusi()->baris_terefek();
                         break;
 
                     case 'update':
-                        $data['mjr_status'] = (isset($data['mjr_status'])) ? 'on' : 'off';
-                        return $this->mysqli->kueri("UPDATE $this->dtmjr SET mjr_name = ?, mjr_nameen = ?, mjr_expertise = ?, mjr_basic = ?, mjr_speciality = ?, mjr_headofdepartment = ?, mjr_information = ?, mjr_status = ? WHERE mjr_id = ?")
-                                        ->ikat($data['mjr_name'], $data['mjr_nameen'], $data['mjr_expertise'], $data['mjr_basic'], $data['mjr_speciality'], $data['mjr_headofdepartment'], $data['mjr_information'], $data['mjr_status'], $data['mjr_id'])
+                        $data = array(
+                            'mjr_id'                => $data['mjr_id'],
+                            'mjr_name'              => $data['mjr_name'],
+                            'mjr_nameen'            => $data['mjr_nameen'],
+                            'mjr_basic'             => $data['mjr_basic'],
+                            'mjr_expertise'         => $data['mjr_expertise'],
+                            'mjr_speciality'        => $data['mjr_speciality'],
+                            'mjr_headofdepartment'  => $data['mjr_headofdepartment'],
+                            'mjr_information'       => $data['mjr_information'],
+                            'mjr_status'            => (isset($data['mjr_status'])) ? 'on' : 'off'
+                        );
+                        return $this->pdo->kueri("UPDATE $this->dtmjr SET mjr_name = :mjr_name, mjr_nameen = :mjr_nameen, mjr_expertise = :mjr_expertise, mjr_basic = :mjr_basic, mjr_speciality = :mjr_speciality, mjr_headofdepartment = :mjr_headofdepartment, mjr_information = :mjr_information, mjr_status = :mjr_status WHERE mjr_id = :mjr_id")->ikat($data)
                                         ->eksekusi()->baris_terefek();
                         break;
                     
                     default:
-                        return $this->mysqli->kueri("SELECT * FROM $this->dtmjr")->eksekusi()->hasil_jamak();
+                        return $this->pdo->kueri("SELECT * FROM $this->dtmjr")->eksekusi()->hasil_jamak();
                         break;
                 }
                 break;
@@ -192,34 +241,44 @@ class m_data extends Model
             case 'kurikulum':
                 switch ($act) {
                     case 'detail':
-                        return $this->mysqli->kueri("SELECT * FROM $this->dtcur WHERE cur_id = ?")->ikat($data['cur_id'])->eksekusi()->hasil_tunggal();
+                        $data = array('cur_id' => $data['cur_id']);
+                        return $this->pdo->kueri("SELECT * FROM $this->dtcur WHERE cur_id = :cur_id")->ikat($data)->eksekusi()->hasil_tunggal();
                         break;
 
                     case 'hapus':
-                        return $this->mysqli->kueri("DELETE FROM $this->dtcur WHERE cur_id = ?")->ikat($data['cur_id'])->eksekusi()->baris_terefek();
+                        $data = array('cur_id' => $data['cur_id']);
+                        return $this->pdo->kueri("DELETE FROM $this->dtcur WHERE cur_id = :cur_id")->ikat($data)->eksekusi()->baris_terefek();
                         break;
 
                     case 'id-add':
-                        $no_max = $this->mysqli->kueri("SELECT max(cur_id) as kode FROM $this->dtcur")->eksekusi()->hasil_tunggal();
+                        $no_max = $this->pdo->kueri("SELECT max(cur_id) as kode FROM $this->dtcur")->eksekusi()->hasil_tunggal();
                         $no_max = (int) substr($no_max['kode'], 3); 
                         $no_max = ++$no_max;
                         return 'K-' . sprintf("%03s", $no_max);
                         break;
 
                     case 'tambah':
-                        $data['cur_status'] = (isset($data['cur_status'])) ? 'on' : 'off';
-                        return $this->mysqli->kueri("INSERT INTO $this->dtcur VALUES (?, ?, ?)")->ikat($data['cur_id'], $data['cur_name'], $data['cur_status'])
+                        $data = array(
+                            'cur_id'    => $data['cur_id'],
+                            'cur_name'  => $data['cur_name'],
+                            'cur_status'=> (isset($data['cur_status'])) ? 'on' : 'off'
+                        );
+                        return $this->pdo->kueri("INSERT INTO $this->dtcur VALUES (:cur_id, :cur_name, :cur_status)")->ikat($data)
                                         ->eksekusi()->baris_terefek();
                         break;
 
                     case 'update':
-                        $data['cur_status'] = (isset($data['cur_status'])) ? 'on' : 'off';
-                        return $this->mysqli->kueri("UPDATE $this->dtcur SET cur_name = ?, cur_status = ? WHERE cur_id = ?")->ikat($data['cur_name'], $data['cur_status'], $data['cur_id'])
+                        $data = array(
+                            'cur_id'    => $data['cur_id'],
+                            'cur_name'  => $data['cur_name'],
+                            'cur_status'=> (isset($data['cur_status'])) ? 'on' : 'off'
+                        );
+                        return $this->pdo->kueri("UPDATE $this->dtcur SET cur_name = :cur_name, cur_status = :cur_status WHERE cur_id = :cur_id")->ikat($data)
                                         ->eksekusi()->baris_terefek();
                         break;
                     
                     default:
-                        return $this->mysqli->kueri("SELECT * FROM $this->dtcur")->eksekusi()->hasil_jamak();
+                        return $this->pdo->kueri("SELECT * FROM $this->dtcur")->eksekusi()->hasil_jamak();
                         break;
                 }
                 break;
@@ -227,34 +286,46 @@ class m_data extends Model
             case 'ptk':
                 switch ($act) {
                     case 'detail':
-                        return $this->mysqli->kueri("SELECT * FROM $this->dtptk WHERE ptk_id = ?")->ikat($data['ptk_id'])
+                        $data = array('ptk_id' => $data['ptk_id']);
+                        return $this->pdo->kueri("SELECT * FROM $this->dtptk WHERE ptk_id = :ptk_id")->ikat($data)
                                         ->eksekusi()->hasil_tunggal();
                         break;
 
                     case 'hapus':
-                        return $this->mysqli->kueri("DELETE FROM $this->dtptk WHERE ptk_id = ?")->ikat($data['ptk_id'])
+                        $data = array('ptk_id' => $data['ptk_id']);
+                        return $this->pdo->kueri("DELETE FROM $this->dtptk WHERE ptk_id = :ptk_id")->ikat($data)
                                         ->eksekusi()->baris_terefek();
                         break;
 
                     case 'id-add':
-                        $no_max = $this->mysqli->kueri("SELECT max(ptk_id) as kode FROM $this->dtptk")->eksekusi()->hasil_tunggal();
+                        $no_max = $this->pdo->kueri("SELECT max(ptk_id) as kode FROM $this->dtptk")->eksekusi()->hasil_tunggal();
                         $no_max = (int) substr($no_max['kode'], 3); 
                         $no_max = ++$no_max;
                         return 'P-' . sprintf("%03s", $no_max);
                         break;
                         
                     case 'tambah':
-                        return $this->mysqli->kueri("INSERT INTO $this->dtptk VALUES (?, ?, ?)")->ikat($data['ptk_id'], $data['ptk_name'], $data['ptk_information'])
+                        $data = array(
+                            'ptk_id'            => $data['ptk_id'],
+                            'ptk_name'          => $data['ptk_name'],
+                            'ptk_information'   => $data['ptk_information']
+                        );
+                        return $this->pdo->kueri("INSERT INTO $this->dtptk VALUES (:ptk_id, :ptk_name, :ptk_information)")->ikat($data)
                                         ->eksekusi()->baris_terefek();
                         break;
 
                     case 'update':
-                        return $this->mysqli->kueri("UPDATE $this->dtptk SET ptk_name = ?, ptk_information = ? WHERE ptk_id = ?")->ikat($data['ptk_name'], $data['ptk_information'], $data['ptk_id'])
+                        $data = array(
+                            'ptk_id'            => $data['ptk_id'],
+                            'ptk_name'          => $data['ptk_name'],
+                            'ptk_information'   => $data['ptk_information']
+                        );
+                        return $this->pdo->kueri("UPDATE $this->dtptk SET ptk_name = :ptk_name, ptk_information = :ptk_information WHERE ptk_id = :ptk_id")->ikat($data)
                                         ->eksekusi()->baris_terefek();
                         break;
                     
                     default:
-                        return $this->mysqli->kueri("SELECT * FROM $this->dtptk")->eksekusi()->hasil_jamak();
+                        return $this->pdo->kueri("SELECT * FROM $this->dtptk")->eksekusi()->hasil_jamak();
                         break;
                 }
                 break;
@@ -262,41 +333,52 @@ class m_data extends Model
             case 'ruangan':
                 switch ($act) {
                     case 'detail':
-                        return $this->mysqli->kueri("SELECT * FROM $this->dtrom JOIN $this->dtbld ON rom_bld = bld_id WHERE rom_id = ?")->ikat($data['rom_id'])->eksekusi()->hasil_tunggal();
+                        $data = array('rom_id' => $data['rom_id']);
+                        return $this->pdo->kueri("SELECT * FROM $this->dtrom JOIN $this->dtbld ON rom_bld = bld_id WHERE rom_id = :rom_id")->ikat($data)->eksekusi()->hasil_tunggal();
                         break;
 
                     case 'hapus':
-                        return $this->mysqli->kueri("DELETE FROM $this->dtrom WHERE rom_id = ?")->ikat($data['rom_id'])->eksekusi()->baris_terefek();
+                        $data = array('rom_id' => $data['rom_id']);
+                        return $this->pdo->kueri("DELETE FROM $this->dtrom WHERE rom_id = :rom_id")->ikat($data)->eksekusi()->baris_terefek();
                         break;
 
                     case 'id-add':
-                        $no_max = $this->mysqli->kueri("SELECT max(rom_id) as kode FROM $this->dtrom")->eksekusi()->hasil_tunggal();
+                        $no_max = $this->pdo->kueri("SELECT max(rom_id) as kode FROM $this->dtrom")->eksekusi()->hasil_tunggal();
                         $no_max = (int) substr($no_max['kode'], 3);
                         $no_max = ++$no_max;
                         return 'R-' . sprintf("%03s", $no_max);
                         break;
 
                     case 'tambah':
-                        $data['rom_status']          = (isset($data['rom_status'])) ? "on" : "off";
-                        $data['rom_studentcapacity'] = ($data['rom_studentcapacity'] <= 0 || $data['rom_studentcapacity'] == NULL) ? 0 : $data['rom_studentcapacity'];
-                        $data['rom_examcapacity']    = ($data['rom_examcapacity'] <= 0 || $data['rom_examcapacity'] == NULL) ? 0 : $data['rom_examcapacity'];
-                        extract((array) $data);
-                        return $this->mysqli->kueri("INSERT INTO $this->dtrom VALUES (?, ?, ?, ?, ?, ?, ?)")
-                                        ->ikat($rom_id, $rom_bld, $rom_name, $rom_studentcapacity, $rom_examcapacity, $rom_information, $rom_status)
+                        $data = array(
+                            'rom_id'    => $data['rom_id'],
+                            'rom_bld'   => $data['rom_bld'],
+                            'rom_name'  => $data['rom_name'],
+                            'rom_studentcapacity'   => ($data['rom_studentcapacity'] <= 0 || $data['rom_studentcapacity'] == NULL) ? 0 : $data['rom_studentcapacity'],
+                            'rom_examcapacity'      => ($data['rom_examcapacity'] <= 0 || $data['rom_examcapacity'] == NULL) ? 0 : $data['rom_examcapacity'],
+                            'rom_information'       => $data['rom_information'],
+                            'rom_status'            => (isset($data['rom_status'])) ? "on" : "off"
+                        );
+                        return $this->pdo->kueri("INSERT INTO $this->dtrom VALUES (:rom_id, :rom_bld, :rom_name, :rom_studentcapacity, :rom_examcapacity, :rom_information, :rom_status)")->ikat($data)
                                         ->eksekusi()->baris_terefek();
                         break;
 
                     case 'update':
-                        $data['rom_status']          = (isset($data['rom_status'])) ? "on" : "off";
-                        $data['rom_studentcapacity'] = ($data['rom_studentcapacity'] <= 0 || $data['rom_studentcapacity'] == NULL) ? 0 : $data['rom_studentcapacity'];
-                        $data['rom_examcapacity']    = ($data['rom_examcapacity'] <= 0 || $data['rom_examcapacity'] == NULL) ? 0 : $data['rom_examcapacity'];
-                        return $this->mysqli->kueri("UPDATE $this->dtrom SET rom_bld = ?, rom_name = ?, rom_studentcapacity = ?, rom_examcapacity = ?, rom_information = ?, rom_status = ? WHERE rom_id = ?")
-                                        ->ikat($data['rom_bld'], $data['rom_name'], $data['rom_studentcapacity'], $data['rom_examcapacity'], $data['rom_information'], $data['rom_status'], $data['rom_id'])
+                        $data = array(
+                            'rom_id'    => $data['rom_id'],
+                            'rom_bld'   => $data['rom_bld'],
+                            'rom_name'  => $data['rom_name'],
+                            'rom_studentcapacity'   => ($data['rom_studentcapacity'] <= 0 || $data['rom_studentcapacity'] == NULL) ? 0 : $data['rom_studentcapacity'],
+                            'rom_examcapacity'      => ($data['rom_examcapacity'] <= 0 || $data['rom_examcapacity'] == NULL) ? 0 : $data['rom_examcapacity'],
+                            'rom_information'       => $data['rom_information'],
+                            'rom_status'            => (isset($data['rom_status'])) ? "on" : "off"
+                        );
+                        return $this->pdo->kueri("UPDATE $this->dtrom SET rom_bld = :rom_bld, rom_name = :rom_name, rom_studentcapacity = :rom_studentcapacity, rom_examcapacity = :rom_examcapacity, rom_information = :rom_information, rom_status = :rom_status WHERE rom_id = :rom_id")->ikat($data)
                                         ->eksekusi()->baris_terefek();
                         break;
                     
                     default:
-                        return $this->mysqli->kueri("SELECT * FROM $this->dtrom JOIN $this->dtbld ON rom_bld = bld_id")->eksekusi()->hasil_jamak();
+                        return $this->pdo->kueri("SELECT * FROM $this->dtrom JOIN $this->dtbld ON rom_bld = bld_id")->eksekusi()->hasil_jamak();
                         break;
                 }
                 break;
@@ -304,13 +386,27 @@ class m_data extends Model
             case 'sekolah':
                 switch ($act) {
                     case 'update':
-                        extract((array) $data);
-                        return $this->mysqli->kueri("UPDATE $this->dtsch SET sch_name = ?, sch_npsn = ?, sch_nss = ?, sch_address = ?, sch_postalcode = ?, sch_telephone = ?, sch_village = ?, sch_district = ?, sch_regency = ?, sch_province = ?, sch_website = ?, sch_email = ?")
-                                        ->ikat($sch_name, $sch_npsn, $sch_nss, $sch_address, $sch_postalcode, $sch_telephone, $sch_village, $sch_district, $sch_regency, $sch_province, $sch_website, $sch_email)->eksekusi()->baris_terefek();
+                        $data = array(
+                            'sch_name'      => $data['sch_name'], 
+                            'sch_npsn'      => $data['sch_npsn'], 
+                            'sch_nss'       => $data['sch_nss'], 
+                            'sch_address'   => $data['sch_address'], 
+                            'sch_postalcode'=> $data['sch_postalcode'], 
+                            'sch_telephone' => $data['sch_telephone'], 
+                            'sch_village'   => $data['sch_village'], 
+                            'sch_district'  => $data['sch_district'], 
+                            'sch_regency'   => $data['sch_regency'], 
+                            'sch_province'  => $data['sch_province'], 
+                            'sch_website'   => $data['sch_website'], 
+                            'sch_email'     => $data['sch_email']
+                        );
+                        return $this->pdo->kueri("UPDATE $this->dtsch SET sch_name = :sch_name, sch_npsn = :sch_npsn, sch_nss = :sch_nss, sch_address = :sch_address, sch_postalcode = :sch_postalcode, sch_telephone = :sch_telephone, sch_village = :sch_village, sch_district = :sch_district, sch_regency = :sch_regency, sch_province = :sch_province, sch_website = :sch_website, sch_email = :sch_email")->ikat($data)
+                                        ->eksekusi()->baris_terefek();
                         break;
                     
                     default:
-                        return $this->mysqli->kueri("SELECT * FROM $this->dtsch WHERE sch_id = ?")->ikat('1')->eksekusi()->hasil_tunggal();
+                        $data = array('sch_id' => 1);
+                        return $this->pdo->kueri("SELECT * FROM $this->dtsch WHERE sch_id = :sch_id")->ikat($data)->eksekusi()->hasil_tunggal();
                         break;
                 }
                 break;
@@ -318,34 +414,50 @@ class m_data extends Model
             case 'status-pegawai':
                 switch ($act) {
                     case 'detail':
-                        return $this->mysqli->kueri("SELECT * FROM $this->dtest WHERE est_id = ?")->ikat($data['est_id'])
+                        $data = array(
+                            'est_id'    => $data['est_id']
+                        );
+                        return $this->pdo->kueri("SELECT * FROM $this->dtest WHERE est_id = :est_id")->ikat($data)
                                         ->eksekusi()->hasil_tunggal();
                         break;
 
                     case 'hapus':
-                        return $this->mysqli->kueri("DELETE FROM $this->dtest WHERE est_id = ?")->ikat($data['est_id'])
+                        $data = array(
+                            'est_id'    => $data['est_id']
+                        );
+                        return $this->pdo->kueri("DELETE FROM $this->dtest WHERE est_id = :est_id")->ikat($data)
                                         ->eksekusi()->baris_terefek();
                         break;
 
                     case 'id-add':
-                        $no_max = $this->mysqli->kueri("SELECT max(est_id) as kode FROM $this->dtest")->eksekusi()->hasil_tunggal();
+                        $no_max = $this->pdo->kueri("SELECT max(est_id) as kode FROM $this->dtest")->eksekusi()->hasil_tunggal();
                         $no_max = (int) substr($no_max['kode'], 3); 
                         $no_max = ++$no_max;
                         return 'T-' . sprintf("%03s", $no_max);
                         break;
 
                     case 'tambah':
-                        return $this->mysqli->kueri("INSERT INTO $this->dtest VALUES (?, ?, ?)")->ikat($data['est_id'], $data['est_employeestatuses'], $data['est_information'])
+                        $data = array(
+                            'est_id'                => $data['est_id'],
+                            'est_employeestatuses'  => $data['est_employeestatuses'],
+                            'est_information'       => $data['est_information']
+                        );
+                        return $this->pdo->kueri("INSERT INTO $this->dtest VALUES (:est_id, :est_employeestatuses, :est_information)")->ikat($data)
                                         ->eksekusi()->baris_terefek();
                         break;
 
                     case 'update':
-                        return $this->mysqli->kueri("UPDATE $this->dtest SET est_employeestatuses = ?, est_information = ? WHERE est_id = ?")->ikat($data['est_employeestatuses'], $data['est_information'], $data['est_id'])
+                        $data = array(
+                            'est_id'                => $data['est_id'],
+                            'est_employeestatuses'  => $data['est_employeestatuses'],
+                            'est_information'       => $data['est_information']
+                        );
+                        return $this->pdo->kueri("UPDATE $this->dtest SET est_employeestatuses = :est_employeestatuses, est_information = :est_information WHERE est_id = :est_id")->ikat($data)
                                         ->eksekusi()->baris_terefek();
                         break;
                     
                     default:
-                        return $this->mysqli->kueri("SELECT * FROM $this->dtest")->eksekusi()->hasil_jamak();
+                        return $this->pdo->kueri("SELECT * FROM $this->dtest")->eksekusi()->hasil_jamak();
                         break;
                 }
                 break;
@@ -353,27 +465,39 @@ class m_data extends Model
             case 'tapel':
                 switch ($act) {
                     case 'detail':
-                        return $this->mysqli->kueri("SELECT * FROM $this->dtfys WHERE fys_id = ?")->ikat($data['fys_id'])->eksekusi()->hasil_tunggal();
+                        $data = array('fys_id' => $data['fys_id']);
+                        return $this->pdo->kueri("SELECT * FROM $this->dtfys WHERE fys_id = :fys_id")->ikat($data)->eksekusi()->hasil_tunggal();
                         break;
 
                     case 'hapus':
-                        return $this->mysqli->kueri("DELETE FROM $this->dtfys WHERE fys_id = ?")->ikat($data['fys_id'])->eksekusi()->baris_terefek();
+                        $data = array('fys_id' => $data['fys_id']);
+                        return $this->pdo->kueri("DELETE FROM $this->dtfys WHERE fys_id = :fys_id")->ikat($data)->eksekusi()->baris_terefek();
                         break;
 
                     case 'tambah':
-                        $data['fys_status'] = (isset($data['fys_status'])) ? 'on' : 'off' ;
-                        return $this->mysqli->kueri("INSERT INTO $this->dtfys VALUES (?, ?, ?, ?)")->ikat($data['fys_id'], $data['fys_name'], $data['fys_fiscal'], $data['fys_status'])
+                        $data = array(
+                            'fys_id'    => $data['fys_id'],
+                            'fys_name'  => $data['fys_name'],
+                            'fys_fiscal'=> $data['fys_fiscal'],
+                            'fys_status'=> (isset($data['fys_status'])) ? 'on' : 'off'
+                        );
+                        return $this->pdo->kueri("INSERT INTO $this->dtfys VALUES (:fys_id, :fys_name, :fys_fiscal, :fys_status)")->ikat($data)
                                         ->eksekusi()->baris_terefek();
                         break;
 
                     case 'update':
-                        $data['fys_status'] = (isset($data['fys_status'])) ? 'on' : 'off' ;
-                        return $this->mysqli->kueri("UPDATE $this->dtfys SET fys_name = ?, fys_fiscal = ?, fys_status = ? WHERE fys_id = ?")
-                                        ->ikat($data['fys_name'], $data['fys_fiscal'], $data['fys_status'], $data['fys_id'])->eksekusi()->baris_terefek();
+                        $data = array(
+                            'fys_id'    => $data['fys_id'],
+                            'fys_name'  => $data['fys_name'],
+                            'fys_fiscal'=> $data['fys_fiscal'],
+                            'fys_status'=> (isset($data['fys_status'])) ? 'on' : 'off'
+                        );
+                        return $this->pdo->kueri("UPDATE $this->dtfys SET fys_name = :fys_name, fys_fiscal = :fys_fiscal, fys_status = :fys_status WHERE fys_id = :fys_id")->ikat($data)
+                                        ->eksekusi()->baris_terefek();
                         break;
                     
                     default:
-                        return $this->mysqli->kueri("SELECT * FROM $this->dtfys")->eksekusi()->hasil_jamak();
+                        return $this->pdo->kueri("SELECT * FROM $this->dtfys")->eksekusi()->hasil_jamak();
                         break;
                 }
                 break;
@@ -390,32 +514,54 @@ class m_data extends Model
             case 'administrator':
                 switch ($act) {
                     case 'detail':
-                        return $this->mysqli->kueri("SELECT * FROM $this->dtadm WHERE adm_id = ?")->ikat($data['adm_id'])
+                        $data = array(
+                            'adm_id'    => $data['adm_id']
+                        );
+                        return $this->pdo->kueri("SELECT * FROM $this->dtadm WHERE adm_id = :adm_id")->ikat($data)
                                         ->eksekusi()->hasil_tunggal();
                         break;
 
                     case 'id-add':
-                        $no_max = $this->mysqli->kueri("SELECT max(adm_id) as kode FROM $this->dtadm")->eksekusi()->hasil_tunggal();
+                        $no_max = $this->pdo->kueri("SELECT max(adm_id) as kode FROM $this->dtadm")->eksekusi()->hasil_tunggal();
                         $no_max = (int) substr($no_max['kode'], 6); 
                         $no_max = ++$no_max;
                         return date('Y') . '1' . sprintf("%03s", $no_max);
                         break;
 
                     case 'tambah':
-                        $data['adm_status'] = (isset($data['adm_status'])) ? 'on' : 'off';
-                        extract((array) $data);
-                        return $this->mysqli->kueri("INSERT INTO $this->dtadm VALUES (?, ?, ?, ?, ?, ?, ?, ?)")->ikat($adm_id, $adm_idnumber, $adm_name, $adm_passworddef, $adm_address, $adm_phone, $adm_email, $adm_position)
+                        $data = array(
+                            'adm_id'            => $data['adm_id'],
+                            'adm_idnumber'      => $data['adm_idnumber'],
+                            'adm_name'          => $data['adm_name'],
+                            'adm_passworddef'   => $data['adm_passworddef'],
+                            'adm_address'       => $data['adm_address'],
+                            'adm_phone'         => $data['adm_phone'],
+                            'adm_email'         => $data['adm_email'],
+                            'adm_position'      => $data['adm_position'],
+                            'adm_status'        => (isset($data['adm_status'])) ? 'on' : 'off'
+                        );
+                        return $this->pdo->kueri("INSERT INTO $this->dtadm VALUES (:adm_id, :adm_idnumber, :adm_name, :adm_passworddef, :adm_address, :adm_phone, :adm_email, :adm_position)")->ikat($data)
                                         ->eksekusi()->baris_terefek();
                         break;
 
                     case 'update':
-                        return $this->mysqli->kueri("UPDATE $this->dtadm SET adm_idnumber = ?, adm_name = ?, adm_passworddef = ?, adm_address = ?, adm_phone = ?, adm_email = ?, adm_position = ? WHERE adm_id = ?")
-                                        ->ikat($data['adm_idnumber'], $data['adm_name'], $data['adm_passworddef'], $data['adm_address'], $data['adm_phone'], $data['adm_email'], $data['adm_position'], $data['adm_id'])
+                        $data = array(
+                            'adm_id'            => $data['adm_id'],
+                            'adm_idnumber'      => $data['adm_idnumber'],
+                            'adm_name'          => $data['adm_name'],
+                            'adm_passworddef'   => $data['adm_passworddef'],
+                            'adm_address'       => $data['adm_address'],
+                            'adm_phone'         => $data['adm_phone'],
+                            'adm_email'         => $data['adm_email'],
+                            'adm_position'      => $data['adm_position'],
+                            'adm_status'        => (isset($data['adm_status'])) ? 'on' : 'off'
+                        );
+                        return $this->pdo->kueri("UPDATE $this->dtadm SET adm_idnumber = :adm_idnumber, adm_name = :adm_name, adm_passworddef = :adm_passworddef, adm_address = :adm_address, adm_phone = :adm_phone, adm_email = :adm_email, adm_position = :adm_position WHERE adm_id = :adm_id")->ikat($data)
                                         ->eksekusi()->baris_terefek();
                         break;
                     
                     default:
-                        return $this->mysqli->kueri("SELECT * FROM $this->dtadm")->eksekusi()->hasil_jamak();
+                        return $this->pdo->kueri("SELECT * FROM $this->dtadm")->eksekusi()->hasil_jamak();
                         break;
                 }
                 break;
@@ -427,7 +573,7 @@ class m_data extends Model
                         break;
 
                     case 'id-add':
-                        $no_max = $this->mysqli->kueri("SELECT max(tch_id) as kode FROM $this->dttch")->eksekusi()->hasil_tunggal();
+                        $no_max = $this->pdo->kueri("SELECT max(tch_id) as kode FROM $this->dttch")->eksekusi()->hasil_tunggal();
                         $no_max = (int) substr($no_max['kode'], 6); 
                         $no_max = ++$no_max;
                         return date('Y') . '3' . sprintf("%03s", $no_max);
@@ -522,7 +668,7 @@ class m_data extends Model
                         break;
                     
                     default:
-                        return $this->mysqli->kueri("SELECT * FROM $this->dttch")->eksekusi()->hasil_jamak();
+                        return $this->pdo->kueri("SELECT * FROM $this->dttch")->eksekusi()->hasil_jamak();
                         break;
                 }
                 break;
@@ -561,7 +707,7 @@ class m_data extends Model
                         break;
 
                     case 'id-add':
-                        $no_max = $this->mysqli->kueri("SELECT max(stu_id) as kode FROM $this->dtstu")->eksekusi()->hasil_tunggal();
+                        $no_max = $this->pdo->kueri("SELECT max(stu_id) as kode FROM $this->dtstu")->eksekusi()->hasil_tunggal();
                         $no_max = (int) substr($no_max['kode'], 6); 
                         $no_max = ++$no_max;
                         return date('Y') . '0' . sprintf("%03s", $no_max);
@@ -702,7 +848,7 @@ class m_data extends Model
                         break;
                     
                     default:
-                        return $this->mysqli->kueri("SELECT * FROM $this->dtstu")->eksekusi()->hasil_jamak();
+                        return $this->pdo->kueri("SELECT * FROM $this->dtstu")->eksekusi()->hasil_jamak();
                         break;
                 }
                 break;
@@ -710,7 +856,8 @@ class m_data extends Model
             case 'user':
                 switch ($act) {
                     case 'detail':
-                        return $this->mysqli->kueri("SELECT * FROM $this->dtusr WHERE usr_id = ?")->ikat($data)
+                        $data = array('usr_id' => $data);
+                        return $this->pdo->kueri("SELECT * FROM $this->dtusr WHERE usr_id = :usr_id")->ikat($data)
                                         ->eksekusi()->hasil_tunggal();
                         break;
 
@@ -725,9 +872,15 @@ class m_data extends Model
                         break;
 
                     case 'tambah-adm':
-                        $data['adm_status'] = (isset($data['adm_status'])) ? "on" : "off";
-                        $data['adm_photo']  = '';
-                        return $this->mysqli->kueri("INSERT INTO $this->dtusr VALUES (?, ?, ?, ?, ?, ?)")->ikat($data['adm_id'], $data['adm_idnumber'], md5($data['adm_passworddef']), '1', $data['adm_photo'], $data['adm_status'])
+                        $data = array(
+                            'usr_id'    => $data['adm_id'],
+                            'usr_name'  => $data['adm_idnumber'],
+                            'usr_pass'  => md5($data['adm_passworddef']),
+                            'usr_role'  => 1,
+                            'usr_photo' => '',
+                            'usr_status'=> (isset($data['adm_status'])) ? "on" : "off",
+                        );
+                        return $this->pdo->kueri("INSERT INTO $this->dtusr VALUES (:usr_id, :usr_name, :usr_pass, :usr_role, :usr_photo, :usr_status)")->ikat($data)
                                         ->eksekusi()->baris_terefek();
                         break;
 
@@ -775,8 +928,11 @@ class m_data extends Model
                         break;
 
                     case 'update-status-val':
-                        $data['adm_status'] = (isset($data['adm_status'])) ? 'on' : 'off';
-                        return $this->mysqli->kueri("UPDATE $this->dtusr SET usr_status = ? WHERE usr_id = ?")->ikat($data['adm_status'], $data['adm_id'])
+                        $data = array(
+                            'usr_id'    => $data['usr_id'],
+                            'usr_status'=> $data['usr_status']
+                        );
+                        return $this->pdo->kueri("UPDATE $this->dtusr SET usr_status = :usr_status WHERE usr_id = :usr_id")->ikat($data)
                                         ->eksekusi()->baris_terefek();
                         break;
                     
@@ -806,7 +962,7 @@ class m_data extends Model
                         break;
 
                     case 'id-add':
-                        $no_max = $this->mysqli->kueri("SELECT max(sgr_id) as kode FROM $this->dtsgr")->eksekusi()->hasil_tunggal();
+                        $no_max = $this->pdo->kueri("SELECT max(sgr_id) as kode FROM $this->dtsgr")->eksekusi()->hasil_tunggal();
                         $no_max = (int) substr($no_max['kode'], 3);
                         $no_max = ++$no_max;
                         return 'G-' . sprintf("%03s", $no_max);
@@ -837,7 +993,7 @@ class m_data extends Model
                         break;
 
                     case 'id-add':
-                        $no_max = $this->mysqli->kueri("SELECT max(ssc_id) as kode FROM $this->dtssc")->eksekusi()->hasil_tunggal();
+                        $no_max = $this->pdo->kueri("SELECT max(ssc_id) as kode FROM $this->dtssc")->eksekusi()->hasil_tunggal();
                         $no_max = (int) substr($no_max['kode'], 5);
                         $no_max = ++$no_max;
                         $semest = ((int) date('m') < 7) ? '1' : '2';
@@ -895,28 +1051,42 @@ class m_data extends Model
                         break;
 
                     case 'id-add':
-                        $no_max = $this->mysqli->kueri("SELECT max(sbj_id) as kode FROM $this->dtsbj")->eksekusi()->hasil_tunggal();
+                        $no_max = $this->pdo->kueri("SELECT max(sbj_id) as kode FROM $this->dtsbj")->eksekusi()->hasil_tunggal();
                         $no_max = (int) substr($no_max['kode'], 3);
                         $no_max = ++$no_max;
                         return 'MP' . sprintf("%03s", $no_max);
                         break;
 
                     case 'tambah':
-                        $data['sbj_sgr'] = (isset($data['sbj_sgr'])) ? $data['sbj_sgr'] : '';
-                        $data['sbj_mjr'] = (isset($data['sbj_mjr'])) ? $data['sbj_mjr'] : '';
-                        $data['sbj_tch'] = (isset($data['sbj_tch'])) ? $data['sbj_tch'] : '';
-                        $data['sbj_cur'] = (isset($data['sbj_cur'])) ? $data['sbj_cur'] : '';
-                        $data['sbj_status'] = (isset($data['sbj_status'])) ? 'on' : 'off';
+                        $data = array(
+                            'sbj_id'            => $data['sbj_id'],
+                            'sbj_name'          => $data['sbj_name'],
+                            'sbj_nameen'        => $data['sbj_nameen'],
+                            'sbj_class'         => $data['sbj_class'],
+                            'sbj_competence'    => $data['sbj_competence'],
+                            'sbj_sgr'           => (isset($data['sbj_sgr'])) ? $data['sbj_sgr'] : '',
+                            'sbj_mjr'           => (isset($data['sbj_mjr'])) ? $data['sbj_mjr'] : '',
+                            'sbj_tch'           => (isset($data['sbj_tch'])) ? $data['sbj_tch'] : '',
+                            'sbj_cur'           => (isset($data['sbj_cur'])) ? $data['sbj_cur'] : '',
+                            'sbj_status'        => (isset($data['sbj_status'])) ? 'on' : 'off'
+                        );
                         return $this->pdo->kueri("INSERT INTO $this->dtsbj VALUES (:sbj_id, :sbj_name, :sbj_nameen, :sbj_class, :sbj_competence, :sbj_sgr, :sbj_mjr, :sbj_tch, :sbj_cur, :sbj_status)")->ikat($data)->eksekusi()->baris_terefek();
                         break;
 
                     case 'update':
-                        $data['sbj_sgr'] = (isset($data['sbj_sgr'])) ? $data['sbj_sgr'] : '';
-                        $data['sbj_mjr'] = (isset($data['sbj_mjr'])) ? $data['sbj_mjr'] : '';
-                        $data['sbj_tch'] = (isset($data['sbj_tch'])) ? $data['sbj_tch'] : '';
-                        $data['sbj_cur'] = (isset($data['sbj_cur'])) ? $data['sbj_cur'] : '';
-                        $data['sbj_status'] = (isset($data['sbj_status'])) ? 'on' : 'off';
-                        return $this->pdo->kueri("UPDATE $this->dtsbj SET sbj_id = :sbj_id, sbj_name = :sbj_name, sbj_nameen = :sbj_nameen, sbj_class = :sbj_class, sbj_competence = :sbj_competence, sbj_sgr = :sbj_sgr, sbj_mjr = :sbj_mjr, sbj_tch = :sbj_tch, sbj_cur = :sbj_cur, sbj_status = :sbj_status")->ikat($data)->eksekusi()->baris_terefek();
+                        $data = array(
+                            'sbj_id'            => $data['sbj_id'],
+                            'sbj_name'          => $data['sbj_name'],
+                            'sbj_nameen'        => $data['sbj_nameen'],
+                            'sbj_class'         => $data['sbj_class'],
+                            'sbj_competence'    => $data['sbj_competence'],
+                            'sbj_sgr'           => (isset($data['sbj_sgr'])) ? $data['sbj_sgr'] : '',
+                            'sbj_mjr'           => (isset($data['sbj_mjr'])) ? $data['sbj_mjr'] : '',
+                            'sbj_tch'           => (isset($data['sbj_tch'])) ? $data['sbj_tch'] : '',
+                            'sbj_cur'           => (isset($data['sbj_cur'])) ? $data['sbj_cur'] : '',
+                            'sbj_status'        => (isset($data['sbj_status'])) ? 'on' : 'off'
+                        );
+                        return $this->pdo->kueri("UPDATE $this->dtsbj SET sbj_name = :sbj_name, sbj_nameen = :sbj_nameen, sbj_class = :sbj_class, sbj_competence = :sbj_competence, sbj_sgr = :sbj_sgr, sbj_mjr = :sbj_mjr, sbj_tch = :sbj_tch, sbj_cur = :sbj_cur, sbj_status = :sbj_status WHERE sbj_id = :sbj_id")->ikat($data)->eksekusi()->baris_terefek();
                         break;
                     
                     default:
@@ -968,10 +1138,5 @@ class m_data extends Model
                 # code...
                 break;
         }
-    }
-
-    function __destruct()
-    {
-        $this->mysqli->tutup();
     }
 }
