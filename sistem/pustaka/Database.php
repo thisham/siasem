@@ -1,113 +1,70 @@
 <?php
 
-/**
- * 
- */
 class Database
 {
-	private $host = NAMA_NH;
+    private $host = NAMA_NH;
 	private $user = NAMA_UN;
 	private $pass = NAMA_KS;
-	private $pd   = NAMA_PD;
+	private $name   = NAMA_PD;
 
 	private $dbh;
 	private $stmt;
 	private $result;
 
-	public function __construct($stmt = '')
-	{
-		$this->dbh = new mysqli();
-		
-		$this->dbh->connect($this->host, $this->user, $this->pass, $this->pd);
+    function __construct($stmt = null) {
+        try {
+            $this->dbh = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->name . "", $this->user, $this->pass);
+            $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $th) {
+            print $th->getMessage();
+        }
+        $this->stmt = $stmt;
+    }
 
-		if ($this->dbh->connect_error) {
-			echo "Koneksi Eror: " . $this->dbh->connect_errno . " - " . $this->dbh->connect_error;
-		}
+    function kueri($kueri)
+    {
+        $this->stmt = $this->dbh->prepare($kueri);
+        return $this;
+    }
 
-		$this->stmt = (object) $stmt;
+    function ikat($var = [])
+    {
+        $valarr = array_values($var);
+        $keyarr = array_keys($var);
+        for ($i=0; $i < count($valarr); $i++) { 
+            $valarr[$i] = htmlspecialchars($valarr[$i]);
+            $this->stmt->bindParam($keyarr[$i], $valarr[$i]);
+        }
 
-	}
+        return $this;
+    }
 
-	public function np_kueri($kueri)
-	{
-		$this->stmt = $this->dbh->query($kueri);
-		return $this;
-	}
+    function eksekusi()
+    {
+        $this->stmt->execute();
+        return $this;
+    }
 
-	public function kueri($kueri)
-	{
-		$this->stmt = $this->dbh->prepare($kueri);
-		return $this;
-	}
+    function hasil_jamak()
+    {
+        return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+        $this->tutup();
+    }
 
-	public function ikat(...$val)
-	{
-		$tipe = null;
-		if ( is_null($tipe) ) {
-			for ($i=0; $i < count($val); $i++) { 
-				switch (true) {
-					case is_int($val[$i]):
-						$tipe[$i] = "i";
-						break;
+    function hasil_tunggal()
+    {
+        return $this->stmt->fetch(PDO::FETCH_ASSOC);
+        $this->tutup();
+    }
 
-					case is_double($val[$i]):
-						$tipe[$i] = "d";
-						break;
+    function baris_terefek()
+    {
+        return $this->stmt->rowCount();
+        $this->tutup();
+    }
 
-					case is_bool($val[$i]):
-						$tipe[$i] = "b";
-						break;
-						
-					default:
-						$tipe[$i] = "s";
-						break;
-				}
-				$this->dbh->real_escape_string($val[$i]);
-				$val[$i] = htmlspecialchars($val[$i]);
-			}
-		}
-		
-		$tipe = implode("", $tipe);
-		$this->stmt->bind_param($tipe, ...$val);
-		return $this;
-	}
-
-	public function eksekusi()
-	{
-		$this->stmt->execute();
-		return $this;
-	}
-
-	// Fungsi-fungsi untuk menampilkan baris data
-
-		public function hasil_jamak()
-		{
-			$this->eksekusi();
-			$this->result = $this->stmt->get_result();
-			return $this->result->fetch_all(MYSQLI_ASSOC);
-		}
-
-		public function hasil_tunggal()
-		{
-			$this->eksekusi();
-			$this->result = $this->stmt->get_result();
-			return $this->result->fetch_assoc();
-		}
-
-	// Fungsi-fungsi untuk menghitung perubahan baris data
-
-		public function baris_terefek()
-		{
-			if ( $this->stmt->affected_rows < 0 ) {
-				$hasil = $this->stmt->affected_rows + 1;
-			} else {
-				$hasil = $this->stmt->affected_rows;
-			}
-			return $hasil;
-		}
-
-	public function tutup()
-	{
-		$this->dbh->close();
-	}
+    function tutup()
+    {
+        $this->stmt->closeCursor();
+    }
 }

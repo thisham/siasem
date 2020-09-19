@@ -13,7 +13,11 @@ class m_portal extends Model
     {
         switch ($menu) {
             case 'masuk':
-                return $this->db->kueri("SELECT * FROM $this->dtusr WHERE usr_name = ? AND usr_password = ?")->ikat($data['username'], md5($data['password']))
+                $data = array(
+                    'usr_name'  => $data['username'], 
+                    'usr_pass'  => md5($data['password'])
+                );
+                return $this->db->kueri("SELECT * FROM $this->dtusr WHERE usr_name = :usr_name AND usr_password = :usr_pass")->ikat($data)
                                 ->eksekusi()->hasil_tunggal();
                 break;
             

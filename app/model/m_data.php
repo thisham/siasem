@@ -30,7 +30,7 @@ class m_data extends Model
 
     function __construct()
     {
-        $this->pdo = $this->pustaka('Database_PDO');
+        $this->pdo = new Database();
     }
 
     function master($menu = '', $act = '', $data = '')

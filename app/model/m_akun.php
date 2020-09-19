@@ -3,7 +3,7 @@
 class m_akun extends Model
 {
     function __construct() {
-        $this->db = $this->pustaka('Database_PDO');
+        $this->db = new Database();
     }
 
     function pengaturan($act = '', $data = '')
