@@ -32,12 +32,17 @@
                 type: "POST",
                 url: "<?= basis_url('portal/aksi/masuk'); ?>",
                 success: function (data) {
-                    /*console.log(data);*/
-                    if (data == null) {
+                    if (data == false) {
                         swal("Aksi Gagal!", "Kombinasi username dan password tidak ditemukan.", "error");
                     } else {
-                        swal("Selamat Datang!", "Sedang dialihkan...", "success");
-                        window.location = "<?= basis_url(); ?>";
+                        if (data.usr_status == 'on') {
+                            swal("Selamat Datang!", "Sedang dialihkan...", "success");
+                            setInterval(() => {
+                                window.location = "<?= basis_url(); ?>";
+                            }, 2000);
+                        } else {
+                            swal("Aksi Masuk Dicekal!", "Akun ter-suspend, harap hubungi administrator sistem.", "error");
+                        }
                     }
                 },
                 error: function (data) {
