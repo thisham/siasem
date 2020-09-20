@@ -40,7 +40,7 @@
         $('.data-batal').click(function (e) {
             e.preventDefault();
             $.ajax({
-                url: "<?= basis_url('data/user/kepala-sekolah/detail'); ?>",
+                url: "<?= basis_url('data/user/kepala-sekolah/data-batal'); ?>",
                 success: function (url) {
                     $('#hdm-content').html(url);
                 }

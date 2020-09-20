@@ -61,7 +61,7 @@
                                 <td class="center">
                                 <button class="btn btn-small indigo modal-trigger waves-effect waves-light" data-target="modal-det" onclick="detdata('<?= $dtstu['stu_id']; ?>')"><i class="material-icons">search</i></button>
                                 <button class="btn btn-small orange waves-effect waves-light" onclick="uptdata('<?= $dtstu['stu_id']; ?>');"><i class="material-icons">edit</i></button>
-                                <button class="btn btn-small red modal-trigger waves-effect waves-light" onclick="resdata('<?= $dtstu['stu_id']; ?>', '<?= $dtstu['stu_name']; ?>', '<?= $dtstu['stu_idnumber']; ?>', '<?= $dtstu['stu_passworddef']; ?>');"><i class="material-icons">replay</i></button>
+                                <button class="btn btn-small red waves-effect waves-light" onclick="resdata('<?= $dtstu['stu_id']; ?>', '<?= $dtstu['stu_name']; ?>', '<?= $dtstu['stu_idnumber']; ?>', '<?= $dtstu['stu_passworddef']; ?>');"><i class="material-icons">replay</i></button>
                                 </td>
                             </tr>
                         <?php } ?>
@@ -166,7 +166,7 @@
 
     function uptdata(stu_id) {
         $.ajax({
-            data: {stu_id: stu_id},
+            data: {usr_id: stu_id},
             type: "POST",
             url: "<?= basis_url('data/user/siswa/editor'); ?>",
             success: function (url) {
@@ -192,7 +192,7 @@
         $('#det-photo').attr('alt', '');
         $.ajax({
             dataType: "JSON",
-            data: {stu_id: stu_id},
+            data: {usr_id: stu_id},
             type: "POST",
             url: "<?= basis_url('data/user/siswa/detail'); ?>",
             success: function (data) {

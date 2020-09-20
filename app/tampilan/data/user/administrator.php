@@ -21,8 +21,8 @@
                             <td><?= $dtadm['adm_position']; ?></td>
                             <td class="center">
                                 <button class="btn btn-small indigo modal-trigger waves-effect waves-light" data-target="modal-det" onclick="detdata('<?= $dtadm['adm_id']; ?>')"><i class="material-icons">search</i></button>
-                                <button class="btn btn-small orange modal-trigger waves-effect waves-light" data-target="modal-upt" onclick="uptdata('<?= $dtadm['adm_id']; ?>');"><i class="material-icons">edit</i></button>
-                                <button class="btn btn-small red modal-trigger waves-effect waves-light" onclick="resdata('<?= $dtadm['adm_id']; ?>', '<?= $dtadm['adm_name']; ?>', '<?= $dtadm['adm_idnumber']; ?>', '<?= $dtadm['adm_passworddef']; ?>');"><i class="material-icons">replay</i></button>
+                                <button class="btn btn-small orange waves-effect waves-light" onclick="uptdata('<?= $dtadm['adm_id']; ?>');"><i class="material-icons">edit</i></button>
+                                <button class="btn btn-small red waves-effect waves-light" onclick="resdata('<?= $dtadm['adm_id']; ?>', '<?= $dtadm['adm_name']; ?>', '<?= $dtadm['adm_idnumber']; ?>', '<?= $dtadm['adm_passworddef']; ?>');"><i class="material-icons">replay</i></button>
                             </td>
                         </tr>
                     <?php } ?>
@@ -84,7 +84,7 @@
 <script>
     function uptdata(adm_id) {
         $.ajax({
-            data: {adm_id: adm_id},
+            data: {usr_id: adm_id},
             type: "POST",
             url: "<?= basis_url('data/user/administrator/editor'); ?>",
             success: function (url) {
@@ -128,7 +128,7 @@
     function detdata(adm_id) {
         $.ajax({
             dataType: "JSON",
-            data: {adm_id: adm_id},
+            data: {usr_id: adm_id},
             type: "POST",
             url: "<?= basis_url('data/user/administrator/detail'); ?>",
             success: function (data) {

@@ -1043,15 +1043,40 @@ class data extends Kontroler
                         # code...
                         break;
 
+                    case 'update-status-val':
+                        $send = $_POST;
+                        $acts = $this->data->user('user', 'update-status-val', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtusr' => $this->data->user('user')
+                            )
+                        );
+
+                        $this->tampilkan('data/user/after-upt/userdata', $data);
+                        break;
+
+                    case 'hapus':
+                        $send = $_POST;
+                        $acts = $this->data->user('user', 'hapus', $send);
+                        $data = array(
+                            'badan' => array(
+                                'dtusr' => $this->data->user('user')
+                            )
+                        );
+
+                        $this->tampilkan('data/user/after-upt/userdata', $data);
+                        break;
+
                     case 'search':
                         $send = $_POST;
                         $acts = $this->data->user('user', 'search', $send);
-                        // $data = array(
-                        //     'badan' => array(
-                        //         'dtusr' => $this->data->user('user', 'search', $send)
-                        //     )
-                        // );
-                        echo json_encode($acts);
+                        $data = array(
+                            'badan' => array(
+                                'dtusr' => $acts
+                            )
+                        );
+
+                        $this->tampilkan('data/user/after-upt/tbl-userdata', $data);
                         break;
                     
                     default:

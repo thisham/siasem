@@ -867,6 +867,11 @@ class m_data extends Model
                                         ->eksekusi()->hasil_tunggal();
                         break;
 
+                    case 'hapus':
+                        $data = array('usr_id' => $data['usr_id']);
+                        return $this->db->kueri("DELETE FROM $this->dtusr WHERE usr_id = :usr_id")->ikat($data)->eksekusi()->baris_terefek();
+                        break;
+
                     case 'reset':
                         $data = array(
                             'usr_name'  => $data['usr_name'],

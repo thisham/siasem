@@ -10,7 +10,9 @@
                 <tr>
                     <th class="center">No.</th>
                     <th class="center">Foto</th>
-                    <th class="center">NIP - Nama</th>
+                    <th class="center">NIP</th>
+                    <th class="center">Nama</th>
+                    <th class="center">Status</th>
                     <th class="center">Aksi</th>
                 </tr>
                 <?php if ($badan['dttch'] != NULL) { ?>
@@ -24,11 +26,13 @@
                                     <button class="btn indigo waves-effect waves-light modal-trigger" data-target="modal-upp" onclick="addphoto('<?= $dttch['tch_id']; ?>', '<?= $dttch['tch_name'] ?>');"><i class="material-icons">add_a_photo</i></button>
                                 <?php } ?>
                             </td>
-                            <td><b><?= $dttch['tch_idnumber']; ?></b> - <?= ($dttch['tch_status'] == 'on') ? '<span class="green white-text">Aktif</span>' : '<span class="red white-text">Non-Aktif</span>' ?><br><?= $dttch['tch_name']; ?></td>
+                            <td class="center"><?= $dttch['tch_idnumber']; ?></td>
+                            <td><?= $dttch['tch_name']; ?></td>
+                            <td class="center"><?= ($dttch['tch_status'] == 'on') ? '<span class="green badge new white-text" data-badge-caption="Aktif"></span>' : '<span class="red badge new white-text" data-badge-caption="Non-Aktif"></span>' ?></td>
                             <td class="center">
                                 <button class="btn btn-small indigo modal-trigger waves-effect waves-light" data-target="modal-det" onclick="detdata('<?= $dttch['tch_id']; ?>')"><i class="material-icons">search</i></button>
                                 <button class="btn btn-small orange waves-effect waves-light" onclick="uptdata('<?= $dttch['tch_id']; ?>');"><i class="material-icons">edit</i></button>
-                                <button class="btn btn-small red modal-trigger waves-effect waves-light" onclick="resdata('<?= $dttch['tch_id']; ?>', '<?= $dttch['tch_name']; ?>', '<?= $dttch['tch_idnumber']; ?>', '<?= $dttch['tch_passworddef']; ?>');"><i class="material-icons">replay</i></button>
+                                <button class="btn btn-small red waves-effect waves-light" onclick="resdata('<?= $dttch['tch_id']; ?>', '<?= $dttch['tch_name']; ?>', '<?= $dttch['tch_idnumber']; ?>', '<?= $dttch['tch_passworddef']; ?>');"><i class="material-icons">replay</i></button>
                             </td>
                         </tr>
                     <?php } ?>
@@ -146,7 +150,7 @@
         $('#det-photo').attr('alt', '');
         $.ajax({
             dataType: "JSON",
-            data: {tch_id: tch_id},
+            data: {usr_id: tch_id},
             type: "POST",
             url: "<?= basis_url('data/user/guru/detail'); ?>",
             success: function (data) {
@@ -164,7 +168,7 @@
 
     function uptdata(tch_id) {
         $.ajax({
-            data: {tch_id: tch_id},
+            data: {usr_id: tch_id},
             type: "POST",
             url: "<?= basis_url('data/user/guru/detail-upt'); ?>",
             success: function (url) {
