@@ -32,7 +32,7 @@ class portal extends Kontroler
 			case 'masuk':
 				$send = $_POST;
 				$acts = $this->portal->aksi('masuk', $send);
-				if ($acts != NULL) {
+				if ($acts != NULL && $acts['usr_status'] == 'on') {
 					$sesi = array(
 						'usr_id'	=> $acts['usr_id'],
 						'usr_name'	=> $acts['usr_name'],

@@ -26,9 +26,4 @@ class m_portal extends Model
                 break;
         }
     }
-
-    function __destruct()
-    {
-        $this->db->tutup();
-    }
 }
