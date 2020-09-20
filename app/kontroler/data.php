@@ -663,7 +663,7 @@ class data extends Kontroler
                     case 'detail':
                         $send = $_POST;
                         $act1 = $this->data->user('administrator', 'detail', $send);
-                        $act2 = $this->data->user('user', 'detail', $send['adm_id']);
+                        $act2 = $this->data->user('user', 'detail', $send['usr_id']);
                         $act1['usr_status'] = $act2['usr_status'];
                         echo json_encode($act1);
                         break;
@@ -673,7 +673,7 @@ class data extends Kontroler
                         $data = array(
                             'badan' => array(
                                 'dtadm' => $this->data->user('administrator', 'detail', $send),
-                                'dtusr' => $this->data->user('user', 'detail', $send['adm_id'])
+                                'dtusr' => $this->data->user('user', 'detail', $send['usr_id'])
                             )
                         );
                         
@@ -862,12 +862,19 @@ class data extends Kontroler
             case 'kepala-sekolah':
                 switch ($act) {
                     case 'detail':
+                        $send = $_POST;
+                        $acts = $this->data->user('kepala-sekolah');
+                        
+                        echo json_encode($acts);
+                        break;
+
+                    case 'data-batal':
                         $data = array(
                             'badan' => array(
                                 'dthdm' => $this->data->user('kepala-sekolah')
                             )
                         );
-                        $this->tampilkan('data/user/aftr-upt/kepala-sekolah', $data);
+                        $this->tampilkan('data/user/after-upt/kepala-sekolah', $data);
                         break;
 
                     case 'editor':
@@ -1030,14 +1037,34 @@ class data extends Kontroler
                 }
                 break;
 
-            case 'user':
+            case 'userdata':
                 switch ($act) {
                     case 'reset':
                         # code...
                         break;
+
+                    case 'search':
+                        $send = $_POST;
+                        $acts = $this->data->user('user', 'search', $send);
+                        // $data = array(
+                        //     'badan' => array(
+                        //         'dtusr' => $this->data->user('user', 'search', $send)
+                        //     )
+                        // );
+                        echo json_encode($acts);
+                        break;
                     
                     default:
-                        # code...
+                        $data = array(
+                            'title' => 'Kontrol User',
+                            'badan' => array(
+                                'dtusr' => $this->data->user('user')
+                            )
+                        );
+                        $this->tampilkan('pakem/header', $data);
+                        $this->tampilkan('pakem/navbar', $data);
+                        $this->tampilkan('data/user/userdata', $data);
+                        $this->tampilkan('pakem/footer');
                         break;
                 }
                 break;

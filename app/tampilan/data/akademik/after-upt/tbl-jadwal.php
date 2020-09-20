@@ -5,6 +5,7 @@
         <th class="center">MP</th>
         <th class="center">Pengajar</th>
         <th class="center">Waktu</th>
+        <th class="center">JP</th>
         <th class="center">Status</th>
         <th class="center">Aksi</th>
     </tr>
@@ -15,7 +16,8 @@
                 <td class="center"><?= $dtssc['sbj_name']; ?></td>
                 <td class="center"><?= $dtssc['tch_name']; ?></td>
                 <td class="center"><?= $days[$dtssc['ssc_day']] . ', ' . $dtssc['ssc_timestart'] . ' s/d ' . $dtssc['ssc_timeend']; ?></td>
-                <td class="center"><?= ($dtssc['ssc_status'] == 'on') ? 'Aktif': 'Non-Aktif'; ?></td>
+                <td class="center"><?= $dtssc['ssc_learntime']; ?></td>
+                <td class="center"><?= ($dtssc['ssc_status'] == 'on') ? '<span class="badge new green" data-badge-caption="Aktif"></span>': '<span class="badge new grey" data-badge-caption="Non-Aktif"></span>'; ?></td>
                 <td class="center">
                     <button class="btn btn-small orange waves-effect waves-light" data-target="modal-upt" onclick="uptdata('<?= $dtssc['ssc_id']; ?>');"><i class="material-icons">edit</i></button>
                     <button class="btn btn-small red waves-effect waves-light" onclick="deldata('<?= $dtssc['ssc_id']; ?>');"><i class="material-icons">delete</i></button>

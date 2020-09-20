@@ -45,15 +45,19 @@
         <div class="col s6">
             <div class="input-field">
                 <input type="time" name="ssc_timestart" id="upt-ssc_timestart" value="<?= $badan['dtssc']['ssc_timestart']; ?>">
-                <label for="upt-ssc_timestart" id="lupt-ssc-timestart" <?= ($badan['dtssc']['ssc_status'] != null) ? 'class="active"' : ''; ?>>Mulai</label>
+                <label for="upt-ssc_timestart" id="lupt-ssc-timestart" <?= ($badan['dtssc']['ssc_timestart'] != null) ? 'class="active"' : ''; ?>>Mulai</label>
             </div>
         </div>
         <div class="col s6">
             <div class="input-field">
                 <input type="time" name="ssc_timeend" id="upt-ssc_timeend" value="<?= $badan['dtssc']['ssc_timeend']; ?>">
-                <label for="upt-ssc_timeend" id="lupt-ssc-timeend" <?= ($badan['dtssc']['ssc_status'] != null) ? 'class="active"' : ''; ?>>Selesai</label>
+                <label for="upt-ssc_timeend" id="lupt-ssc-timeend" <?= ($badan['dtssc']['ssc_timeend'] != null) ? 'class="active"' : ''; ?>>Selesai</label>
             </div>
         </div>
+    </div>
+    <div class="input-field">
+        <input type="number" name="ssc_learntime" id="upt-ssc_learntime" value="<?= $badan['dtssc']['ssc_learntime']; ?>">
+        <label for="upt-ssc_learntime" id="lupt-ssc-learntime" <?= ($badan['dtssc']['ssc_learntime'] != null) ? 'class="active"' : ''; ?>>Jam Pelajaran</label>
     </div>
     <div class="input-field">
         <select name="ssc_day" id="upt-ssc_day">

@@ -56,6 +56,10 @@
         </div>
     </div>
     <div class="input-field">
+        <input type="number" name="ssc_learntime" id="add-ssc_learntime">
+        <label for="add-ssc_learntime" id="ladd-ssc-learntime">Jam Pelajaran</label>
+    </div>
+    <div class="input-field">
         <select name="ssc_day" id="add-ssc_day">
             <option value="" id="aday1" disabled selected>Pilih Hari...</option>
             <option value="0">Minggu</option>
