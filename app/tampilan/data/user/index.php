@@ -10,7 +10,7 @@
                 <a class="collection-item indigo-text" href="<?= basis_url('data/user/keuangan'); ?>">Keuangan <i class="material-icons right">chevron_right</i></a>
                 <a class="collection-item indigo-text" href="<?= basis_url('data/user/siswa'); ?>">Siswa <i class="material-icons right">chevron_right</i></a>
                 <a class="collection-item indigo-text" href="<?= basis_url('data/user/administrator'); ?>">Administrator <i class="material-icons right">chevron_right</i></a>
-                <a class="collection-item indigo-text" href="<?= basis_url('data/user/list'); ?>">List <i class="material-icons right">chevron_right</i></a>
+                <a class="collection-item indigo-text" href="<?= basis_url('data/user/userdata'); ?>">User Data <i class="material-icons right">chevron_right</i></a>
             </ul>
         </div>
     </div>
