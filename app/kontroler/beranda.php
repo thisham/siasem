@@ -19,8 +19,7 @@ class beranda extends Kontroler
 	function indeks()
 	{
 		$acts = array('siswa', 'administrator', 'kepala-sekolah', 'guru', 'keuangan');
-		$keys = array('stu_id', 'adm_id', 'hdm_id', 'tch_id', 'fin_id');
-		$send[$keys[$this->session->get('usr_role')]] = $this->session->get('usr_id');
+		$send['usr_id'] = $this->session->get('usr_id');
 		$data = array(
 			'title'	=> 'Beranda',
 			'badan'	=> array (
