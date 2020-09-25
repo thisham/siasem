@@ -1,12 +1,3 @@
-# Framework PHP-KMT Versi 2.5.0 
-
-Pustaka: 
-Youtube Channel: Web Programming Unpas
-
-## Spesifikasi
-
-  - Dibangun dengan PHP versi 7.3
-
-## Pengujian App
-
-Work on PHP v7.3
+# Siasem
+## Introduction
+Siasem is a academic information system for High School (acronym from Sistem Informasi Akademik Sekolah Menengah (in Indonesian)).
